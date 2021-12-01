@@ -1,0 +1,30 @@
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $btn-primary;
+  color: $clr-fourth;
+  border-radius: 50vh;
+  font-size: 18px;
+  margin-top: 40px; 
+
+  &--small{
+    display: flex;
+    justify-content: end;
+    color: $btn-secondary;
+    font-weight: bold;
+    margin-top: 20px;
+  
+    &__text {
+      border-bottom: 1px solid
+      // text-decoration: underline;
+    }
+    a {
+      text-decoration: none;
+    }
+    a:visited {
+      color: $btn-secondary;
+      
+    }
+  }
+}
