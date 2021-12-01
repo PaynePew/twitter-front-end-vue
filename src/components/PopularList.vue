@@ -1,3 +1,3 @@
 <template>
-  <h1>ArticleShow</h1>
+  <h1>PopularList</h1>
 </template>
