@@ -1,3 +1,30 @@
 @charset 'utf-8';
 
 @import "abstracts/__abstracts-dir";
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $btn-primary;
+  color: $clr-fourth;
+  border-radius: 50vh;
+  font-size: 18px;
+  margin-top: 40px;
+}
+
+.button--small {
+  display: flex;
+  justify-content: end;
+  color: $btn-secondary;
+  font-weight: bold;
+  margin-top: 20px;
+  
+  .button__text--small {
+    text-decoration: underline;
+  }
+
+  a:visited {
+    color: $btn-secondary;
+  }
+}
