@@ -174,7 +174,7 @@ export default {
   &__box {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     line-height: 20px;
     font-weight: bold;
   }

@@ -48,9 +48,6 @@
 </template>
 
 <script>
-import "./../assets/scss/components/_form.scss";
-import "./../assets/scss/components/_button.scss";
-
 export default {
   name: "LoginForm",
   data() {
@@ -88,6 +85,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "./../assets/scss/components/_form.scss";
+@import "./../assets/scss/components/_button.scss";
 .login-form {
   &__btn {
     width: 540px;
