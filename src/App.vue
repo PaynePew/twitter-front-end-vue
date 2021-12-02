@@ -10,7 +10,7 @@
         <Modal v-show="isShow" />
       </section>
       <section class="sidebar" >
-        <PopularList v-show="conditionalRender" v-if="isAdminPage"/>
+        <PopularList v-show="conditionalRender" v-if="!isAdminPage"/>
       </section>
     </section>
   </div>
@@ -60,9 +60,9 @@ export default {
       console.log("URL.name", currentURL.name);
       const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
       if (pathWithoutSideRender.includes(currentURL.name)) {
-        return false;
+        return true;
       }
-      return true;
+      return false;
     }
   },
 };
