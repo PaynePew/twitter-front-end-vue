@@ -7,7 +7,7 @@
       <section class="content">
         <AppBar />
         <router-view />
-        <Modal />
+        <Modal v-show="isShow" />
       </section>
       <section class="sidebar">
         <PopularList />
@@ -29,6 +29,11 @@ export default {
     Modal,
     PopularList,
   },
+  data() {
+    return {
+      isShow: false,
+    };
+  },
 };
 </script>
 
@@ -37,12 +42,16 @@ export default {
 
 .container {
   display: flex;
+  position: relative;
+  justify-content: center;
   outline: solid red;
 }
 .header {
+  display: flex;
+  position: relative;
   padding: 0 20px;
-  min-width: 275px;
-  outline: solid red;
+  flex: 1 0 auto;
+  justify-content: flex-end;
 }
 
 .main {
@@ -55,7 +64,5 @@ export default {
   flex-direction: column;
   min-width: 600px;
   outline: solid red;
-}
-.sidebar {
 }
 </style>
