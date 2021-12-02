@@ -5,7 +5,7 @@
         <div class="navbar__header">
           <img class="navbar__logo" src="@/assets/img/logo@2x.png" alt="" />
         </div>
-        <div class="navbar__body">
+        <div class="navbar__body" v-if="!isAdminPage">
           <div class="navbar__menu">
             <img src="@/assets/img/icon_house@2x.png" class="navbar__icon" />
             <div class="navbar__title">首頁</div>
@@ -22,6 +22,20 @@
             <button class="navbar__button">推文</button>
           </div>
         </div>
+
+        <div class="navbar__body" v-if="isAdminPage">
+          <div class="navbar__menu">
+            <img src="@/assets/img/icon_house@2x.png" class="navbar__icon" />
+            <div class="navbar__title">推文清單</div>
+          </div>
+          <div class="navbar__menu">
+            <img src="@/assets/img/icon_user@2x.png" class="navbar__icon" />
+            <div class="navbar__title">使用者列表</div>
+          </div>
+          <div class="navbar__menu">
+            <button class="navbar__button">推文</button>
+          </div>
+        </div>
       </div>
       <div class="navbar__footer">
         <div class="navbar__logout">
@@ -32,6 +46,23 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  computed: {
+    isAdminPage() {
+      const currentURL = this.$route;
+      console.log("URL.name", currentURL.name);
+      const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
+      if (pathWithoutSideRender.includes(currentURL.name)) {
+        return true;
+      }
+      return false;
+    }
+  }
+}
+</script>
+
 
 <style lang="scss" scoped>
 .navbar {
