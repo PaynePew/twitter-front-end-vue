@@ -85,15 +85,15 @@
 export default {
   data() {
     return {
-      HomeURL: ['Home', 'ArticleShow',],
-      UserURL: ['UserInfo'],
+      HomeURL: ["Home", "ArticleShow"],
+      UserURL: ["UserInfo"],
     };
   },
 
   computed: {
     isAdminPage() {
       const currentURL = this.$route;
-      console.log('URL.name', currentURL.name);
+      console.log("URL.name", currentURL.name);
       const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
       if (pathWithoutSideRender.includes(currentURL.name)) {
         return true;
@@ -106,7 +106,7 @@ export default {
       return this.$route.name;
     },
   },
-    methods: {
+  methods: {
     handleNewPost() {
       this.$emit("after-click");
     },

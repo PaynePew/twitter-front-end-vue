@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 
 const routes = [
@@ -55,13 +55,13 @@ const routes = [
   {
     path: "/admin",
     exact: true,
-    redirect: '/admin/users'
+    redirect: "/admin/users",
   },
 ];
 
 const router = createRouter({
   linkExactActiveClass: "active",
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

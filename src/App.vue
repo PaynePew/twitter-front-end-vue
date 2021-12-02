@@ -9,8 +9,8 @@
         <router-view />
         <Modal v-show="isShow" @close="isShow = false" :users="users" />
       </section>
-      <section class="sidebar" >
-        <PopularList v-show="conditionalRender" v-if="!isAdminPage"/>
+      <section class="sidebar">
+        <PopularList v-show="conditionalRender" v-if="!isAdminPage" />
       </section>
     </section>
   </div>
@@ -68,7 +68,7 @@ export default {
         return true;
       }
       return false;
-    }
+    },
   },
   // beforeMount() {
   //   this.conditionalRender();
