@@ -8,15 +8,15 @@
   border-radius: 100px;
   font-size: $fs-h3;
   border-style: none;
-  padding:10px 15px;
-  height:35px;
+  padding: 10px 15px;
+  height: 35px;
 
-  &--small{
+  &--small {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     color: $btn-secondary;
-    font-weight: bold;    
-  
+    font-weight: bold;
+
     &__text {
       border-bottom: 1px solid;
       cursor: pointer;
@@ -26,7 +26,6 @@
     }
     a:visited {
       color: $btn-secondary;
-      
     }
   }
 }
