@@ -8,15 +8,36 @@
         <div class="navbar__body" v-if="!isAdminPage">
           <div class="navbar__menu">
             <img src="@/assets/img/icon_house@2x.png" class="navbar__icon" />
-            <div class="navbar__title">首頁</div>
+            <div
+              :class="[
+                'navbar__title',
+                { 'navbar__title--active': HomeURL.includes(currentPage) },
+              ]"
+            >
+              首頁
+            </div>
           </div>
           <div class="navbar__menu">
             <img src="@/assets/img/icon_user@2x.png" class="navbar__icon" />
-            <div class="navbar__title">個人資料</div>
+            <div
+              :class="[
+                'navbar__title',
+                { 'navbar__title--active': UserURL.includes(currentPage) },
+              ]"
+            >
+              個人資料
+            </div>
           </div>
           <div class="navbar__menu">
             <img src="@/assets/img/icon_gear@2x.png" class="navbar__icon" />
-            <div class="navbar__title">設定</div>
+            <div
+              :class="[
+                'navbar__title',
+                { 'navbar__title--active': currentPage === 'Setting' },
+              ]"
+            >
+              設定
+            </div>
           </div>
           <div class="navbar__menu">
             <button class="navbar__button">推文</button>
@@ -26,11 +47,25 @@
         <div class="navbar__body" v-if="isAdminPage">
           <router-link class="navbar__menu" to="/admin/articles">
             <img src="@/assets/img/icon_house@2x.png" class="navbar__icon" />
-            <div class="navbar__title">推文清單</div>
+            <div
+              :class="[
+                'navbar__title',
+                { 'navbar__title--active': currentPage === 'AdminArticles' },
+              ]"
+            >
+              推文清單
+            </div>
           </router-link>
           <router-link class="navbar__menu" to="/admin/users">
             <img src="@/assets/img/icon_user@2x.png" class="navbar__icon" />
-            <div class="navbar__title">使用者列表</div>
+            <div
+              :class="[
+                'navbar__title',
+                { 'navbar__title--active': currentPage === 'AdminUsers' },
+              ]"
+            >
+              使用者列表
+            </div>
           </router-link>
         </div>
       </div>
@@ -46,15 +81,27 @@
 
 <script>
 export default {
+  data() {
+    return {
+      HomeURL: ['Home', 'ArticleShow',],
+      UserURL: ['UserInfo'],
+    };
+  },
+
   computed: {
     isAdminPage() {
       const currentURL = this.$route;
-      console.log("URL.name", currentURL.name);
+      console.log('URL.name', currentURL.name);
       const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
       if (pathWithoutSideRender.includes(currentURL.name)) {
         return true;
       }
       return false;
+    },
+
+    currentPage() {
+      console.log("currentPage:", this.$route.name);
+      return this.$route.name;
     },
   },
 };
@@ -93,6 +140,8 @@ export default {
     display: flex;
     margin-bottom: 30px;
     margin-left: 10px;
+    font-size: 18px;
+    text-decoration: none;
   }
   &__icon {
     width: 24px;
@@ -101,6 +150,10 @@ export default {
   &__title {
     margin-left: 1.3rem;
     font-weight: bold;
+    color: $clr-form-primary;
+    &--active {
+      color: $clr-third;
+    }
   }
   &__button {
     background-color: $btn-primary;
