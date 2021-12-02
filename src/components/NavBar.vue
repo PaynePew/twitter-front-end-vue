@@ -40,7 +40,9 @@
             </div>
           </div>
           <div class="navbar__menu">
-            <button class="navbar__button">推文</button>
+            <button @click.stop="handleNewPost" class="navbar__button">
+              推文
+            </button>
           </div>
         </div>
 
@@ -104,9 +106,13 @@ export default {
       return this.$route.name;
     },
   },
+    methods: {
+    handleNewPost() {
+      this.$emit("after-click");
+    },
+  },
 };
 </script>
-
 
 <style lang="scss" scoped>
 .navbar {
@@ -162,6 +168,7 @@ export default {
     border-style: none;
     height: 38px;
     width: 210px;
+    cursor: pointer;
   }
   &__logout {
     margin-left: 10px;

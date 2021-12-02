@@ -1,4 +1,4 @@
-[
+export const repliesDummy = [
   {
     id: 1,
     comment:

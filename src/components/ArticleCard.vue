@@ -1,40 +1,42 @@
 <template>
   <section v-for="article in articles" :key="article.id" class="article-card">
     <div class="article-card__wrapper">
-      <div class="article-card__side">
-        <img :src="currentUser.avatar" alt="" />
-      </div>
-      <div class="article-card__main">
-        <div class="article-card__header">
-          <div class="article-card__name">
-            {{ currentUser.name }}
-          </div>
-          <div class="article-card__account">@testAccount</div>
-          <span>·</span>
-          <div class="article-card__time">
-            {{ fromNow(article.created_at) }}
-          </div>
+      <div class="article-card__container">
+        <div class="article-card__side">
+          <img class="article-card__avatar" :src="currentUser.avatar" alt="" />
         </div>
-        <div class="article-card__body">
-          {{ article.description }}
-        </div>
-        <div class="article-card__footer">
-          <div class="article-card__response">
-            <div class="article-card__comment">
-              <img
-                class="article-card__icon"
-                src="@/assets/img/icon_reply@2x.png"
-                alt=""
-              />
-              <span class="article-card__count">13</span>
+        <div class="article-card__main">
+          <div class="article-card__header">
+            <div class="article-card__name">
+              {{ currentUser.name }}
             </div>
-            <div class="article-card__like">
-              <img
-                class="article-card__icon"
-                src="@/assets/img/icon_like@2x.png"
-                alt=""
-              />
-              <span class="article-card__count">78</span>
+            <div class="article-card__account">@testAccount</div>
+            <span>·</span>
+            <div class="article-card__time">
+              {{ fromNow(article.created_at) }}
+            </div>
+          </div>
+          <div class="article-card__body">
+            {{ article.description }}
+          </div>
+          <div class="article-card__footer">
+            <div class="article-card__response">
+              <div class="article-card__comment">
+                <img
+                  class="article-card__icon"
+                  src="@/assets/img/icon_reply@2x.png"
+                  alt=""
+                />
+                <span class="article-card__count">13</span>
+              </div>
+              <div class="article-card__like">
+                <img
+                  class="article-card__icon"
+                  src="@/assets/img/icon_like@2x.png"
+                  alt=""
+                />
+                <span class="article-card__count">78</span>
+              </div>
             </div>
           </div>
         </div>
@@ -61,11 +63,23 @@ export default {
 .article-card {
   &__wrapper {
     max-width: 600px;
+    border-bottom: 1px solid $clr-border;
+  }
+  &__container {
+    margin: 10px 15px 15px 0px;
     display: flex;
   }
   &__header {
     display: flex;
     color: $clr-secondary;
+  }
+  &__side {
+    margin-left: 15px;
+  }
+  &__avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
   }
   &__name {
     font-weight: bold;
@@ -77,7 +91,7 @@ export default {
   }
   &__footer {
     display: flex;
-    margin: 10px 0px;
+    margin-top: 10px;
   }
   &__response {
     max-width: 130px;

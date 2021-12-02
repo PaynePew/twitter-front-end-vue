@@ -1,4 +1,4 @@
-[
+export const usersDummy = [
   {
     id: 1,
     account: "tz1Mp67VLh43epLdHSvuaK4FbMoQ2nQkeLUk",
