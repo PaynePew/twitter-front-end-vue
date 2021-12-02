@@ -1,16 +1,16 @@
 <template>
   <div class="container">
     <section class="header">
-      <NavBar />
+      <NavBar v-show="conditionalRender" />
     </section>
     <section class="main">
       <section class="content">
-        <AppBar />
+        <AppBar v-show="conditionalRender" />
         <router-view />
         <Modal v-show="isShow" />
       </section>
       <section class="sidebar">
-        <PopularList />
+        <PopularList v-show="conditionalRender" />
       </section>
     </section>
   </div>
@@ -32,7 +32,29 @@ export default {
   data() {
     return {
       isShow: false,
+      isRender: true,
+      route: "",
     };
+  },
+  // beforeMount() {
+  //   this.conditionalRender();
+  // },
+  // beforeRouteEnter(to, from) {
+  //   console.log("hello");
+  //   console.log(to);
+  //   console.log(from);
+  // },
+
+  computed: {
+    conditionalRender() {
+      const currentURL = this.$route;
+      console.log("URL", currentURL);
+      const pathWithoutSideRender = ["Login", "Signup"];
+      if (pathWithoutSideRender.includes(currentURL.name)) {
+        return false;
+      }
+      return true;
+    },
   },
 };
 </script>

@@ -202,11 +202,9 @@ export default {
   },
   methods: {
     fetchCurrentUser() {
-      console.log(usersDummy);
       this.currentUser = usersDummy[3];
     },
     fetchArticles() {
-      console.log(usersDummy);
       this.articles = articleDummy;
     },
   },

@@ -145,7 +145,6 @@ export default {
   },
   methods: {
     fetchCurrentUser() {
-      console.log(usersDummy);
       this.users = usersDummy;
     },
   },

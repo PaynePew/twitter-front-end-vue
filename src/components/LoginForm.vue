@@ -3,20 +3,14 @@
     <div class="login-form__input-box form__input-box">
       <label class="form__input-box__label" for="email">email</label>
       <div
-        class="
-          login-form__input-box__input-container
-          form__input-box__input-container
-        "
+        class="login-form__input-box__input-container form__input-box__input-container"
       >
         <input
           id="email"
           v-model="email"
           name="email"
           type="email"
-          class="
-            login-form__input-box__input-container__input
-            form__input-box__input-container__input
-          "
+          class="login-form__input-box__input-container__input form__input-box__input-container__input"
           required
           autofocus
         />
@@ -26,34 +20,22 @@
     <div class="login-form__input-box form__input-box">
       <label class="form__input-box__label" for="password">密碼</label>
       <div
-        class="
-          login-form__input-box__input-container
-          form__input-box__input-container
-        "
+        class="login-form__input-box__input-container form__input-box__input-container"
       >
         <input
           id="password"
           v-model="password"
           name="password"
           type="password"
-          class="
-            login-form__input-box__input-container__input
-            form__input-box__input-container__input
-          "
+          class="login-form__input-box__input-container__input form__input-box__input-container__input"
           required
         />
       </div>
     </div>
 
-    <button class="login-form__btn btn">
-      登入
-    </button>
+    <button class="login-form__btn btn">登入</button>
 
-    <div 
-      class="
-        login-form__btn--small
-        btn--small
-    ">
+    <div class="login-form__btn--small btn--small">
       <router-link v-if="!adminToggled" to="/signup" class="btn--small__text">
         註冊Alphitter
       </router-link>
@@ -70,7 +52,7 @@ import "./../assets/scss/components/_form.scss";
 import "./../assets/scss/components/_button.scss";
 
 export default {
-  name: 'LoginForm',
+  name: "LoginForm",
   data() {
     return {
       email: "",
@@ -87,21 +69,20 @@ export default {
     },
 
     async handleSubmit() {
-      try {        
-        if(!this.email) {
-          throw new Error('請輸入email')
-        } 
+      try {
+        if (!this.email) {
+          throw new Error("請輸入email");
+        }
 
-        if(!this.password) {
-          throw new Error('請輸入密碼')
-        } 
+        if (!this.password) {
+          throw new Error("請輸入密碼");
+        }
 
         this.$router.push("/home");
-
-      } catch (error) { 
-        console.log('error')
-      }      
-    }
+      } catch (error) {
+        console.log("error");
+      }
+    },
   },
 };
 </script>
@@ -118,5 +99,4 @@ export default {
     }
   }
 }
-
 </style>
