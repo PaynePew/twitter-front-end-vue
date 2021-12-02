@@ -19,7 +19,9 @@
             <div class="navbar__title">設定</div>
           </div>
           <div class="navbar__menu">
-            <button class="navbar__button">推文</button>
+            <button @click.stop="handleNewPost" class="navbar__button">
+              推文
+            </button>
           </div>
         </div>
       </div>
@@ -32,6 +34,16 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  methods: {
+    handleNewPost() {
+      this.$emit("after-click");
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .navbar {
@@ -81,6 +93,7 @@
     border-style: none;
     height: 38px;
     width: 210px;
+    cursor: pointer;
   }
   &__logout {
     margin-left: 10px;
