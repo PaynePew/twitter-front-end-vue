@@ -1,4 +1,4 @@
-[
+export const tweetsDummy = [
   {
     id: 1,
     description:

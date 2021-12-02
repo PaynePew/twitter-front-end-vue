@@ -34,7 +34,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/components/_button.scss";
 .article-create {
-  border: solid green;
   &__wrapper {
     display: flex;
     width: 600px;
@@ -59,6 +58,9 @@ export default {
     height: 100%;
     margin-top: 21px;
     border-style: none;
+    &:focus {
+      outline: none;
+    }
   }
   &__footer {
     margin-right: 15px;

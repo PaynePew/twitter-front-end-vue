@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <section class="header">
-      <NavBar v-show="conditionalRender" />
+      <NavBar v-show="conditionalRender" @after-click="toggleModal" />
     </section>
     <section class="main">
       <section class="content">
         <AppBar v-show="conditionalRender" />
         <router-view />
-        <Modal v-show="isShow" />
+        <Modal v-show="isShow" @close="isShow = false" :users="users" />
       </section>
       <section class="sidebar">
         <PopularList v-show="conditionalRender" />
@@ -21,6 +21,7 @@ import NavBar from "./components/NavBar.vue";
 import AppBar from "./components/AppBar.vue";
 import Modal from "./components/Modal.vue";
 import PopularList from "./components/PopularList.vue";
+import { usersDummy } from "@/store/dummy/usersDummy";
 
 export default {
   components: {
@@ -34,16 +35,20 @@ export default {
       isShow: false,
       isRender: true,
       route: "",
+      users: [],
     };
   },
-  // beforeMount() {
-  //   this.conditionalRender();
-  // },
-  // beforeRouteEnter(to, from) {
-  //   console.log("hello");
-  //   console.log(to);
-  //   console.log(from);
-  // },
+  beforeMount() {
+    this.fetchUsers();
+  },
+  methods: {
+    toggleModal() {
+      this.isShow = !this.isShow;
+    },
+    fetchUsers() {
+      this.users = usersDummy;
+    },
+  },
 
   computed: {
     conditionalRender() {
@@ -56,6 +61,14 @@ export default {
       return true;
     },
   },
+  // beforeMount() {
+  //   this.conditionalRender();
+  // },
+  // beforeRouteEnter(to, from) {
+  //   console.log("hello");
+  //   console.log(to);
+  //   console.log(from);
+  // },
 };
 </script>
 
