@@ -55,15 +55,10 @@
         />
       </div>
       <div class="form__input-box__hint">
-        <p
-          class="form__input-box__hint__error-message"
-          v-if="nameLength > 50"
-        >
+        <p class="form__input-box__hint__error-message" v-if="nameLength > 50">
           字數超出上限！
         </p>
-        <p class="form__input-box__hint__counter">
-          {{ 0 || nameLength }}/50
-        </p>
+        <p class="form__input-box__hint__counter">{{ 0 || nameLength }}/50</p>
       </div>
     </div>
 
@@ -155,6 +150,20 @@ import "./../assets/scss/components/_button.scss";
 
 export default {
   name: "AccountForm",
+
+  props: {
+    initialUser: {
+      type: Object,
+      default: () => ({
+        account: "",
+        name: "",
+        email: "",
+        password: "",
+        passwordCheck: "",
+      }),
+    },
+  },
+
   data() {
     return {
       account: "",
@@ -177,7 +186,7 @@ export default {
     },
   },
 
-    methods: {
+  methods: {
     toggleAdmin() {
       console.log("toggleAdmin");
       this.adminToggled = !this.adminToggled;
@@ -223,7 +232,6 @@ export default {
         console.log("error");
       }
     },
-
   },
 };
 </script>
