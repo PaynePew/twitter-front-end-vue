@@ -3,14 +3,20 @@
     <div class="login-form__input-box form__input-box">
       <label class="form__input-box__label" for="email">email</label>
       <div
-        class="login-form__input-box__input-container form__input-box__input-container"
+        class="
+          login-form__input-box__input-container
+          form__input-box__input-container
+        "
       >
         <input
           id="email"
           v-model="email"
           name="email"
           type="email"
-          class="login-form__input-box__input-container__input form__input-box__input-container__input"
+          class="
+            login-form__input-box__input-container__input
+            form__input-box__input-container__input
+          "
           required
           autofocus
         />
@@ -20,14 +26,20 @@
     <div class="login-form__input-box form__input-box">
       <label class="form__input-box__label" for="password">密碼</label>
       <div
-        class="login-form__input-box__input-container form__input-box__input-container"
+        class="
+          login-form__input-box__input-container
+          form__input-box__input-container
+        "
       >
         <input
           id="password"
           v-model="password"
           name="password"
           type="password"
-          class="login-form__input-box__input-container__input form__input-box__input-container__input"
+          class="
+            login-form__input-box__input-container__input
+            form__input-box__input-container__input
+          "
           required
         />
       </div>
@@ -75,7 +87,11 @@ export default {
           throw new Error("請輸入密碼");
         }
 
-        this.$router.push("/home");
+        if (this.adminToggled) {
+          this.$router.push("/admin/users");
+        } else {
+          this.$router.push("/home");
+        }
       } catch (error) {
         console.log("error");
       }
