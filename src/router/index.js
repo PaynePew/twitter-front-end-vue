@@ -37,6 +37,23 @@ const routes = [
     name: "Signup",
     component: () => import("../views/SignUp.vue"),
   },
+  {
+    path: "/admin",
+    exact: true,
+    redirect: '/admin/users'
+  },
+  {
+    path: '/admin/users',
+    name: 'admin-users',
+    component: () => import('../views/AdminUsers.vue'),
+    // beforeEnter: authorizeIsAdmin
+  },
+  {
+    path: '/admin/articles',
+    name: 'admin-articles',
+    component: () => import('../views/AdminArticles.vue'),
+    // beforeEnter: authorizeIsAdmin
+  },
 ];
 
 const router = createRouter({
