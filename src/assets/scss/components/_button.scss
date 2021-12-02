@@ -4,8 +4,11 @@
   align-items: center;
   background-color: $btn-primary;
   color: $clr-fourth;
-  border-radius: 50vh;
-  font-size: 18px;
+  border-radius: 100px;
+  font-size: $fs-h3;
+  border-style: none;
+  padding:10px 15px;
+  height:35px;
 
   &--small{
     display: flex;
