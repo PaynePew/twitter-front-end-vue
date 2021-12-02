@@ -38,6 +38,11 @@ export default {
     display: flex;
     width: 600px;
     height: 120px;
+    border-bottom: 1px solid $clr-border;
+  }
+  &__header {
+    margin-top: 10px;
+    margin-left: 15px;
   }
   &__avatar {
     width: 50px;
@@ -56,7 +61,7 @@ export default {
   }
   &__input {
     height: 100%;
-    margin-top: 21px;
+    margin-top: 20px;
     border-style: none;
     &:focus {
       outline: none;

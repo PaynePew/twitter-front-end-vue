@@ -79,7 +79,6 @@ export default {
   display: flex;
   position: relative;
   justify-content: center;
-  outline: solid red;
 }
 .header {
   display: flex;
@@ -91,13 +90,12 @@ export default {
 
 .main {
   display: flex;
-  outline: solid red;
   flex: 1 1 auto;
 }
 .content {
   display: flex;
   flex-direction: column;
   min-width: 600px;
-  outline: solid red;
+  border: 1px solid $clr-border;
 }
 </style>
