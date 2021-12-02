@@ -9,8 +9,8 @@
         <router-view />
         <Modal v-show="isShow" />
       </section>
-      <section class="sidebar">
-        <PopularList v-show="conditionalRender" />
+      <section class="sidebar" >
+        <PopularList v-show="conditionalRender" v-if="isAdminPage"/>
       </section>
     </section>
   </div>
@@ -55,6 +55,15 @@ export default {
       }
       return true;
     },
+    isAdminPage() {
+      const currentURL = this.$route;
+      console.log("URL.name", currentURL.name);
+      const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
+      if (pathWithoutSideRender.includes(currentURL.name)) {
+        return false;
+      }
+      return true;
+    }
   },
 };
 </script>
