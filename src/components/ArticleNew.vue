@@ -38,7 +38,7 @@ export default {
     display: flex;
     width: 600px;
     height: 120px;
-    border-bottom: 1px solid $clr-border;
+    border-bottom: 10px solid $clr-border;
   }
   &__header {
     margin-top: 10px;
