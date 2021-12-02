@@ -1,10 +1,16 @@
 <template>
   <section class="appbar">
     <div class="appbar__wrapper">
-      <div class="appbar__nav" v-show="isShow">
-        <img src="@/assets/img/icon_back@2x.png" class="appbar__icon" alt="" />
+      <div class="appbar__container">
+        <div class="appbar__nav" v-show="isShow">
+          <img
+            src="@/assets/img/icon_back@2x.png"
+            class="appbar__icon"
+            alt=""
+          />
+        </div>
+        <div class="appbar__title">首頁</div>
       </div>
-      <div class="appbar__title">首頁</div>
     </div>
   </section>
 </template>
@@ -13,7 +19,7 @@
 export default {
   data() {
     return {
-      isShow: true,
+      isShow: false,
     };
   },
 };
@@ -23,6 +29,10 @@ export default {
 .appbar {
   &__wrapper {
     display: flex;
+    border-bottom: 1px solid $clr-border;
+  }
+  &__container {
+    margin: 15px;
   }
   &__icon {
     width: 17px;
@@ -30,6 +40,7 @@ export default {
   }
   &__title {
     font-size: $fs-h3;
+    font-weight: bold;
   }
 }
 </style>
