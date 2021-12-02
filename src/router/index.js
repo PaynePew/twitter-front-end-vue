@@ -18,6 +18,11 @@ const routes = [
     component: () => import("../views/AdminUsers.vue"),
   },
   {
+    path: "/admin/articles",
+    name: "AdminArticles",
+    component: () => import("../views/AdminArticles.vue"),
+  },
+  {
     path: "/home",
     name: "Home",
     component: Home,
@@ -51,18 +56,6 @@ const routes = [
     path: "/admin",
     exact: true,
     redirect: '/admin/users'
-  },
-  {
-    path: '/admin/users',
-    name: 'admin-users',
-    component: () => import('../views/AdminUsers.vue'),
-    // beforeEnter: authorizeIsAdmin
-  },
-  {
-    path: '/admin/articles',
-    name: 'admin-articles',
-    component: () => import('../views/AdminArticles.vue'),
-    // beforeEnter: authorizeIsAdmin
   },
 ];
 
