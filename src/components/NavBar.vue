@@ -24,17 +24,14 @@
         </div>
 
         <div class="navbar__body" v-if="isAdminPage">
-          <div class="navbar__menu">
+          <router-link class="navbar__menu" to="/admin/articles">
             <img src="@/assets/img/icon_house@2x.png" class="navbar__icon" />
             <div class="navbar__title">推文清單</div>
-          </div>
-          <div class="navbar__menu">
+          </router-link>
+          <router-link class="navbar__menu" to="/admin/users">
             <img src="@/assets/img/icon_user@2x.png" class="navbar__icon" />
             <div class="navbar__title">使用者列表</div>
-          </div>
-          <div class="navbar__menu">
-            <button class="navbar__button">推文</button>
-          </div>
+          </router-link>
         </div>
       </div>
       <div class="navbar__footer">
@@ -58,9 +55,9 @@ export default {
         return true;
       }
       return false;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 
