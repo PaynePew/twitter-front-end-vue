@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
+import NavBar from "../components/NavBar.vue";
+import PopularList from "../components/PopularList.vue";
 import NotFound from "../views/NotFound.vue";
 
 const routes = [
@@ -16,22 +18,32 @@ const routes = [
   {
     path: "/admin/users",
     name: "AdminUsers",
-    component: () => import("../views/AdminUsers.vue"),
+    components: {
+      default: () => import("../views/AdminUsers.vue"),
+      nav: NavBar,
+    },
   },
   {
     path: "/admin/articles",
     name: "AdminArticles",
-    component: () => import("../views/AdminArticles.vue"),
+    components: {
+      default: () => import("../views/AdminArticles.vue"),
+      nav: NavBar,
+    },
   },
   {
     path: "/home",
     name: "Home",
-    component: Home,
+    components: { default: Home, nav: NavBar, side: PopularList },
   },
   {
     path: "/:userName",
     name: "UserInfo",
-    component: () => import("../views/UserInfo.vue"),
+    components: {
+      default: () => import("../views/UserInfo.vue"),
+      nav: NavBar,
+      side: PopularList,
+    },
     children: [
       {
         path: "with_replies",
@@ -46,14 +58,44 @@ const routes = [
     ],
   },
   {
-    path: "/:userName/:articleId",
+    path: "/:userName/status/:articleId",
     name: "ArticleShow",
-    component: () => import("../views/ArticleShow.vue"),
+    components: {
+      default: () => import("../views/ArticleShow.vue"),
+      nav: NavBar,
+      side: PopularList,
+    },
+  },
+  {
+    path: "/settings",
+    name: "Setting",
+    redirect: "/settings/account",
+  },
+  {
+    path: "/settings/account",
+    name: "SettingAccount",
+    components: {
+      default: () => import("../views/UserSetting.vue"),
+      nav: NavBar,
+    },
   },
   {
     path: "/:userName/follower",
     name: "Follower",
-    component: () => import("../views/Follower.vue"),
+    components: {
+      default: () => import("../views/Follower.vue"),
+      nav: NavBar,
+      side: PopularList,
+    },
+  },
+  {
+    path: "/:userName/following",
+    name: "Following",
+    components: {
+      default: () => import("../views/Following.vue"),
+      nav: NavBar,
+      side: PopularList,
+    },
   },
   {
     path: "/login",
@@ -66,14 +108,9 @@ const routes = [
     component: () => import("../views/SignUp.vue"),
   },
   {
-    path: "/admin",
-    exact: true,
-    redirect: "/admin/users",
-  },
-  {
     path: "/:catchAll(.*)",
     name: "not-found",
-    component: NotFound,
+    components: { default: NotFound, nav: NavBar, side: PopularList },
   },
 ];
 

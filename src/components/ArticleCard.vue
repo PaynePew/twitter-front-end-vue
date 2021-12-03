@@ -3,21 +3,27 @@
     <div class="article-card__wrapper">
       <div class="article-card__container">
         <div class="article-card__side">
-          <img class="article-card__avatar" :src="currentUser.avatar" alt="" />
+          <img
+            class="article-card__avatar"
+            :src="article.tweet.User.avatar"
+            alt=""
+          />
         </div>
         <div class="article-card__main">
           <div class="article-card__header">
             <div class="article-card__name">
-              {{ currentUser.name }}
+              {{ article.tweet.User.name }}
             </div>
-            <div class="article-card__account">@testAccount</div>
+            <div class="article-card__account">
+              @{{ article.tweet.User.account }}
+            </div>
             <span>·</span>
             <div class="article-card__time">
-              {{ fromNow(article.created_at) }}
+              {{ fromNow(article.tweet.createdAt) }}
             </div>
           </div>
           <div class="article-card__body">
-            {{ article.description }}
+            {{ article.tweet.description }}
           </div>
           <div class="article-card__footer">
             <div class="article-card__response">
@@ -27,7 +33,9 @@
                   src="@/assets/img/icon_reply@2x.png"
                   alt=""
                 />
-                <span class="article-card__count">13</span>
+                <span class="article-card__count">{{
+                  article.repliedCount
+                }}</span>
               </div>
               <div class="article-card__like">
                 <img
@@ -35,7 +43,9 @@
                   src="@/assets/img/icon_like@2x.png"
                   alt=""
                 />
-                <span class="article-card__count">78</span>
+                <span class="article-card__count">{{
+                  article.likedCount
+                }}</span>
               </div>
             </div>
           </div>
@@ -53,7 +63,15 @@ export default {
     articles: Array,
   },
   data() {
-    return {};
+    return {
+      allarticles: [],
+    };
+  },
+
+  watch: {
+    articles(newValue) {
+      this.allarticles = newValue;
+    },
   },
   mixins: [fromNowMixin],
 };
@@ -61,9 +79,9 @@ export default {
 
 <style lang="scss" scoped>
 .article-card {
+  border-bottom: 1px solid $clr-border;
   &__wrapper {
     max-width: 600px;
-    border-bottom: 1px solid $clr-border;
   }
   &__container {
     margin: 10px 15px 15px 0px;
@@ -80,6 +98,10 @@ export default {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    margin-top: 3px;
+  }
+  &__main {
+    margin-left: 10px;
   }
   &__name {
     font-weight: bold;

@@ -1,15 +1,16 @@
 <template>
-  <UserInfoCard />
+  <AppBar :stepper="true" :article-count="25" />
+  <UserInfoCard :currentUser="currentUser" />
   <UserInfoTab />
   <router-view :key="$route.fullPath" />
   <ArticleCard :articles="articles" />
 </template>
 
 <script>
+import AppBar from "@/components/AppBar.vue";
 import UserInfoCard from "@/components/UserInfoCard.vue";
 import UserInfoTab from "@/components/UserInfoTab.vue";
 import ArticleCard from "@/components/ArticleCard.vue";
-import { usersDummy } from "@/store/dummy/usersDummy";
 import { articlesDummy } from "@/store/dummy/articlesDummy";
 
 export default {
@@ -17,6 +18,7 @@ export default {
     ArticleCard,
     UserInfoCard,
     UserInfoTab,
+    AppBar,
   },
   data() {
     return {
@@ -25,7 +27,7 @@ export default {
     };
   },
   beforeMount() {
-    this.currentUser = usersDummy[0];
+    this.currentUser = articlesDummy[0].tweet.User;
     this.articles = articlesDummy;
   },
   // beforeRouteUpdate(to, from, next) {

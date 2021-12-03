@@ -1,44 +1,34 @@
 <template>
   <div class="container">
     <section class="header">
-      <NavBar v-show="conditionalRender" @after-click="toggleModal" />
+      <router-view name="nav" @after-click="toggleModal" />
     </section>
     <section class="main">
-      <section class="content">
-        <AppBar v-show="conditionalRender" />
+      <section class="content" :class="{ 'content--admin': isAdmin }">
         <router-view />
         <Modal v-show="isShow" @close="isShow = false" :users="users" />
       </section>
       <section class="sidebar">
-        <PopularList v-show="conditionalRender" v-if="!isAdminPage" />
+        <router-view name="side" />
       </section>
     </section>
   </div>
 </template>
 
 <script>
-import NavBar from "./components/NavBar.vue";
-import AppBar from "./components/AppBar.vue";
 import Modal from "./components/Modal.vue";
-import PopularList from "./components/PopularList.vue";
 import { usersDummy } from "@/store/dummy/usersDummy";
 
 export default {
   components: {
-    NavBar,
-    AppBar,
     Modal,
-    PopularList,
   },
   data() {
     return {
-      isShow: false,
-      isRender: true,
-      route: "",
       users: [],
     };
   },
-  beforeMount() {
+  created() {
     this.fetchUsers();
   },
   methods: {
@@ -49,35 +39,16 @@ export default {
       this.users = usersDummy;
     },
   },
-
   computed: {
-    conditionalRender() {
-      const currentURL = this.$route;
-      console.log("URL", currentURL);
-      const pathWithoutSideRender = ["Login", "Signup"];
-      if (pathWithoutSideRender.includes(currentURL.name)) {
-        return false;
-      }
-      return true;
-    },
-    isAdminPage() {
-      const currentURL = this.$route;
-      console.log("URL.name", currentURL.name);
-      const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
-      if (pathWithoutSideRender.includes(currentURL.name)) {
+    isAdmin() {
+      const currentURL = this.$route.name;
+      const contentWithoutMax = ["AdminUsers", "AdminArticles"];
+      if (contentWithoutMax.includes(currentURL)) {
         return true;
       }
       return false;
     },
   },
-  // beforeMount() {
-  //   this.conditionalRender();
-  // },
-  // beforeRouteEnter(to, from) {
-  //   console.log("hello");
-  //   console.log(to);
-  //   console.log(from);
-  // },
 };
 </script>
 
@@ -96,7 +67,6 @@ export default {
   flex: 1 0 auto;
   justify-content: flex-end;
 }
-
 .main {
   display: flex;
   flex: 1 1 auto;
@@ -104,7 +74,10 @@ export default {
 .content {
   display: flex;
   flex-direction: column;
-  min-width: 600px;
+  max-width: 600px;
   border: 1px solid $clr-border;
+  &--admin {
+    max-width: none;
+  }
 }
 </style>
