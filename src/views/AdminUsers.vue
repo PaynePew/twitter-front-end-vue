@@ -1,18 +1,16 @@
 <template>
   <div class="container">
-    <AdminUserCard/>
+    <AdminUserCard />
   </div>
 </template>
 
 <script>
-import AdminUserCard from './../components/AdminUserCard.vue'
+import AdminUserCard from "./../components/AdminUserCard.vue";
 
 export default {
-  name: 'AdminUsers',
+  name: "AdminUsers",
   components: {
-    AdminUserCard
-  }
-}
+    AdminUserCard,
+  },
+};
 </script>
-
-

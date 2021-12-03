@@ -10,10 +10,10 @@
 import AccountForm from "./../components/AccountForm.vue";
 
 export default {
-  name: 'Login',
+  name: "Login",
   components: {
     AccountForm,
-  },  
+  },
 };
 </script>
 
