@@ -1,27 +1,33 @@
 <template>
   <div class="user-card__container">
-    <div v-for="user in users" :key="user.id" class="user-card__card">
-      <img class="user-card__side" :src="user.avatar" />
+    <div class="user-card__card">
+      <router-link :to="{name:'UserInfo', params: {userName: user.name}}">
+      <img 
+        class="user-card__side" 
+        :src="user.avatar"        
+      />
+      </router-link>
       <div class="user-card__main">
         <div class="user-card__header">
           <div class="user-card__name">
             {{ user.name }}
           </div>
-          <div class="user-card__account">@testAccount</div>
+          <div class="user-card__account">@{{user.account}}</div>
         </div>
         <div class="user-card__body">
           {{ user.introduction }}
         </div>
         <button
-          :class="[
-            'btn',
-            `${
-              user.isFollowing
-                ? 'user-card__button--frame'
-                : 'user-card__button'
-            }`,
-          ]"
-          @click.stop.prevent="toggleFollowing(user.id)"
+          v-if="user.isFollowing"
+          class="btn user-card__button"
+          @click.stop.prevent="deleteFollowing(user.id)"
+        >
+          <span>正在跟隨</span>
+        </button>
+        <button
+          v-if="!user.isFollowing"
+          class="btn user-card__button--frame"
+          @click.stop.prevent="addFollowing(user.id)"
         >
           <span>跟隨</span>
         </button>
@@ -33,49 +39,40 @@
 <script>
 export default {
   props: {
-    initialUsers: Array,
+    initialUser: {
+      type: Object,
+      require: true,
+      }
   },
+
   data() {
     return {
-      users: [],
-    };
-  },
-
-  mounted() {
-    this.fetchUsers();
-  },
-
-  watch: {
-    initialUsers(newValue) {
-      this.users = {
-        ...this.users,
-        ...newValue
-      }
+      user: this.initialUser,
     }
   },
 
+  // watch: {
+  //   initialUser(newValue) {
+  //     this.user = {
+  //       ...this.user,
+  //       ...newValue
+  //     }
+  //   }
+  // },
+
   methods: {
-    async fetchUsers() {
-      try {
-        this.users = await this.initialUsers;
-        console.log('fetched');
-      } catch (error) {
-        console.log(error);
+    addFollowing() {
+      this.user = {
+        ...this.user,
+        isFollowing: true
       }
     },
 
-    toggleFollowing(userId) {
-      this.users = this.users.map((user) => {
-        if (user.id !== userId) {
-          return user;
-        }
-        const currentIsFollowing = user.isFollowing
-
-        return {
-          ...user,
-          isFollowing: !currentIsFollowing,
-        };
-      });
+    deleteFollowing() {
+      this.user = {
+        ...this.user,
+        isFollowing: false
+      }
     },
   },
 };

@@ -1,6 +1,9 @@
 <template>
   <ConnectTable />
-  <UserCard :initialUsers="users" />
+  <UserCard 
+    v-for="user in users"
+    :key="user.id"
+    :initialUser="user" />
 </template>
 
 <script>
@@ -17,18 +20,6 @@ const usersDummy = [
     introduction: "150.255.148.96",
     avatar: "https://robohash.org/utetenim.png?size=50x50&set=set1",
     cover: "https://robohash.org/nihilhicet.png?size=50x50&set=set1",
-    role: "admin",
-    isFollowing: false,
-  },
-  {
-    id: 2,
-    account: "VvoiYiMCA",
-    email: "dmarre1@msn.com",
-    password: "KscuOM98PC13",
-    name: "Dukie Marre",
-    introduction: "68.181.142.33",
-    avatar: "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
-    cover: "https://robohash.org/quasiipsumvoluptatem.png?size=50x50&set=set1",
     role: "admin",
     isFollowing: false,
   },

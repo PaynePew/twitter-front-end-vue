@@ -1,6 +1,9 @@
 <template>
   <ConnectTable />
-  <UserCard />
+  <UserCard 
+    v-for="user in users"
+    :key="user.id"
+    :initialUser="user" />
 </template>
 
 <script>
@@ -8,17 +11,6 @@ import ConnectTable from "@/components/ConnectTable.vue";
 import UserCard from "@/components/UserCard.vue";
 
 const usersDummy = [
-  {
-    id: 1,
-    account: "tz1Mp67VLh4",
-    email: "pcobbing0@oracle.com",
-    password: "PcQxT3f1J",
-    name: "Phineas Cobbing",
-    introduction: "150.255.148.96",
-    avatar: "https://robohash.org/utetenim.png?size=50x50&set=set1",
-    cover: "https://robohash.org/nihilhicet.png?size=50x50&set=set1",
-    role: "admin",
-  },
   {
     id: 2,
     account: "VvoiYiMCA",
@@ -29,18 +21,9 @@ const usersDummy = [
     avatar: "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
     cover: "https://robohash.org/quasiipsumvoluptatem.png?size=50x50&set=set1",
     role: "admin",
+    isFollowing: false,
   },
-  {
-    id: 3,
-    account: "3Ti97hNUWQWcd",
-    email: "fklasing2@china.com.cn",
-    password: "He1xnjP",
-    name: "Florri Klasing",
-    introduction: "96.72.192.4",
-    avatar: "https://robohash.org/sedvitaeeveniet.png?size=50x50&set=set1",
-    cover: "https://robohash.org/autimpeditillo.png?size=50x50&set=set1",
-    role: "",
-  },
+  
   {
     id: 4,
     account: "mhwUKdbDE9",
@@ -51,6 +34,7 @@ const usersDummy = [
     avatar: "https://robohash.org/rerumautemnesciunt.png?size=50x50&set=set1",
     cover: "https://robohash.org/minusblanditiiseum.png?size=50x50&set=set1",
     role: "",
+    isFollowing: false,
   },
   {
     id: 5,
@@ -62,29 +46,7 @@ const usersDummy = [
     avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
     cover: "https://robohash.org/quisexomnis.png?size=50x50&set=set1",
     role: "",
-  },
-  {
-    id: 6,
-    account: "NW8TC9Y3yR",
-    email: "emorsey5@blinklist.com",
-    password: "cBIGgrFpAL",
-    name: "Emylee Morsey",
-    introduction: "157.40.7.185",
-    avatar: "https://robohash.org/nemolaboriosamin.png?size=50x50&set=set1",
-    cover: "https://robohash.org/voluptatemquivelit.png?size=50x50&set=set1",
-    role: "",
-  },
-  {
-    id: 7,
-    account: "LEMcQK",
-    email: "wcragg6@github.com",
-    password: "CF2yom3hg",
-    name: "Winslow Cragg",
-    introduction: "14.27.230.34",
-    avatar: "https://robohash.org/debitisveroet.png?size=50x50&set=set1",
-    cover:
-      "https://robohash.org/doloribusrecusandaefugiat.png?size=50x50&set=set1",
-    role: "",
+    isFollowing: true,
   },
   {
     id: 8,
@@ -97,18 +59,7 @@ const usersDummy = [
     cover:
       "https://robohash.org/voluptatibusrepellenduset.png?size=50x50&set=set1",
     role: "",
-  },
-  {
-    id: 9,
-    account: "nif1nT6S6",
-    email: "kcalbaithe8@jugem.jp",
-    password: "UuO7qrvFObMZ",
-    name: "Keriann Calbaithe",
-    introduction: "18.188.140.26",
-    avatar: "https://robohash.org/teneturiureet.png?size=50x50&set=set1",
-    cover:
-      "https://robohash.org/quivoluptatemnecessitatibus.png?size=50x50&set=set1",
-    role: "",
+    isFollowing: false,
   },
   {
     id: 10,
@@ -120,6 +71,7 @@ const usersDummy = [
     avatar: "https://robohash.org/fugitnonqui.png?size=50x50&set=set1",
     cover: "https://robohash.org/ipsaassumendaitaque.png?size=50x50&set=set1",
     role: "",
+    isFollowing: false,
   },
 ];
 
@@ -134,11 +86,11 @@ export default {
     };
   },
   mounted() {
-    this.fetchCurrentUser();
+    this.fetchUsers();
   },
   methods: {
-    fetchUser() {
-      this.User = usersDummy;
+    fetchUsers() {
+      this.users = usersDummy;
     },
   },
 };
