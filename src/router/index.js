@@ -9,6 +9,16 @@ const routes = [
     redirect: "/login",
   },
   {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/LogIn.vue"),
+  },
+  {
+    path: "/signup",
+    name: "Signup",
+    component: () => import("../views/SignUp.vue"),
+  },
+  {
     path: "/admin",
     exact: true,
     redirect: "/admin/users",
@@ -56,19 +66,9 @@ const routes = [
     component: () => import("../views/Follower.vue"),
   },
   {
-    path: "/login",
-    name: "Login",
-    component: () => import("../views/LogIn.vue"),
-  },
-  {
-    path: "/signup",
-    name: "Signup",
-    component: () => import("../views/SignUp.vue"),
-  },
-  {
-    path: "/admin",
-    exact: true,
-    redirect: "/admin/users",
+    path: "/:userName/following",
+    name: "Following",
+    component: () => import("../views/Following.vue"),
   },
   {
     path: "/:catchAll(.*)",
