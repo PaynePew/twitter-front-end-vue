@@ -6,27 +6,27 @@
       class="admin-article-list__card"
     >
       <img
-        class="admin-article-list__card__side"
+        class="admin-article-list__side"
         :src="article.tweet.User.avatar"
         alt=""
       />
-      <div class="admin-article-list__card__main">
-        <div class="admin-article-list__card__header">
-          <div class="admin-article-list__card__name">
+      <div class="admin-article-list__main">
+        <div class="admin-article-list__header">
+          <div class="admin-article-list__name">
             {{ article.tweet.User.name }}
           </div>
-          <div class="admin-article-list__card__account">@testAccount</div>
+          <div class="admin-article-list__account">@testAccount</div>
           <span>·</span>
-          <div class="admin-article-list__card__time">
+          <div class="admin-article-list__time">
             {{ fromNow(article.tweet.createdAt) }}
           </div>
         </div>
-        <div class="admin-article-list__card__body">
+        <div class="admin-article-list__body">
           {{ article.tweet.description }}
         </div>
 
         <img
-          class="admin-article-list__card__close"
+          class="admin-article-list__close"
           src="@/assets/img/icon_close_black@2x.png"
           alt=""
           @click="deleteArticle(article.tweet.id)"
@@ -1968,46 +1968,45 @@ export default {
     display: flex;
     height: 75px;
     border: 1px solid $clr-border;
+  }
+  &__side {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    object-fit: cover;
+    margin: 15px;
+    margin-top: 13px;
+  }
 
-    &__side {
-      width: 50px;
-      height: 50px;
-      border-radius: 100%;
-      object-fit: cover;
-      margin: 15px;
-      margin-top: 13px;
-    }
+  &__main {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+  }
 
-    &__main {
-      display: flex;
-      flex-direction: column;
-      // justify-content: center;
-    }
+  &__header {
+    display: flex;
+    color: $clr-secondary;
+    margin-top: 10px;
+    margin-bottom: 6px;
+  }
 
-    &__header {
-      display: flex;
-      color: $clr-secondary;
-      margin-top: 10px;
-      margin-bottom: 6px;
-    }
+  &__name {
+    font-weight: bold;
+    color: $clr-primary;
+    margin-right: 5px;
+  }
 
-    &__name {
-      font-weight: bold;
-      color: $clr-primary;
-      margin-right: 5px;
-    }
+  &__account {
+    color: $clr-secondary;
+  }
 
-    &__account {
-      color: $clr-secondary;
-    }
-
-    &__close {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      top: 15px;
-      right: 15px;
-    }
+  &__close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 15px;
+    right: 15px;
   }
 }
 </style>

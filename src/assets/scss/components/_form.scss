@@ -7,62 +7,59 @@
     border: none;
     border-bottom: 2px solid $clr-form-secondary;
     border-radius: 0px 0px 4px 4px;
+  }
+  &__label {
+    position: absolute;
+    color: $clr-form-secondary;
+    top: 5px;
+    left: 10px;
+  }
 
-    &__label {
-      position: absolute;
-      color: $clr-form-secondary;
-      top: 5px;
-      left: 10px;
-    }
-    
-    &__input-container {
-      display: flex;
-      align-items: flex-end;
-      background: $clr-form-bg;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      
-      &__input {
-        padding-left: 10px;
-        padding-bottom: 2px;
-        width: 100%;
-        border: none;
-        outline: none;
-        text-align: start;
-        background: none;
-        line-height: 0px;
+  &__input-container {
+    display: flex;
+    align-items: flex-end;
+    background: $clr-form-bg;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px 4px 0px 0px;
+  }
+  &__input {
+    padding-left: 10px;
+    padding-bottom: 2px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: start;
+    background: none;
+    line-height: 0px;
 
-        //TODO focus invalid狀態目前還不能動，待修正
-        &:focus ~ .form__input-box {
-          border-color: $clr-form-focus;
-        }
+    //TODO focus invalid狀態目前還不能動，待修正
+    &:focus ~ .form__input-box {
+      border-color: $clr-form-focus;
+    }
 
-        &:invalid ~ .form__input-box {
-          border-color: $clr-form-error;
-        }
-      }
+    &:invalid ~ .form__input-box {
+      border-color: $clr-form-error;
     }
-    &__hint {
-      position: relative;
-      font-size: 15px;
-      line-height: 15px; 
-      margin-top: 4px;
-      
-      &__error-message {
-        position: absolute;
-        left: 0;
-        color: $clr-form-error;
-        margin: 0;
-      }
-      &__counter {
-        position: absolute;
-        right: 0;
-        color: $clr-form-secondary;
-        margin: 0;
-      }
-    }
-    
+  }
+
+  &__hint {
+    position: relative;
+    font-size: 15px;
+    line-height: 15px;
+    margin-top: 4px;
+  }
+  &__error-message {
+    position: absolute;
+    left: 0;
+    color: $clr-form-error;
+    margin: 0;
+  }
+  &__counter {
+    position: absolute;
+    right: 0;
+    color: $clr-form-secondary;
+    margin: 0;
   }
 }
-

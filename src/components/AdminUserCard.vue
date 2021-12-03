@@ -5,30 +5,28 @@
       :key="user.id"
       class="admin-user-card__user-card"
     >
-      <img class="admin-user-card__user-card__cover" :src="user.cover" />
+      <img class="admin-user-card__cover" :src="user.cover" />
 
-      <img class="admin-user-card__user-card__avatar" :src="user.avatar" />
+      <img class="admin-user-card__avatar" :src="user.avatar" />
 
-      <div class="admin-user-card__user-card__info">
-        <div class="admin-user-card__user-card__info__name">
+      <div class="admin-user-card__info">
+        <div class="admin-user-card__name">
           {{ user.name }}
         </div>
-        <div class="admin-user-card__user-card__info__account">
-          @{{ user.account }}
-        </div>
-        <div class="admin-user-card__user-card__info__article">
-          <div class="admin-user-card__user-card__info__article__reply">
+        <div class="admin-user-card__account">@{{ user.account }}</div>
+        <div class="admin-user-card__article">
+          <div class="admin-user-card__reply">
             <img
-            class="admin-user-card__user-card__info__article__img"
-            src="@/assets/img/icon_reply@2x.png"
-            alt=""
+              class="admin-user-card__img"
+              src="@/assets/img/icon_reply@2x.png"
+              alt=""
             />
             <span>1.5K</span>
             <!-- <span>{{user.replyCount}}</span> -->
           </div>
-          <div class="admin-user-card__user-card__info__article__like">
+          <div class="admin-user-card__like">
             <img
-              class="admin-user-card__user-card__info__article__img"
+              class="admin-user-card__img"
               src="@/assets/img/icon_like@2x.png"
               alt=""
             />
@@ -36,12 +34,14 @@
             <!-- <span>{{user.likeCount}}</span> -->
           </div>
         </div>
-        <div class="admin-user-card__user-card__info__follow">
-          <div class="admin-user-card__user-card__info__follow__text">
-            <strong>34個</strong><p>跟隨中</p>
+        <div class="admin-user-card__follow">
+          <div class="admin-user-card__text">
+            <strong>34個</strong>
+            <p>跟隨中</p>
           </div>
-          <div class="admin-user-card__user-card__info__follow__text">
-            <strong>66位</strong><p>跟隨者</p>
+          <div class="admin-user-card__text">
+            <strong>66位</strong>
+            <p>跟隨者</p>
           </div>
         </div>
       </div>
@@ -206,73 +206,72 @@ export default {
     height: 314px;
     border-radius: 10px;
     background: #f6f7f8;
+  }
+  &__cover {
+    position: absolute;
+    width: 245px;
+    height: 140px;
+    background-color: #c4c4c4;
+    border-radius: 10px 10px 0 0;
+    width: 245px;
+    height: 140px;
+    object-fit: cover;
+  }
 
-    &__cover {
-      position: absolute;
-      width: 245px;
-      height: 140px;
-      background-color: #c4c4c4;
-      border-radius: 10px 10px 0 0;
-      width: 245px;
-      height: 140px;
-      object-fit: cover;
-    }
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    border: 4px solid #ffffff;
+    background-color: #c4c4c4;
+    z-index: 2;
+    margin-top: 68px;
+  }
 
-    &__avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 100%;
-      border: 4px solid #ffffff;
-      background-color: #c4c4c4;
-      z-index: 2;
-      margin-top: 68px;
-    }
+  &__info {
+    z-index: 1;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__name {
+    font-weight: 900;
+  }
+  &__account {
+    color: $clr-form-secondary;
+  }
+  &__article {
+    width: 130px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px;
+  }
+  &__reply,
+  &__like {
+    display: flex;
+    align-items: center;
+  }
+  &__img {
+    width: 24px;
+    height: 24px;
+    padding-right: 5px;
+  }
 
-    &__info {
-      z-index: 1;
-      font-size: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      &__name {
-        font-weight: 900;
-      }
-      &__account {
-        color: $clr-form-secondary;
-      }
-      &__article {
-        width: 130px;
-        display: flex;
-        justify-content: space-between;
-        padding-top: 15px;
+  &__follow {
+    width: 157px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px;
+  }
+  &__text {
+    display: flex;
+    font-size: 14px;
+    margin: 0;
 
-        &__reply, &__like{
-          display: flex;
-          align-items: center;
-        }
-        &__img{
-          width: 24px;
-          height: 24px;
-          padding-right: 5px;
-        }        
-      }
-      &__follow{
-          width: 157px;
-          display: flex;
-          justify-content: space-between;
-          padding-top: 15px;
-
-          &__text {
-            display: flex;
-            font-size: 14px;
-            margin: 0;
-            
-            p {
-              margin: 0;
-              color: $clr-form-secondary;
-            }
-          }
-        }
+    p {
+      margin: 0;
+      color: $clr-form-secondary;
     }
   }
 }

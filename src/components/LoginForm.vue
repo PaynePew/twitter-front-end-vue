@@ -1,22 +1,14 @@
 <template>
   <form @submit.stop.prevent="handleSubmit">
     <div class="login-form__input-box form__input-box">
-      <label class="form__input-box__label" for="email">email</label>
-      <div
-        class="
-          login-form__input-box__input-container
-          form__input-box__input-container
-        "
-      >
+      <label class="form__label" for="email">email</label>
+      <div class="login-form__input-container form__input-container">
         <input
           id="email"
           v-model="email"
           name="email"
           type="email"
-          class="
-            login-form__input-box__input-container__input
-            form__input-box__input-container__input
-          "
+          class="login-form__input form__input"
           required
           autofocus
         />
@@ -24,22 +16,14 @@
     </div>
 
     <div class="login-form__input-box form__input-box">
-      <label class="form__input-box__label" for="password">密碼</label>
-      <div
-        class="
-          login-form__input-box__input-container
-          form__input-box__input-container
-        "
-      >
+      <label class="form__label" for="password">密碼</label>
+      <div class="login-form__input-container form__input-container">
         <input
           id="password"
           v-model="password"
           name="password"
           type="password"
-          class="
-            login-form__input-box__input-container__input
-            form__input-box__input-container__input
-          "
+          class="login-form__input form__input"
           required
         />
       </div>
@@ -103,12 +87,12 @@ export default {
 <style lang="scss" scoped>
 @import "./../assets/scss/components/_form.scss";
 @import "./../assets/scss/components/_button.scss";
+
 .login-form {
   &__btn {
     width: 540px;
     height: 46px;
     margin-top: 40px;
-
     &--small {
       margin-top: 20px;
     }
