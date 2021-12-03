@@ -67,6 +67,19 @@ const routes = [
     },
   },
   {
+    path: "/settings",
+    name: "Setting",
+    redirect: "/settings/account",
+  },
+  {
+    path: "/settings/account",
+    name: "SettingAccount",
+    components: {
+      default: () => import("../views/UserSetting.vue"),
+      nav: NavBar,
+    },
+  },
+  {
     path: "/:userName/follower",
     name: "Follower",
     components: {
