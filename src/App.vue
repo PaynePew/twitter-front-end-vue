@@ -1,34 +1,30 @@
 <template>
   <div class="container">
     <section class="header">
-      <NavBar v-show="conditionalRender" @after-click="toggleModal" />
+      <router-view name="nav" @after-click="toggleModal" />
     </section>
     <section class="main">
       <section class="content">
-        <AppBar v-show="conditionalRender" />
+        <AppBar v-show="conditionalRender" :users="users" />
         <router-view />
         <Modal v-show="isShow" @close="isShow = false" :users="users" />
       </section>
       <section class="sidebar">
-        <PopularList v-show="conditionalRender" v-if="!isAdminPage" />
+        <router-view name="side" />
       </section>
     </section>
   </div>
 </template>
 
 <script>
-import NavBar from "./components/NavBar.vue";
 import AppBar from "./components/AppBar.vue";
 import Modal from "./components/Modal.vue";
-import PopularList from "./components/PopularList.vue";
 import { usersDummy } from "@/store/dummy/usersDummy";
 
 export default {
   components: {
-    NavBar,
     AppBar,
     Modal,
-    PopularList,
   },
   data() {
     return {
@@ -70,14 +66,6 @@ export default {
       return false;
     },
   },
-  // beforeMount() {
-  //   this.conditionalRender();
-  // },
-  // beforeRouteUpdate(to, from) {
-  //   console.log("hello");
-  //   console.log(to);
-  //   console.log(from);
-  // },
 };
 </script>
 
@@ -96,7 +84,6 @@ export default {
   flex: 1 0 auto;
   justify-content: flex-end;
 }
-
 .main {
   display: flex;
   flex: 1 1 auto;
