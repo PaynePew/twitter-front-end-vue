@@ -97,7 +97,7 @@ const routes = [
   {
     path: "/:catchAll(.*)",
     name: "not-found",
-    component: NotFound,
+    components: { default: NotFound, nav: NavBar, side: PopularList },
   },
 ];
 
