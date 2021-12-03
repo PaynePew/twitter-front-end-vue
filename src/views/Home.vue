@@ -1,4 +1,5 @@
 <template>
+  <AppBar :currentUser="currentUser" :status="'首頁'" />
   <ArticleNew :current-user="currentUser" />
   <ArticleCard :current-user="currentUser" :articles="articles" />
 </template>
@@ -6,6 +7,7 @@
 <script>
 import ArticleNew from "@/components/ArticleNew.vue";
 import ArticleCard from "@/components/ArticleCard.vue";
+import AppBar from "@/components/AppBar.vue";
 import { articlesDummy } from "@/store/dummy/articlesDummy";
 
 const usersDummy = [
@@ -128,6 +130,7 @@ export default {
   components: {
     ArticleNew,
     ArticleCard,
+    AppBar,
   },
   data() {
     return {

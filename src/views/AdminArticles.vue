@@ -1,4 +1,5 @@
 <template>
+  <AppBar :status="'推文清單'" />
   <div class="container">
     <AdminArticleList />
   </div>
@@ -6,10 +7,12 @@
 
 <script>
 import AdminArticleList from "./../components/AdminArticleList.vue";
+import AppBar from "./../components/AppBar.vue";
 
 export default {
   components: {
     AdminArticleList,
+    AppBar,
   },
 };
 </script>

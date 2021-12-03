@@ -5,7 +5,7 @@
     </section>
     <section class="main">
       <section class="content">
-        <AppBar v-show="conditionalRender" :users="users" />
+        <!-- <AppBar v-show="conditionalRender" :users="users" /> -->
         <router-view />
         <Modal v-show="isShow" @close="isShow = false" :users="users" />
       </section>
@@ -17,13 +17,11 @@
 </template>
 
 <script>
-import AppBar from "./components/AppBar.vue";
 import Modal from "./components/Modal.vue";
 import { usersDummy } from "@/store/dummy/usersDummy";
 
 export default {
   components: {
-    AppBar,
     Modal,
   },
   data() {

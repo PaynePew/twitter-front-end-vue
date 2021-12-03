@@ -1,4 +1,5 @@
 <template>
+  <AppBar :stepper="true" :article-count="25" />
   <UserInfoCard :currentUser="currentUser" />
   <UserInfoTab />
   <router-view :key="$route.fullPath" />
@@ -6,6 +7,7 @@
 </template>
 
 <script>
+import AppBar from "@/components/AppBar.vue";
 import UserInfoCard from "@/components/UserInfoCard.vue";
 import UserInfoTab from "@/components/UserInfoTab.vue";
 import ArticleCard from "@/components/ArticleCard.vue";
@@ -16,6 +18,7 @@ export default {
     ArticleCard,
     UserInfoCard,
     UserInfoTab,
+    AppBar,
   },
   data() {
     return {
