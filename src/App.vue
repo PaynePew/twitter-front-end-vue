@@ -28,9 +28,6 @@ export default {
   },
   data() {
     return {
-      isShow: false,
-      isRender: true,
-      route: "",
       users: [],
     };
   },
@@ -43,27 +40,6 @@ export default {
     },
     fetchUsers() {
       this.users = usersDummy;
-    },
-  },
-
-  computed: {
-    conditionalRender() {
-      const currentURL = this.$route;
-      console.log("URL", currentURL);
-      const pathWithoutSideRender = ["Login", "Signup"];
-      if (pathWithoutSideRender.includes(currentURL.name)) {
-        return false;
-      }
-      return true;
-    },
-    isAdminPage() {
-      const currentURL = this.$route;
-      console.log("URL.name", currentURL.name);
-      const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
-      if (pathWithoutSideRender.includes(currentURL.name)) {
-        return true;
-      }
-      return false;
     },
   },
 };
