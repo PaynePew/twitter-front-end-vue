@@ -4,7 +4,7 @@
       <router-view name="nav" @after-click="toggleModal" />
     </section>
     <section class="main">
-      <section class="content">
+      <section class="content" :class="{ 'content--admin': isAdmin }">
         <router-view />
         <Modal v-show="isShow" @close="isShow = false" :users="users" />
       </section>
@@ -39,6 +39,16 @@ export default {
       this.users = usersDummy;
     },
   },
+  computed: {
+    isAdmin() {
+      const currentURL = this.$route.name;
+      const contentWithoutMax = ["AdminUsers", "AdminArticles"];
+      if (contentWithoutMax.includes(currentURL)) {
+        return true;
+      }
+      return false;
+    },
+  },
 };
 </script>
 
@@ -66,5 +76,8 @@ export default {
   flex-direction: column;
   max-width: 600px;
   border: 1px solid $clr-border;
+  &--admin {
+    max-width: none;
+  }
 }
 </style>
