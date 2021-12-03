@@ -32,6 +32,18 @@ const routes = [
     path: "/:userName",
     name: "UserInfo",
     component: () => import("../views/UserInfo.vue"),
+    children: [
+      {
+        path: "with_replies",
+        name: "UserInfoWithReplies",
+        component: () => import("../components/UserInfoReplies.vue"),
+      },
+      {
+        path: "likes",
+        name: "UserInfoLikes",
+        component: () => import("../components/UserInfoLikes.vue"),
+      },
+    ],
   },
   {
     path: "/:userName/:articleId",
@@ -66,7 +78,8 @@ const routes = [
 ];
 
 const router = createRouter({
-  linkExactActiveClass: "active",
+  linkActiveClass: "active",
+  linkExactActiveClass: "exact-active",
   history: createWebHistory(),
   routes,
 });
