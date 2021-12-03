@@ -50,10 +50,11 @@ export default {
   &__wrapper {
     display: flex;
     border-bottom: 1px solid $clr-border;
+    height: 55px;
   }
   &__container {
     display: flex;
-    margin: 15px;
+    margin-left: 15px;
     justify-content: center;
     align-items: center;
   }
