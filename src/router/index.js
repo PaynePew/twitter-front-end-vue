@@ -46,7 +46,7 @@ const routes = [
     ],
   },
   {
-    path: "/:userName/:articleId",
+    path: "/:userName/status/:articleId",
     name: "ArticleShow",
     component: () => import("../views/ArticleShow.vue"),
   },
@@ -54,6 +54,11 @@ const routes = [
     path: "/:userName/follower",
     name: "Follower",
     component: () => import("../views/Follower.vue"),
+  },
+  {
+    path: "/:userName/following",
+    name: "Following",
+    component: () => import("../views/Following.vue"),
   },
   {
     path: "/login",
