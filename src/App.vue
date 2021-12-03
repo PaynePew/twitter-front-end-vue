@@ -38,7 +38,7 @@ export default {
       users: [],
     };
   },
-  beforeMount() {
+  created() {
     this.fetchUsers();
   },
   methods: {
@@ -73,7 +73,7 @@ export default {
   // beforeMount() {
   //   this.conditionalRender();
   // },
-  // beforeRouteEnter(to, from) {
+  // beforeRouteUpdate(to, from) {
   //   console.log("hello");
   //   console.log(to);
   //   console.log(from);
@@ -104,7 +104,7 @@ export default {
 .content {
   display: flex;
   flex-direction: column;
-  min-width: 600px;
+  max-width: 600px;
   border: 1px solid $clr-border;
 }
 </style>
