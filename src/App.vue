@@ -5,7 +5,6 @@
     </section>
     <section class="main">
       <section class="content">
-        <!-- <AppBar v-show="conditionalRender" :users="users" /> -->
         <router-view />
         <Modal v-show="isShow" @close="isShow = false" :users="users" />
       </section>

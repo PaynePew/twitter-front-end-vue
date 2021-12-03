@@ -61,6 +61,7 @@ export default {
     margin-right: 40px;
     width: 17px;
     height: 14px;
+    cursor: pointer;
   }
   &__title {
     font-size: $fs-h3;
