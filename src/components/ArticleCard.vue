@@ -111,6 +111,9 @@ export default {
   &__account {
     color: $clr-secondary;
   }
+  &__body {
+    font-weight: 500;
+  }
   &__footer {
     display: flex;
     margin-top: 10px;
