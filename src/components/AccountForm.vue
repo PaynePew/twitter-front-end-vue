@@ -198,7 +198,7 @@ export default {
           throw new Error("兩次輸入密碼不同，請重新確認");
         }
 
-        this.$router.push({ name: "UserInfo", params: { userAccount: this.account } });
+        this.$router.push({ name: "UserInfo", params: { account: this.account } });
       } catch (error) {
         console.log("error");
       }
