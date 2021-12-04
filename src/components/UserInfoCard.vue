@@ -15,7 +15,32 @@
               />
             </div>
             <div class="userinfo-card__setting">
-              <button class="btn btn--opacity">編輯個人檔案</button>
+              <!-- 此處需增加currentUser判定 -->
+              <div class="userinfo-card__relation">
+                <img
+                  class="userinfo-card__btn"
+                  src="@/assets/img/btn_messege@2x.png"
+                  alt=""
+                />
+                <img
+                  class="userinfo-card__btn"
+                  src="@/assets/img/btn_noti@2x.png"
+                  alt=""
+                />
+                <!-- 此處需要判定開啟提醒 -->
+                <img
+                  v-if="active"
+                  class="userinfo-card__btn"
+                  src="@/assets/img/btn_noti_active@2x.png"
+                  alt=""
+                />
+                <!-- 此處需要判定追蹤 -->
+                <button v-if="active" class="btn btn--opacity">跟隨</button>
+                <button class="btn btn--primary">正在跟隨</button>
+              </div>
+              <button v-if="isShow" class="btn btn--opacity">
+                編輯個人檔案
+              </button>
             </div>
           </div>
           <div class="userinfo-card__title">
@@ -66,8 +91,6 @@ export default {
     display: flex;
     flex-direction: column;
   }
-  &__cover-box {
-  }
   &__cover {
     width: 100%;
     height: 100%;
@@ -92,8 +115,6 @@ export default {
     height: 140px;
     border: 4px solid $clr-fourth;
   }
-  &__setting {
-  }
   &__title {
     margin: 5px 0 10px 0;
   }
@@ -113,9 +134,8 @@ export default {
   }
   &__relation {
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     align-items: center;
-    margin-right: 20px;
   }
   &__nav {
     text-decoration: none;
@@ -129,6 +149,11 @@ export default {
   }
   &__suffix {
     color: $clr-secondary;
+  }
+  &__btn {
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
   }
 }
 </style>

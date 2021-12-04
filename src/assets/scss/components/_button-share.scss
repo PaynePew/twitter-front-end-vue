@@ -16,6 +16,12 @@
     border: 1px solid $btn-primary;
     background-color: inherit;
   }
+  &--icon{
+    color: $btn-primary;
+    border: 1px solid $btn-primary;
+    background-color: inherit;
+    border-radius:50%;
+  }
   &--small {
     border-style: none;
     color: $btn-secondary;

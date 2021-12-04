@@ -47,7 +47,7 @@ const routes = [
     components: { default: Home, nav: NavBar, side: PopularList },
   },
   {
-    path: "/:userAccount",
+    path: "/:account",
     name: "UserInfo",
     components: {
       default: () => import("../views/UserInfo.vue"),
@@ -56,7 +56,7 @@ const routes = [
     },
   },
   {
-    path: "/:userAccount/with_replies",
+    path: "/:account/with_replies",
     name: "UserInfoWithReply",
     exact: true,
     components: {
@@ -66,7 +66,7 @@ const routes = [
     },
   },
   {
-    path: "/:userAccount/likes",
+    path: "/:account/likes",
     name: "UserInfoWithLike",
     exact: true,
     components: {
@@ -77,7 +77,7 @@ const routes = [
   },
 
   {
-    path: "/:userAccount/status/:articleId",
+    path: "/:account/status/:articleId",
     name: "ArticleShow",
     components: {
       default: () => import("../views/ArticleShow.vue"),
@@ -99,7 +99,7 @@ const routes = [
     },
   },
   {
-    path: "/:userAccount/follower",
+    path: "/:account/follower",
     name: "Follower",
     components: {
       default: () => import("../views/Follower.vue"),
@@ -108,7 +108,7 @@ const routes = [
     },
   },
   {
-    path: "/:userAccount/following",
+    path: "/:account/following",
     name: "Following",
     components: {
       default: () => import("../views/Following.vue"),
