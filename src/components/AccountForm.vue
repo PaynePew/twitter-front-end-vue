@@ -10,14 +10,18 @@
           type="text"
           class="account-form__input form__input"
           required
-          autofocus
+          :disabled="initialUser.account"
+          @focus="focus = 'account'"
+          @blur="focus = null"
         />
       </div>
       <div class="form__hint">
         <p class="form__error-message" v-if="accountLength > 50">
           字數超出上限！
         </p>
-        <p class="form__counter">{{ 0 || accountLength }}/50</p>
+        <p class="form__counter" v-show="focus === 'account'">
+          {{ 0 || accountLength }}/50
+        </p>
       </div>
     </div>
 
@@ -31,11 +35,15 @@
           type="text"
           class="account-form__input form__input"
           required
+          @focus="focus = 'name'"
+          @blur="focus = null"
         />
       </div>
       <div class="form__hint">
         <p class="form__error-message" v-if="nameLength > 50">字數超出上限！</p>
-        <p class="form__counter">{{ 0 || nameLength }}/50</p>
+        <p class="form__counter" v-show="focus === 'name'">
+          {{ 0 || nameLength }}/50
+        </p>
       </div>
     </div>
 
@@ -89,11 +97,18 @@
       </div>
     </div>
 
-    <button class="account-form__btn btn">註冊</button>
+    <div v-if="this.$route.name === 'Signup' ">
+    <button type="submit" class="account-form__btn btn btn--primary">註冊</button>
 
     <div class="account-form__btn--small btn--small">
       <router-link to="/login" class="btn--small__text">取消</router-link>
     </div>
+    </div>
+
+    <div class="account-form__btn-wrapper" v-if="this.$route.name === 'SettingAccount' ">
+    <button type="submit" class="account-form__btn--setting btn btn--primary">儲存</button>
+    </div>
+
   </form>
 </template>
 
@@ -105,7 +120,7 @@ export default {
     initialUser: {
       type: Object,
       default: () => ({
-        account: "",
+        account: null,
         name: "",
         email: "",
         password: "",
@@ -123,9 +138,10 @@ export default {
       passwordCheck: "",
       isProcessing: false,
       adminToggled: false,
-      errorMessage: "",
+      focus: null,
     };
   },
+
   computed: {
     accountLength() {
       return this.account.length;
@@ -136,12 +152,17 @@ export default {
     },
   },
 
-  methods: {
-    toggleAdmin() {
-      console.log("toggleAdmin");
-      this.adminToggled = !this.adminToggled;
+  watch: {
+    initialUser(newValue) {
+      this.account = newValue.account;
+      this.name = newValue.name;
+      this.email = newValue.email;
+      this.password = newValue.password;
     },
+  },
 
+  methods: {
+ 
     async handleSubmit() {
       try {
         // 前端驗證
@@ -177,7 +198,7 @@ export default {
           throw new Error("兩次輸入密碼不同，請重新確認");
         }
 
-        this.$router.push("home");
+        this.$router.push({ name: "UserInfo", params: { account: this.account } });
       } catch (error) {
         console.log("error");
       }
@@ -188,17 +209,28 @@ export default {
 
 <style lang="scss" scoped>
 @import "./../assets/scss/components/_form.scss";
-@import "./../assets/scss/components/_button.scss";
+@import "./../assets/scss/components/_button-share.scss";
 
 .account-form {
   &__btn {
     width: 540px;
     height: 46px;
     margin-top: 40px;
+    cursor: pointer;
     &--small {
       justify-content: center;
       margin-top: 20px;
     }
+    &--setting {
+      margin-top: 50px;
+      width: 116px;
+      height: 46px;
+      cursor: pointer;
+    }
+  }
+  &__btn-wrapper {    
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>
