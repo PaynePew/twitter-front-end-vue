@@ -35,10 +35,6 @@ export default {
     this.currentUser = articlesDummy[0].tweet.User;
     this.articles = articlesDummy;
   },
-  // beforeRouteUpdate(to, from, next) {
-  //   console.log("from", from.params.userName);
-  //   next();
-  // },
 };
 </script>
 
