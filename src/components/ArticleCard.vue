@@ -1,5 +1,10 @@
 <template>
-  <section v-for="article in articles" :key="article.id" class="article-card">
+  <section
+    v-for="article in articles"
+    :key="article.tweet.id"
+    class="article-card"
+    @click="handlePageRoute(article.tweet.User.account, article.tweet.id)"
+  >
     <div class="article-card__wrapper">
       <div class="article-card__container">
         <div class="article-card__side">
@@ -66,6 +71,14 @@ export default {
     return {
       allarticles: [],
     };
+  },
+  methods: {
+    handlePageRoute(account, id) {
+      this.$router.push({
+        name: "ArticleShow",
+        params: { account, articleId: id },
+      });
+    },
   },
 
   watch: {
