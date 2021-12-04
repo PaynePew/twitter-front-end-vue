@@ -1,3 +1,0 @@
-<template>
-  <h1>Replies</h1>
-</template>

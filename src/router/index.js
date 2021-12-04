@@ -54,19 +54,28 @@ const routes = [
       nav: NavBar,
       side: PopularList,
     },
-    children: [
-      {
-        path: "with_replies",
-        name: "UserInfoWithReplies",
-        component: () => import("../components/UserInfoReplies.vue"),
-      },
-      {
-        path: "likes",
-        name: "UserInfoLikes",
-        component: () => import("../components/UserInfoLikes.vue"),
-      },
-    ],
   },
+  {
+    path: "/:userName/with_replies",
+    name: "UserInfoWithReply",
+    exact: true,
+    components: {
+      default: () => import("../views/UserInfo.vue"),
+      nav: NavBar,
+      side: PopularList,
+    },
+  },
+  {
+    path: "/:userName/likes",
+    name: "UserInfoWithLike",
+    exact: true,
+    components: {
+      default: () => import("../views/UserInfo.vue"),
+      nav: NavBar,
+      side: PopularList,
+    },
+  },
+
   {
     path: "/:userName/status/:articleId",
     name: "ArticleShow",

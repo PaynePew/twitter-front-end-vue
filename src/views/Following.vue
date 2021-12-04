@@ -1,9 +1,6 @@
 <template>
   <ConnectTable />
-  <UserCard 
-    v-for="user in users"
-    :key="user.id"
-    :initialUser="user" />
+  <UserCard v-for="user in users" :key="user.id" :initialUser="user" />
 </template>
 
 <script>
@@ -23,7 +20,7 @@ const usersDummy = [
     role: "admin",
     isFollowing: false,
   },
-  
+
   {
     id: 4,
     account: "mhwUKdbDE9",

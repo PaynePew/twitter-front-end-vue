@@ -1,18 +1,15 @@
 <template>
   <div class="user-card__container">
     <div class="user-card__card">
-      <router-link :to="{name:'UserInfo', params: {userName: user.name}}">
-      <img 
-        class="user-card__side" 
-        :src="user.avatar"        
-      />
+      <router-link :to="{ name: 'UserInfo', params: { userName: user.name } }">
+        <img class="user-card__side" :src="user.avatar" />
       </router-link>
       <div class="user-card__main">
         <div class="user-card__header">
           <div class="user-card__name">
             {{ user.name }}
           </div>
-          <div class="user-card__account">@{{user.account}}</div>
+          <div class="user-card__account">@{{ user.account }}</div>
         </div>
         <div class="user-card__body">
           {{ user.introduction }}
@@ -42,13 +39,13 @@ export default {
     initialUser: {
       type: Object,
       require: true,
-      }
+    },
   },
 
   data() {
     return {
       user: this.initialUser,
-    }
+    };
   },
 
   // watch: {
@@ -64,15 +61,15 @@ export default {
     addFollowing() {
       this.user = {
         ...this.user,
-        isFollowing: true
-      }
+        isFollowing: true,
+      };
     },
 
     deleteFollowing() {
       this.user = {
         ...this.user,
-        isFollowing: false
-      }
+        isFollowing: false,
+      };
     },
   },
 };
