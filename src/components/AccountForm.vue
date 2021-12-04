@@ -1,4 +1,21 @@
 <template>
+  <div class="form__warning-box" v-if="warning">
+    <span class="form__warning-message">{{ warning }}</span>
+    <img
+      class="form__warning-close"
+      src="./../assets/img/icon_close_black@2x.png"
+      @click="warning = ''"
+      alt=""
+    />
+  </div>
+  <!-- <button 
+    type="button" 
+    class="btn btn-primary" 
+    id="liveAlertBtn"
+    @click="alert('You found me','success')"
+  >
+    Warning Test
+  </button> -->
   <form @submit.stop.prevent="handleSubmit">
     <div class="account-form__input-box form__input-box">
       <label class="form__label" for="account">帳號</label>
@@ -97,18 +114,24 @@
       </div>
     </div>
 
-    <div v-if="this.$route.name === 'Signup' ">
-    <button type="submit" class="account-form__btn btn btn--primary">註冊</button>
+    <div v-if="this.$route.name === 'Signup'">
+      <button type="submit" class="account-form__btn btn btn--primary">
+        註冊
+      </button>
 
-    <div class="account-form__btn--small btn--small">
-      <router-link to="/login" class="btn--small__text">取消</router-link>
-    </div>
-    </div>
-
-    <div class="account-form__btn-wrapper" v-if="this.$route.name === 'SettingAccount' ">
-    <button type="submit" class="account-form__btn--setting btn btn--primary">儲存</button>
+      <div class="account-form__btn--small btn--small">
+        <router-link to="/login" class="btn--small__text">取消</router-link>
+      </div>
     </div>
 
+    <div
+      class="account-form__btn-wrapper"
+      v-if="this.$route.name === 'SettingAccount'"
+    >
+      <button type="submit" class="account-form__btn--setting btn btn--primary">
+        儲存
+      </button>
+    </div>
   </form>
 </template>
 
@@ -139,6 +162,7 @@ export default {
       isProcessing: false,
       adminToggled: false,
       focus: null,
+      warning: "",
     };
   },
 
@@ -162,7 +186,6 @@ export default {
   },
 
   methods: {
- 
     async handleSubmit() {
       try {
         // 前端驗證
@@ -198,10 +221,18 @@ export default {
           throw new Error("兩次輸入密碼不同，請重新確認");
         }
 
-        this.$router.push({ name: "UserInfo", params: { account: this.account } });
+        this.$router.push({
+          name: "UserInfo",
+          params: { account: this.account },
+        });
       } catch (error) {
         console.log("error");
+        alert(error.message);
       }
+    },
+
+    alert(message) {
+      this.warning = message;
     },
   },
 };
@@ -228,7 +259,7 @@ export default {
       cursor: pointer;
     }
   }
-  &__btn-wrapper {    
+  &__btn-wrapper {
     display: flex;
     justify-content: flex-end;
   }

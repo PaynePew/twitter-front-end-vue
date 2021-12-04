@@ -25,11 +25,15 @@ export default {
     align-items: center;
   }
   &__logo {
+    margin-top: 60px;
     width: 40px;
     height: 40px;
   }
-  h1 {
+  &__title {
     font-size: $fs-h1;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    line-height: 33.3px;
   }
 }
 </style>
