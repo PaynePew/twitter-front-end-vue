@@ -62,4 +62,21 @@
     color: $clr-form-secondary;
     margin: 0;
   }
+  &__warning-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 94%;
+    padding: 3%;
+    border-radius: 4px;
+    margin: 5px;
+    background-color: peachpuff;
+    color: peru;
+  }
+  &__warning-message {
+    font-size: 16px;
+  }
+  &__warning-close {
+    width: 16px;
+  }
 }

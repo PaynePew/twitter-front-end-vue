@@ -1,4 +1,21 @@
 <template>
+  <div class="form__warning-box" v-if="warning">
+    <span class="form__warning-message">{{ warning }}</span>
+    <img
+      class="form__warning-close"
+      src="./../assets/img/icon_close_black@2x.png"
+      @click="warning = ''"
+      alt=""
+    />
+  </div>
+  <!-- <button 
+    type="button" 
+    class="btn btn-primary" 
+    id="liveAlertBtn"
+    @click="alert('You found me','success')"
+  >
+    Warning Test
+  </button> -->
   <form @submit.stop.prevent="handleSubmit">
     <div class="login-form__input-box form__input-box">
       <label class="form__label" for="email">email</label>
@@ -52,6 +69,7 @@ export default {
       password: "",
       isProcessing: false,
       adminToggled: false,
+      warning: "",
     };
   },
 
@@ -77,8 +95,12 @@ export default {
           this.$router.push("/home");
         }
       } catch (error) {
-        console.log("error");
+        this.alert(error.message);
       }
+    },
+
+    alert(message) {
+      this.warning = message;
     },
   },
 };
