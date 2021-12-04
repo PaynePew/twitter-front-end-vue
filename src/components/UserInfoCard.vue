@@ -16,7 +16,7 @@
             </div>
             <div class="userinfo-card__setting">
               <!-- 此處需增加currentUser判定 -->
-              <div class="userinfo-card__relation">
+              <div class="userinfo-card__utils">
                 <img
                   class="userinfo-card__btn"
                   src="@/assets/img/btn_messege@2x.png"
@@ -105,6 +105,11 @@ export default {
     justify-content: space-between;
     position: relative;
   }
+  &__utils {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
   &__avatar-box {
     position: relative;
     margin-top: -75px;
@@ -133,10 +138,9 @@ export default {
     display: flex;
   }
   &__relation {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    margin-right: 20px;
   }
+
   &__nav {
     text-decoration: none;
     &:visited {
