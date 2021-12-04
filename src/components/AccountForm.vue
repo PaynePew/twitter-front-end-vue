@@ -227,7 +227,7 @@ export default {
         });
       } catch (error) {
         console.log("error");
-        alert(error.message);
+        this.alert(error.message);
       }
     },
 
