@@ -11,12 +11,14 @@
           <div class="user-tab__tab">
             <router-link
               class="user-tab__nav"
-              :to="{ name: 'UserInfoWithReplies' }"
+              :to="{ name: 'UserInfoWithReply' }"
               >推文與回覆</router-link
             >
           </div>
           <div class="user-tab__tab">
-            <router-link class="user-tab__nav" :to="{ name: 'UserInfoLikes' }"
+            <router-link
+              class="user-tab__nav"
+              :to="{ name: 'UserInfoWithLike' }"
               >喜歡的內容</router-link
             >
           </div>
