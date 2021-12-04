@@ -16,7 +16,7 @@
         </div>
         <button
           v-if="user.isFollowing"
-          class="btn user-card__button"
+          class="btn btn--primary user-card__button"
           @click.stop.prevent="deleteFollowing(user.id)"
         >
           <span>正在跟隨</span>
@@ -76,7 +76,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./../assets/scss/components/_button.scss";
+@import "./../assets/scss/components/_button-share.scss";
 
 .user-card {
   &__container {
@@ -85,7 +85,7 @@ export default {
   &__card {
     position: relative;
     display: flex;
-    border: 1px solid $clr-border;
+    border-bottom: 1px solid $clr-border;
     height: 105px;
   }
   &__side {
@@ -116,6 +116,10 @@ export default {
 
   &__account {
     color: $clr-secondary;
+  }
+
+  &__body {
+    font-weight: 500;
   }
 
   &__button {

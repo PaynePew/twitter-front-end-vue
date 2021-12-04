@@ -1,14 +1,26 @@
 <template>
+  <AppBar :status="currentUser.name" :stepper="true" :article-count="25" />
   <ConnectTable />
-  <UserCard 
-    v-for="user in users"
-    :key="user.id"
-    :initialUser="user" />
+  <UserCard v-for="user in users" :key="user.id" :initialUser="user" />
 </template>
 
 <script>
+import AppBar from "@/components/AppBar.vue";
 import ConnectTable from "@/components/ConnectTable.vue";
 import UserCard from "@/components/UserCard.vue";
+
+const dummyCurrentUser = {
+  id: 2,
+  account: "VvoiYiMCA",
+  email: "dmarre1@msn.com",
+  password: "KscuOM98PC13",
+  name: "Dukie Marre",
+  introduction: "68.181.142.33",
+  avatar: "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
+  cover: "https://robohash.org/quasiipsumvoluptatem.png?size=50x50&set=set1",
+  role: "admin",
+  isFollowing: false,
+};
 
 const usersDummy = [
   {
@@ -128,16 +140,22 @@ export default {
   components: {
     ConnectTable,
     UserCard,
+    AppBar,
   },
   data() {
     return {
+      currentUser: {},
       users: [],
     };
   },
   mounted() {
+    this.fetchCurrentUser();
     this.fetchUsers();
   },
   methods: {
+    fetchCurrentUser() {
+      this.currentUser = dummyCurrentUser;
+    },
     fetchUsers() {
       this.users = usersDummy;
     },
