@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import authorizationAPI from "./../apis/authorization";
+
 export default {
   name: "LoginForm",
   data() {
@@ -109,13 +111,31 @@ export default {
           throw new Error("請輸入密碼");
         }
 
+        this.isProcessing = true;
+
         if (this.adminToggled) {
           this.$router.push("/admin/users");
         } else {
+          const response = await authorizationAPI.signIn({
+            email: this.email,
+            password: this.password,
+          });
+
+          const { data } = response;
+
+          if (data.status !== "success") {
+            throw new Error(data.message);
+          }
+
+          localStorage.setItem("token", data.token);
+
+          this.$store.commit('setCurrentUser', data.user)
+
           this.$router.push("/home");
         }
       } catch (error) {
         this.alert(error.message);
+        this.isProcessing = false;
       }
     },
 
