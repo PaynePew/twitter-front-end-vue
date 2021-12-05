@@ -1,26 +1,30 @@
 <template>
   <div
     :class="[
-      isNotice
+      isNotice && notice.type === 'success'
         ? ['form__notice-box', 'form__notice-box--show']
         : 'form__notice-box',
     ]"
   >
     <div class="form__notice-message">{{ notice.message }}</div>
-    <div
-      class="form__notice-bg form__notice-bg--success"
-      v-if="notice.type === 'success'"
-    >
+    <div class="form__notice-bg form__notice-bg--success">
       <img
         class="form__notice-icon"
         src="./../assets/img/icon_success@2x.png"
         alt=""
       />
     </div>
-    <div
-      class="form__notice-bg form__notice-bg--error"
-      v-if="notice.type === 'error'"
-    >
+  </div>
+
+  <div
+    :class="[
+      isNotice && notice.type === 'error'
+        ? ['form__notice-box', 'form__notice-box--show']
+        : 'form__notice-box',
+    ]"
+  >
+    <div class="form__notice-message">{{ notice.message }}</div>
+    <div class="form__notice-bg form__notice-bg--error">
       <img
         class="form__notice-icon"
         src="./../assets/img/icon_error@2x.png"
@@ -28,6 +32,7 @@
       />
     </div>
   </div>
+
   <!-- <button 
     type="button" 
     class="btn btn-primary" 
@@ -256,18 +261,20 @@ export default {
     },
 
     toggleNotice({ type, message }) {
+      clearTimeout(this.timeoutId);
+      console.log("before", this.timeoutId);
       this.isNotice = true;
       this.notice.message = message;
       this.notice.type = type;
 
-      setTimeout(() => {
+      this.timeoutId = setTimeout(() => {
         this.isNotice = false;
-      }, 5000);
+      }, 4000);
 
-      setTimeout(() => {
-        this.notice.type = "";
-        this.notice.message = "";
-      }, 6000);
+      // setTimeout(() => {
+      //   this.notice.type = "";
+      //   this.notice.message = "";
+      // }, 6000);
     },
   },
 };
