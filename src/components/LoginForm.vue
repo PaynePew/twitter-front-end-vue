@@ -52,10 +52,17 @@
       <router-link v-if="!adminToggled" to="/signup" class="btn--small__text">
         註冊Alphitter
       </router-link>
-      <span v-if="!adminToggled"> · </span>
-      <span class="btn--small__text" @click="toggleAdmin">
-        {{ adminToggled ? "前台登入" : "後台登入" }}
-      </span>
+      <span> · </span>
+      <router-link
+        v-if="!isRouterAdmin"
+        class="btn--small__text"
+        to="/admin/login"
+      >
+        後台登入
+      </router-link>
+      <router-link v-if="isRouterAdmin" class="btn--small__text" to="/login">
+        前台登入
+      </router-link>
     </div>
   </form>
 </template>
@@ -71,6 +78,19 @@ export default {
       adminToggled: false,
       notice: "",
     };
+  },
+
+  computed: {
+    isRouterAdmin() {
+      const currentURL = this.$route.name;
+      if (currentURL === "AdminLogin") {
+        return true;
+      }
+      return false;
+    },
+  },
+  mounted() {
+    console.log(this.$router.name);
   },
 
   methods: {

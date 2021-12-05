@@ -23,7 +23,14 @@ const routes = [
   {
     path: "/admin",
     exact: true,
-    redirect: "/admin/users",
+    redirect: "/admin/login",
+  },
+  {
+    path: "/admin/login",
+    name: "AdminLogin",
+    components: {
+      default: () => import("../views/LogIn.vue"),
+    },
   },
   {
     path: "/admin/users",
