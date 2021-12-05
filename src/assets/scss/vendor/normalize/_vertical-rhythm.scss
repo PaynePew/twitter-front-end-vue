@@ -10,7 +10,7 @@
     @error "The normalize vertical-rhythm module only supports px inputs. The typey library is better.";
   }
   @if $unit == rem {
-    @return ($value / $base-font-size) * 1rem;
+    @return calc($value / $base-font-size) * 1rem;
   }
   @else if $unit == em {
     @return ($value / $relative-to) * 1em;
@@ -52,7 +52,7 @@
 }
 
 @mixin normalize-line-height($font-size, $min-line-padding: 2px) {
-  $lines: ceil($font-size / $base-line-height);
+  $lines: ceil(calc($font-size / $base-line-height));
   // If lines are cramped include some extra leading.
   @if ($lines * $base-line-height - $font-size) < ($min-line-padding * 2) {
     $lines: $lines + 1;
