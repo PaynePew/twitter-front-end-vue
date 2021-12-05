@@ -129,12 +129,14 @@ const routes = [
     components: { default: NotFound, nav: NavBar, side: PopularList },
   },
 ];
+// eslint-disable-next-line no-unused-vars
+const baseURL =
+  process.env.NODE_ENV === "production" ? "/twitter-front-end-vue/" : "/";
 
 const router = createRouter({
   linkActiveClass: "active",
   linkExactActiveClass: "exact-active",
-  history: createWebHistory(),
-  base: process.env.NODE_ENV === "production" ? "/twitter-front-end-vue/" : "/",
+  history: createWebHistory(baseURL),
   routes,
 });
 
