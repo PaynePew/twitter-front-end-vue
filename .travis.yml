@@ -4,11 +4,13 @@ node_js:
 
 cache: npm
 
-script: npm run build
+script: 
+- npm run lint
+- npm run build
 
 deploy:
  provider: pages
- skip-cleanup: true
+ cleanup: false
  github_token: $GH_TOKEN
  local_dir: dist
  on:
