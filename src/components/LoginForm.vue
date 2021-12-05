@@ -1,13 +1,38 @@
 <template>
-  <div class="form__notice-box" v-if="notice">
-    <span class="form__notice-message">{{ notice }}</span>
-    <img
-      class="form__notice-close"
-      src="./../assets/img/icon_close_black@2x.png"
-      @click="notice = ''"
-      alt=""
-    />
+  <div
+    :class="[
+      isNotice && notice.type === 'success'
+        ? ['form__notice-box', 'form__notice-box--show']
+        : 'form__notice-box',
+    ]"
+  >
+    <div class="form__notice-message">{{ notice.message }}</div>
+    <div class="form__notice-bg form__notice-bg--success">
+      <img
+        class="form__notice-icon"
+        src="./../assets/img/icon_success@2x.png"
+        alt=""
+      />
+    </div>
   </div>
+
+  <div
+    :class="[
+      isNotice && notice.type === 'error'
+        ? ['form__notice-box', 'form__notice-box--show']
+        : 'form__notice-box',
+    ]"
+  >
+    <div class="form__notice-message">{{ notice.message }}</div>
+    <div class="form__notice-bg form__notice-bg--error">
+      <img
+        class="form__notice-icon"
+        src="./../assets/img/icon_error@2x.png"
+        alt=""
+      />
+    </div>
+  </div>
+
   <!-- <button 
     type="button" 
     class="btn btn-primary" 
@@ -76,7 +101,11 @@ export default {
       password: "",
       isProcessing: false,
       adminToggled: false,
-      notice: "",
+      isNotice: false,
+      notice: {
+        type: "",
+        message: "",
+      },
     };
   },
 
@@ -115,12 +144,26 @@ export default {
           this.$router.push("/home");
         }
       } catch (error) {
-        this.alert(error.message);
+        console.log("error");
+        this.toggleNotice({ type: "error", message: error.message });
       }
     },
 
-    toggleNotice(message) {
-      this.notice = message;
+    toggleNotice({ type, message }) {
+      clearTimeout(this.timeoutId);
+      console.log("before", this.timeoutId);
+      this.isNotice = true;
+      this.notice.message = message;
+      this.notice.type = type;
+
+      this.timeoutId = setTimeout(() => {
+        this.isNotice = false;
+      }, 4000);
+
+      // setTimeout(() => {
+      //   this.notice.type = "";
+      //   this.notice.message = "";
+      // }, 6000);
     },
   },
 };
