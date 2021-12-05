@@ -134,6 +134,7 @@ const router = createRouter({
   linkActiveClass: "active",
   linkExactActiveClass: "exact-active",
   history: createWebHistory(),
+  base: process.env.NODE_ENV === "production" ? "/twitter-front-end-vue/" : "/",
   routes,
 });
 
