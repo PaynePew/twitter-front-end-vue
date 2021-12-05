@@ -1,10 +1,10 @@
 <template>
-  <div class="form__warning-box" v-if="warning">
-    <span class="form__warning-message">{{ warning }}</span>
+  <div class="form__notice-box" v-if="notice">
+    <span class="form__notice-message">{{ notice }}</span>
     <img
-      class="form__warning-close"
+      class="form__notice-close"
       src="./../assets/img/icon_close_black@2x.png"
-      @click="warning = ''"
+      @click="notice = ''"
       alt=""
     />
   </div>
@@ -12,9 +12,9 @@
     type="button" 
     class="btn btn-primary" 
     id="liveAlertBtn"
-    @click="alert('You found me','success')"
+    @click="toggleNotice('You found me','success')"
   >
-    Warning Test
+    Notice Test
   </button> -->
   <form @submit.stop.prevent="handleSubmit">
     <div class="login-form__input-box form__input-box">
@@ -52,10 +52,17 @@
       <router-link v-if="!adminToggled" to="/signup" class="btn--small__text">
         註冊Alphitter
       </router-link>
-      <span v-if="!adminToggled"> · </span>
-      <span class="btn--small__text" @click="toggleAdmin">
-        {{ adminToggled ? "前台登入" : "後台登入" }}
-      </span>
+      <span> · </span>
+      <router-link
+        v-if="!isRouterAdmin"
+        class="btn--small__text"
+        to="/admin/login"
+      >
+        後台登入
+      </router-link>
+      <router-link v-if="isRouterAdmin" class="btn--small__text" to="/login">
+        前台登入
+      </router-link>
     </div>
   </form>
 </template>
@@ -69,8 +76,21 @@ export default {
       password: "",
       isProcessing: false,
       adminToggled: false,
-      warning: "",
+      notice: "",
     };
+  },
+
+  computed: {
+    isRouterAdmin() {
+      const currentURL = this.$route.name;
+      if (currentURL === "AdminLogin") {
+        return true;
+      }
+      return false;
+    },
+  },
+  mounted() {
+    console.log(this.$router.name);
   },
 
   methods: {
@@ -99,8 +119,8 @@ export default {
       }
     },
 
-    alert(message) {
-      this.warning = message;
+    toggleNotice(message) {
+      this.notice = message;
     },
   },
 };

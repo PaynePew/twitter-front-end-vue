@@ -1,8 +1,10 @@
 <template>
+  <AppBar :status="'帳戶設定'" />
   <AccountForm :initialUser="currentUser" />
 </template>
 
 <script>
+import AppBar from "./../components/AppBar.vue";
 import AccountForm from "./../components/AccountForm.vue";
 
 const dummyUser = {
@@ -18,9 +20,10 @@ const dummyUser = {
 };
 
 export default {
-  name: "Login",
+  name: "UserSetting",
   components: {
     AccountForm,
+    AppBar,
   },
   data() {
     return {
