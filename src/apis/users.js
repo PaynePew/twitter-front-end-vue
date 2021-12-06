@@ -2,21 +2,22 @@ import { apiHelper } from "../utils/helpers";
 
 export default {
   getCurrentUser() {
-    return apiHelper.get('/get_current_user')
+    return apiHelper.get("/get_current_user");
   },
-  getAccount({ userId }) {
-    return apiHelper.get(`/user/${userId}`)
+  account: {
+    get() {
+      return apiHelper.get("/users/account");
+    },
+    update(formData) {
+      return apiHelper.put("/users/account", formData);
+    },
   },
-  updateAccount({ userId, formData }) {
-    return apiHelper.put(`/user/${userId}`, formData)
+  info: {
+    get() {
+      return apiHelper.get("/user/edit/");
+    },
+    update(formData) {
+      return apiHelper.put("/user/edit/", formData);
+    },
   },
-  getInfo({ userId }) {
-    return apiHelper.get(`/user/edit/${userId}`)
-  },
-  updateInfo({ userId, formData }) {
-    return apiHelper.put(`/user/edit/${userId}`, formData)
-  },
-
-  
-
-}
+};
