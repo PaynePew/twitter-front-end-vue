@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import NavBar from "../components/NavBar.vue";
 import PopularList from "../components/PopularList.vue";
 import NotFound from "../views/NotFound.vue";
+import store from "./../store";
 
 const routes = [
   {
@@ -138,6 +139,31 @@ const router = createRouter({
   linkExactActiveClass: "exact-active",
   history: createWebHistory(baseURL),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  const token = localStorage.getItem("token");
+  const tokenInStore = store.state.token;
+  console.log("beforeEach: token:", token);
+  console.log("tokenInStore: ", tokenInStore);
+  let isAuthenticated = store.state.isAuthenticated;
+
+  if (token && token !== tokenInStore) {
+    isAuthenticated = await store.dispatch("fetchCurrentUser");
+  }
+
+  const pathWithoutAuthentication = ["Login", "Signup", "AdminLogin"];
+
+  if (!isAuthenticated && !pathWithoutAuthentication.includes(to.name)) {
+    next("/login");
+    return;
+  }
+
+  if (isAuthenticated && pathWithoutAuthentication.includes(to.name)) {
+    next("/home");
+  }
+
+  next();
 });
 
 export default router;
