@@ -1,21 +1,23 @@
-import axios from 'axios'
+import axios from "axios";
 
-// const baseURL = 'https://ac3-twitter-api.herokuapp.com/api' 
-const baseURL = 'http://localhost:3000/api'
+// const baseURL = "https://ac3-twitter-api.herokuapp.com/api" 
+const baseURL = "http://localhost:3000/api";
 
 const axiosInstance = axios.create({
-  baseURL
-})
+  baseURL,
+});
 
 axiosInstance.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem('token')
+  (config) => {
+    const token = localStorage.getItem("token");
 
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
 
-    return config
-  }, error => Promise.reject(error))
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-export const apiHelper = axiosInstance
+export const apiHelper = axiosInstance;
