@@ -85,7 +85,11 @@
       >
         後台登入
       </router-link>
-      <router-link v-if="isRouterAdmin" class="btn--small__text" to="/login">
+      <router-link 
+        v-if="isRouterAdmin" 
+        class="btn--small__text" 
+        to="/login"
+      >
         前台登入
       </router-link>
     </div>
