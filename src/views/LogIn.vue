@@ -1,7 +1,7 @@
 <template>
   <div class="login__container">
     <img class="login__logo" src="./../assets/img/logo@2x.png" alt="" />
-    <h1 class="login__title">登入 Alphitter</h1>
+    <h1 class="login__title">{{ isRouterAdmin ? "後台登入" : "登入 Alphitter" }}</h1>
     <LoginForm />
   </div>
 </template>
@@ -13,6 +13,16 @@ export default {
   name: "Login",
   components: {
     LoginForm,
+  },
+
+  computed: {
+    isRouterAdmin() {
+      const currentURL = this.$route.name;
+      if (currentURL === "AdminLogin") {
+        return true;
+      }
+      return false;
+    },
   },
 };
 </script>
