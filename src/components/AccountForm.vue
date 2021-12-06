@@ -52,7 +52,6 @@
           type="text"
           class="account-form__input form__input"
           required
-          :disabled="initialUser.account"
           @focus="focus = 'account'"
           @blur="focus = null"
         />
@@ -118,12 +117,12 @@
     </div>
 
     <div class="account-form__input-box form__input-box">
-      <label class="form__label" for="passwordCheck">密碼確認</label>
+      <label class="form__label" for="checkPassword">密碼確認</label>
       <div class="account-form__input-container form__input-container">
         <input
-          id="passwordCheck"
-          v-model="passwordCheck"
-          name="passwordCheck"
+          id="checkPassword"
+          v-model="checkPassword"
+          name="checkPassword"
           type="password"
           class="account-form__input form__input"
           required
@@ -132,7 +131,7 @@
       <div class="form__hint">
         <p
           class="form__error-message"
-          v-if="passwordCheck && password !== passwordCheck"
+          v-if="checkPassword && password !== checkPassword"
         >
           兩組密碼不相符
         </p>
@@ -161,6 +160,9 @@
 </template>
 
 <script>
+import authorizationAPI from "./../apis/authorization";
+import usersAPI from "./../apis/users";
+
 export default {
   name: "AccountForm",
 
@@ -172,7 +174,7 @@ export default {
         name: "",
         email: "",
         password: "",
-        passwordCheck: "",
+        checkPassword: "",
       }),
     },
   },
@@ -183,7 +185,7 @@ export default {
       name: "",
       email: "",
       password: "",
-      passwordCheck: "",
+      checkPassword: "",
       isProcessing: false,
       adminToggled: false,
       focus: null,
@@ -242,18 +244,57 @@ export default {
           throw new Error("請輸入密碼");
         }
 
-        if (!this.passwordCheck) {
+        if (!this.checkPassword) {
           throw new Error("請輸入密碼確認");
         }
 
-        if (this.password !== this.passwordCheck) {
+        if (this.password !== this.checkPassword) {
           throw new Error("兩次輸入密碼不同，請重新確認");
         }
 
-        this.$router.push({
-          name: "UserInfo",
-          params: { account: this.account },
-        });
+        //前端驗證完成 開始打api
+        this.isProcessing = true;
+
+        if (this.$route.name === "Signup") {
+          //若router為signup為註冊
+          console.log("sign up new account");
+          const { data } = await authorizationAPI.signUp({
+            id: this.initialUser.id,
+            name: this.name,
+            account: this.account,
+            email: this.email,
+            password: this.password,
+            checkPassword: this.checkPassword,
+          });
+
+          if (data.status !== "success") {
+            throw new Error(data.message);
+          }
+
+          this.$router.push({
+            name: "Login",
+          });
+        } else {
+          //若router不為signup為更新資料
+          console.log("updating user account");
+          const { data } = await usersAPI.account.update({
+            id: this.initialUser.id,
+            name: this.name,
+            account: this.account,
+            email: this.email,
+            password: this.password,
+            checkPassword: this.checkPassword,
+          });
+
+          if (data.status !== "success") {
+            throw new Error(data.message);
+          }
+
+          this.$router.push({
+            name: "UserInfo",
+            params: { account: this.account },
+          });
+        }
       } catch (error) {
         console.log("error");
         this.toggleNotice({ type: "error", message: error.message });
