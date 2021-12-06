@@ -74,10 +74,12 @@
     <button class="login-form__btn btn">登入</button>
 
     <div class="login-form__btn--small btn--small">
-      <router-link v-if="!adminToggled" to="/signup" class="btn--small__text">
+      <template  v-if="!isRouterAdmin">
+      <router-link to="/signup" class="btn--small__text">
         註冊Alphitter
       </router-link>
       <span> · </span>
+      </template>
       <router-link
         v-if="!isRouterAdmin"
         class="btn--small__text"
@@ -124,6 +126,7 @@ export default {
       return false;
     },
   },
+  
   mounted() {
     console.log(this.$router.name);
   },
