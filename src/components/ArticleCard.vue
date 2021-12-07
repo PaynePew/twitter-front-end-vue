@@ -74,7 +74,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["TOGGLE_MODAL"]),
+    ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
     handlePageRoute(account, id) {
       this.$router.push({
         name: "ArticleShow",

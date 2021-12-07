@@ -33,7 +33,7 @@ export default {
     this.fetchUsers();
   },
   methods: {
-    ...mapMutations(["TOGGLE_MODAL"]),
+    ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
     fetchUsers() {
       this.users = usersDummy;
     },
