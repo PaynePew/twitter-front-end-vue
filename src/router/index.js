@@ -149,7 +149,7 @@ router.beforeEach(async (to, from, next) => {
   let isAuthenticated = store.state.isAuthenticated;
 
   if (token && token !== tokenInStore) {
-    isAuthenticated = await store.dispatch("fetchCurrentUser");
+    isAuthenticated = await store.dispatch("authentication/fetchCurrentUser");
   }
 
   const pathWithoutAuthentication = ["Login", "Signup", "AdminLogin"];

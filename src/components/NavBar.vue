@@ -6,7 +6,7 @@
           <img class="navbar__logo" src="@/assets/img/logo@2x.png" alt="" />
         </div>
         <div class="navbar__body" v-if="!isAdminPage">
-          <div class="navbar__menu">
+          <router-link class="navbar__menu" to="/home">
             <img src="@/assets/img/icon_house@2x.png" class="navbar__icon" />
             <div
               :class="[
@@ -16,8 +16,11 @@
             >
               首頁
             </div>
-          </div>
-          <div class="navbar__menu">
+          </router-link>
+          <router-link
+            class="navbar__menu"
+            :to="{name: 'UserInfo', params: { account: currentUser.account || 'null' }}"
+          >
             <img src="@/assets/img/icon_user@2x.png" class="navbar__icon" />
             <div
               :class="[
@@ -27,18 +30,18 @@
             >
               個人資料
             </div>
-          </div>
-          <div class="navbar__menu">
+          </router-link>
+          <router-link class="navbar__menu" to="/settings/account">
             <img src="@/assets/img/icon_gear@2x.png" class="navbar__icon" />
             <div
               :class="[
                 'navbar__title',
-                { 'navbar__title--active': currentPage === 'Setting' },
+                { 'navbar__title--active': currentPage === 'SettingAccount' },
               ]"
             >
               設定
             </div>
-          </div>
+          </router-link>
           <div class="navbar__menu">
             <button @click.stop="handleNewPost" class="navbar__button">
               推文
@@ -72,7 +75,7 @@
         </div>
       </div>
       <div class="navbar__footer">
-        <div class="navbar__logout">
+        <div class="navbar__logout" @click="logout">
           <img src="@/assets/img/icon_logout@2x.png" class="navbar__icon" />
           <div class="navbar__title">登出</div>
         </div>
@@ -82,6 +85,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -105,10 +110,20 @@ export default {
       console.log("currentPage:", this.$route.name);
       return this.$route.name;
     },
+
+    ...mapState({
+      currentUser: (state) => state.authentication.currentUser,
+    }),
   },
+
   methods: {
     handleNewPost() {
       this.$emit("after-click");
+    },
+
+    logout() {
+      this.$store.commit('authentication/revokeAuthentication');
+      this.$router.push('/login');
     },
   },
 };
@@ -174,6 +189,7 @@ export default {
     margin-left: 10px;
     display: flex;
     height: 60px;
+    cursor: pointer;
   }
 }
 </style>
