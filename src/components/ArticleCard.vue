@@ -32,7 +32,7 @@
           </div>
           <div class="article-card__footer">
             <div class="article-card__response">
-              <div class="article-card__comment">
+              <div class="article-card__comment" @click.stop="TOGGLE_MODAL">
                 <img
                   class="article-card__icon"
                   src="@/assets/img/icon_reply@2x.png"
@@ -62,6 +62,7 @@
 
 <script>
 import { fromNowMixin } from "@/utils/mixins";
+import { mapMutations } from "vuex";
 export default {
   props: {
     currentUser: Object,
@@ -73,6 +74,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["TOGGLE_MODAL"]),
     handlePageRoute(account, id) {
       this.$router.push({
         name: "ArticleShow",

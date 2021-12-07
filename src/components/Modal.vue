@@ -12,24 +12,27 @@
             />
           </div>
           <div class="modal__body">
-            <div class="modal__side">
-              <img class="modal__avatar" :src="users[0].avatar" alt="" />
+            <ArticleModalWithReply :articles="articles" />
+            <div class="modal__post">
+              <div class="modal__side">
+                <img class="modal__avatar" :src="users[0].avatar" alt="" />
+              </div>
+              <form class="article-create__form" action="">
+                <div class="article-create__input-box">
+                  <input
+                    class="article-create__input"
+                    type="textarea"
+                    placeholder="有甚麼新鮮事?"
+                    rows="5"
+                    cols="33"
+                    maxlength="40"
+                  />
+                </div>
+                <div class="article-create__footer">
+                  <button class="article-create__btn btn">推文</button>
+                </div>
+              </form>
             </div>
-            <form class="article-create__form" action="">
-              <div class="article-create__input-box">
-                <input
-                  class="article-create__input"
-                  type="textarea"
-                  placeholder="有甚麼新鮮事?"
-                  rows="5"
-                  cols="33"
-                  maxlength="40"
-                />
-              </div>
-              <div class="article-create__footer">
-                <button class="article-create__btn btn">推文</button>
-              </div>
-            </form>
           </div>
         </div>
       </div>
@@ -38,11 +41,25 @@
 </template>
 
 <script>
+import ArticleModalWithReply from "@/components/ArticleModalWithReply.vue";
+// eslint-disable-next-line no-unused-vars
+import { articlesDummy } from "@/store/dummy/articlesDummy";
 export default {
   props: {
     users: {
       Array,
     },
+  },
+  components: {
+    ArticleModalWithReply,
+  },
+  data() {
+    return {
+      articles: [],
+    };
+  },
+  created() {
+    this.articles = Array(articlesDummy[0]);
   },
 };
 </script>
@@ -67,7 +84,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 600px;
-    height: 300px;
+    min-height: 300px;
     margin: 0px auto;
     background-color: $clr-fourth;
     border-radius: 14px;
@@ -88,7 +105,12 @@ export default {
   &__body {
     padding: 15px;
     display: flex;
+    flex-direction: column;
     flex: 1 1 auto;
+  }
+  &__post {
+    display: flex;
+    height: 245px;
   }
   &__avatar {
     width: 50px;
