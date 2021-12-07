@@ -16,7 +16,7 @@
             </div>
             <div class="userinfo-card__setting">
               <!-- 此處需增加currentUser判定 -->
-              <div class="userinfo-card__utils">
+              <div v-if="isShow" class="userinfo-card__utils">
                 <img
                   class="userinfo-card__btn"
                   src="@/assets/img/btn_messege@2x.png"
@@ -38,7 +38,7 @@
                 <button v-if="active" class="btn btn--opacity">跟隨</button>
                 <button class="btn btn--primary">正在跟隨</button>
               </div>
-              <button v-if="isShow" class="btn btn--opacity">
+              <button @click.stop="TOGGLE_MODAL" class="btn btn--opacity">
                 編輯個人檔案
               </button>
             </div>
@@ -75,11 +75,16 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   props: {
     currentUser: {
       Object,
     },
+  },
+
+  methods: {
+    ...mapMutations("modalUserInfo", ["TOGGLE_MODAL"]),
   },
 };
 </script>
