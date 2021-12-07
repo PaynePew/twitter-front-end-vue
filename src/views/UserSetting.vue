@@ -6,18 +6,8 @@
 <script>
 import AppBar from "./../components/AppBar.vue";
 import AccountForm from "./../components/AccountForm.vue";
-
-const dummyUser = {
-  id: 3,
-  account: "tz1VJJNhqL3irfvxKcJtuEn3Ti97hNUWQWcd",
-  email: "fklasing2@china.com.cn",
-  password: "He1xnjP",
-  name: "Florri Klasing",
-  introduction: "96.72.192.4",
-  avatar: "https://robohash.org/sedvitaeeveniet.png?size=50x50&set=set1",
-  cover: "https://robohash.org/autimpeditillo.png?size=50x50&set=set1",
-  role: "",
-};
+import usersAPI from "./../apis/users";
+import { mapState } from "vuex";
 
 export default {
   name: "UserSetting",
@@ -40,12 +30,30 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState(["currentUser"]),
+  },
+
   mounted() {
     this.fetchUser();
   },
   methods: {
-    fetchUser() {
-      this.currentUser = dummyUser;
+    async fetchUser() {
+      console.log("fetching user");
+      try {
+        const { data } = await usersAPI.account.get();
+
+        const { account, name, email } = data.usersAPI;
+
+        this.currentUser = {
+          ...this.currentUser,
+          account,
+          name,
+          email,
+        };
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };

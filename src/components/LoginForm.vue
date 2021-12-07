@@ -43,13 +43,13 @@
   </button> -->
   <form @submit.stop.prevent="handleSubmit">
     <div class="login-form__input-box form__input-box">
-      <label class="form__label" for="email">email</label>
+      <label class="form__label" for="account">帳號</label>
       <div class="login-form__input-container form__input-container">
         <input
-          id="email"
-          v-model="email"
-          name="email"
-          type="email"
+          id="account"
+          v-model="account"
+          name="account"
+          type="account"
           class="login-form__input form__input"
           required
           autofocus
@@ -74,10 +74,12 @@
     <button class="login-form__btn btn">登入</button>
 
     <div class="login-form__btn--small btn--small">
-      <router-link v-if="!adminToggled" to="/signup" class="btn--small__text">
-        註冊Alphitter
-      </router-link>
-      <span> · </span>
+      <template v-if="!isRouterAdmin">
+        <router-link to="/signup" class="btn--small__text">
+          註冊Alphitter
+        </router-link>
+        <span> · </span>
+      </template>
       <router-link
         v-if="!isRouterAdmin"
         class="btn--small__text"
@@ -93,11 +95,13 @@
 </template>
 
 <script>
+import authorizationAPI from "./../apis/authorization";
+
 export default {
   name: "LoginForm",
   data() {
     return {
-      email: "",
+      account: "",
       password: "",
       isProcessing: false,
       adminToggled: false,
@@ -118,34 +122,49 @@ export default {
       return false;
     },
   },
+
   mounted() {
     console.log(this.$router.name);
   },
 
   methods: {
-    toggleAdmin() {
-      console.log("toggleAdmin");
-      this.adminToggled = !this.adminToggled;
-    },
-
     async handleSubmit() {
       try {
-        if (!this.email) {
-          throw new Error("請輸入email");
+        if (!this.account) {
+          throw new Error("請輸入帳號");
         }
 
         if (!this.password) {
           throw new Error("請輸入密碼");
         }
 
-        if (this.adminToggled) {
+        this.isProcessing = true;
+
+        if (this.isRouterAdmin) {
+          //若isRouterAdmin則為後台登入
           this.$router.push("/admin/users");
         } else {
+          //否則為前台登入
+          const response = await authorizationAPI.signIn({
+            account: this.account,
+            password: this.password,
+          });
+
+          const { data } = response;
+
+          if (data.status !== "success") {
+            throw new Error(data.message);
+          }
+
+          localStorage.setItem("token", data.token);
+
+          this.$store.commit("setCurrentUser", data.user);
+
           this.$router.push("/home");
         }
       } catch (error) {
-        console.log("error");
         this.toggleNotice({ type: "error", message: error.message });
+        this.isProcessing = false;
       }
     },
 
