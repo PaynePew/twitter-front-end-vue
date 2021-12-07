@@ -158,7 +158,7 @@ export default {
 
           localStorage.setItem("token", data.token);
 
-          this.$store.commit("setCurrentUser", data.user);
+          this.$store.commit("authentication/setCurrentUser", data.user);
 
           this.$router.push("/home");
         }

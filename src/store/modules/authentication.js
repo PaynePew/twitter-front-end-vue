@@ -1,6 +1,9 @@
 import usersAPI from "./../../apis/users.js";
+import { setCurrentUser } from "../mutation-types";
+import { revokeAuthentication } from "../mutation-types";
 
 export default {
+  namespaced: true,
   state: {
     currentUser: {
       id: "",
@@ -13,7 +16,7 @@ export default {
     token: "",
   },
   mutations: {
-    setCurrentUser(state, currentUser) {
+    [setCurrentUser]: (state, currentUser) => {
       console.log("setCurrentUser in vuex");
       console.log("currentUser:", currentUser);
       state.currentUser = {
@@ -23,7 +26,7 @@ export default {
       state.isAuthenticated = true;
       state.token = localStorage.getItem("token");
     },
-    revokeAuthentication(state) {
+    [revokeAuthentication]: (state) => {
       console.log("revoke authentication");
       state.currentUser = {};
       state.isAuthenticated = false;
