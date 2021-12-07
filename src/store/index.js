@@ -1,8 +1,8 @@
 import { createStore } from "vuex";
+import modalArticle from "./modules/modalArticle";
 
 export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+  modules: {
+    modalArticle,
+  },
 });
