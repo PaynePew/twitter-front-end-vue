@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <section class="header">
-      <router-view name="nav" @after-click="toggleModal" />
+      <router-view name="nav" @after-click="TOGGLE_MODAL" />
     </section>
     <section class="main">
       <section class="content" :class="{ 'content--admin': isAdmin }">
         <router-view />
-        <Modal v-show="isShow" @close="isShow = false" :users="users" />
+        <Modal v-show="isShow" @close="TOGGLE_MODAL" :users="users" />
       </section>
       <section class="sidebar">
         <router-view name="side" />
@@ -18,6 +18,7 @@
 <script>
 import Modal from "./components/Modal.vue";
 import { usersDummy } from "@/store/dummy/usersDummy";
+import { mapMutations, mapState } from "vuex";
 
 export default {
   components: {
@@ -26,16 +27,13 @@ export default {
   data() {
     return {
       users: [],
-      isShow: false,
     };
   },
   created() {
     this.fetchUsers();
   },
   methods: {
-    toggleModal() {
-      this.isShow = !this.isShow;
-    },
+    ...mapMutations(["TOGGLE_MODAL"]),
     fetchUsers() {
       this.users = usersDummy;
     },
@@ -49,6 +47,9 @@ export default {
       }
       return false;
     },
+    ...mapState({
+      isShow: (state) => state.modalArticle.isShow,
+    }),
   },
 };
 </script>
