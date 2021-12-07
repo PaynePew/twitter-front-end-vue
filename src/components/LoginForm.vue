@@ -163,7 +163,10 @@ export default {
           this.$router.push("/home");
         }
       } catch (error) {
-        this.toggleNotice({ type: "error", message: error.message });
+        this.toggleNotice({
+          type: "error",
+          message: error.response.data.message,
+        });
         this.isProcessing = false;
       }
     },
