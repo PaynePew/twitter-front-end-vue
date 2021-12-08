@@ -1,34 +1,34 @@
 <template>
   <section
     v-for="article in articles"
-    :key="article.tweet.id"
+    :key="article.id"
     class="article-card"
-    @click="handlePageRoute(article.tweet.User.account, article.tweet.id)"
+    @click="handlePageRoute(article.User.account, article.id)"
   >
     <div class="article-card__wrapper">
       <div class="article-card__container">
-        <div class="article-card__side">
-          <img
-            class="article-card__avatar"
-            :src="article.tweet.User.avatar"
-            alt=""
-          />
+        <div
+          class="article-card__side"
+          @click.stop="handlePageRoute(article.User.account)"
+        >
+          <img class="article-card__avatar" :src="article.User.avatar" alt="" />
         </div>
         <div class="article-card__main">
-          <div class="article-card__header">
+          <div
+            class="article-card__header"
+            @click.stop="handlePageRoute(article.User.account)"
+          >
             <div class="article-card__name">
-              {{ article.tweet.User.name }}
+              {{ article.User.name }}
             </div>
-            <div class="article-card__account">
-              @{{ article.tweet.User.account }}
-            </div>
+            <div class="article-card__account">@{{ article.User.account }}</div>
             <span>·</span>
             <div class="article-card__time">
-              {{ fromNow(article.tweet.createdAt) }}
+              {{ fromNow(article.createdAt) }}
             </div>
           </div>
           <div class="article-card__body">
-            {{ article.tweet.description }}
+            {{ article.description }}
           </div>
           <div class="article-card__footer">
             <div class="article-card__response">
@@ -44,8 +44,15 @@
               </div>
               <div class="article-card__like">
                 <img
+                  @click.stop="postLike(article.id)"
                   class="article-card__icon"
                   src="@/assets/img/icon_like@2x.png"
+                  alt=""
+                />
+                <img
+                  @click.stop="deleteLike(article.id)"
+                  class="article-card__icon"
+                  src="@/assets/img/icon_like_active@2x.png"
                   alt=""
                 />
                 <span class="article-card__count">{{
@@ -62,31 +69,55 @@
 
 <script>
 import { fromNowMixin } from "@/utils/mixins";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
+import articlesAPI from "@/apis/articles";
+// import usersAPI from "@/apis/users";
 export default {
   props: {
-    currentUser: Object,
     articles: Array,
   },
   data() {
-    return {
-      allarticles: [],
-    };
+    return {};
+  },
+  computed: {
+    ...mapState("authentication", ["currentUser"]),
   },
   methods: {
     ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
     handlePageRoute(account, id) {
+      if (!id) {
+        this.$router.push({
+          name: "UserInfo",
+          params: { account },
+        });
+        return;
+      }
       this.$router.push({
         name: "ArticleShow",
         params: { account, articleId: id },
       });
     },
-  },
-
-  watch: {
-    articles(newValue) {
-      this.allarticles = newValue;
+    async postLike(articleId) {
+      try {
+        const { data } = await articlesAPI.like.create(articleId);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
+    async deleteLike(articleId) {
+      try {
+        const { data } = await articlesAPI.like.delete(articleId);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getLikes() {},
   },
   mixins: [fromNowMixin],
 };
