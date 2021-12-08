@@ -20,4 +20,36 @@ export default {
       return apiHelper.put("/user/edit/", formData);
     },
   },
+  follower: {
+    getFollower(id) {
+      return apiHelper.get(`/users/${id}/followers`);
+    },
+    getFollowings(id) {
+      return apiHelper.get(`/users/${id}/followings`);
+    },
+    addFollowShips(id) {
+      return apiHelper.post("/followships", { id });
+    },
+    deleteFollowShips(followingId) {
+      return apiHelper.delete(`/followships/${followingId}`);
+    },
+    getTopFollowers() {
+      return apiHelper.get("followers/top");
+    },
+  },
+  like: {
+    getLikes(id) {
+      return apiHelper.get(`/users/${id}/likes`);
+    },
+  },
+  reply: {
+    getReplies(id) {
+      return apiHelper.get(`/users/${id}/replied_tweets`);
+    },
+  },
+  tweet: {
+    getTweets(id) {
+      return apiHelper.get(`/users/${id}/tweets`);
+    },
+  },
 };

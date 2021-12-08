@@ -1,14 +1,14 @@
 <template>
   <AppBar :currentUser="currentUser" :status="'首頁'" />
   <ArticleNew :current-user="currentUser" />
-  <ArticleCard :current-user="currentUser" :articles="articles" />
+  <ArticleCard :articles="articles" />
 </template>
 
 <script>
 import ArticleNew from "@/components/ArticleNew.vue";
 import ArticleCard from "@/components/ArticleCard.vue";
 import AppBar from "@/components/AppBar.vue";
-import { articlesDummy } from "@/store/dummy/articlesDummy";
+import articlesAPI from "@/apis/articles";
 
 const usersDummy = [
   {
@@ -146,8 +146,14 @@ export default {
     fetchCurrentUser() {
       this.currentUser = usersDummy[0];
     },
-    fetchArticles() {
-      this.articles = articlesDummy;
+    async fetchArticles() {
+      try {
+        const response = await articlesAPI.getArticles();
+        console.log("article_HOME", response);
+        this.articles = response.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
