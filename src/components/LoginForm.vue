@@ -157,8 +157,6 @@ export default {
 
           this.$store.commit("authentication/setCurrentUser", data.user);
 
-          this.$router.push("/home");
-
           this.$router.push("/admin/users");
         } else {
           //否則為前台登入
