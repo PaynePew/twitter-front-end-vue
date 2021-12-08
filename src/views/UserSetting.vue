@@ -7,7 +7,6 @@
 import AppBar from "./../components/AppBar.vue";
 import AccountForm from "./../components/AccountForm.vue";
 import usersAPI from "./../apis/users";
-import { mapState } from "vuex";
 
 export default {
   name: "UserSetting",
@@ -30,20 +29,18 @@ export default {
       },
     };
   },
-  computed: {
-    ...mapState(["currentUser"]),
-  },
 
   mounted() {
     this.fetchUser();
   },
+
   methods: {
     async fetchUser() {
       console.log("fetching user");
       try {
-        const { data } = await usersAPI.account.get();
+        const { data } = await usersAPI.getCurrentUser();
 
-        const { account, name, email } = data.usersAPI;
+        const { account, name, email } = data.user;
 
         this.currentUser = {
           ...this.currentUser,

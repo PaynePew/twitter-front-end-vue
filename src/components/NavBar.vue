@@ -19,7 +19,10 @@
           </router-link>
           <router-link
             class="navbar__menu"
-            :to="{name: 'UserInfo', params: { account: currentUser.account || 'null' }}"
+            :to="{
+              name: 'UserInfo',
+              params: { account: currentUser.account || 'null' },
+            }"
           >
             <img src="@/assets/img/icon_user@2x.png" class="navbar__icon" />
             <div
@@ -122,8 +125,8 @@ export default {
     },
 
     logout() {
-      this.$store.commit('authentication/revokeAuthentication');
-      this.$router.push('/login');
+      this.$store.commit("authentication/revokeAuthentication");
+      this.$router.push("/login");
     },
   },
 };
