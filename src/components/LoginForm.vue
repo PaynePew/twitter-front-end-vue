@@ -142,6 +142,21 @@ export default {
 
         if (this.isRouterAdmin) {
           //若isRouterAdmin則為後台登入
+          const response = await authorizationAPI.signIn({
+            account: this.account,
+            password: this.password,
+          });
+
+          const { data } = response;
+
+          if (data.status !== "success") {
+            throw new Error(data.message);
+          }
+
+          localStorage.setItem("token", data.token);
+
+          this.$store.commit("authentication/setCurrentUser", data.user);
+
           this.$router.push("/admin/users");
         } else {
           //否則為前台登入
