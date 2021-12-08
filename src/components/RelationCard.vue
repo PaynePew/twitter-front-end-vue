@@ -1,6 +1,6 @@
 <template>
-  <section v-for="user in users" :key="user.id" class="relation">
-    <div class="relation__wrapper">
+  <section v-for="user in topUsers" :key="user.id" class="relation">
+    <div @click.stop="handlePageRoute(user.account)" class="relation__wrapper">
       <div class="relation__header">
         <div class="relation__avatar">
           <img class="relation__img" :src="user.avatar" alt="" />
@@ -9,143 +9,79 @@
       <div class="relation__body">
         <div class="relation__box">
           <div class="relation__name">{{ user.name }}</div>
-          <div class="relation__account">@testAccount</div>
+          <div class="relation__account">@{{ user.account }}</div>
         </div>
-        <button class="relation__btn">跟隨</button>
+        <button
+          v-if="!user.isFollowed"
+          @click.stop="addFollowShips(user.id)"
+          class="relation__btn"
+        >
+          跟隨
+        </button>
+        <button
+          v-else
+          @click.stop="deleteFollowShips(user.id)"
+          class="relation__btn relation__btn--active"
+        >
+          正在跟隨
+        </button>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-const usersDummy = [
-  {
-    id: 1,
-    account: "tz1Mp67VLh43epLdHSvuaK4FbMoQ2nQkeLUk",
-    email: "pcobbing0@oracle.com",
-    password: "PcQxT3f1J",
-    name: "Phineas Cobbing",
-    introduction: "150.255.148.96",
-    avatar: "https://robohash.org/utetenim.png?size=50x50&set=set1",
-    cover: "https://robohash.org/nihilhicet.png?size=50x50&set=set1",
-    role: "admin",
-  },
-  {
-    id: 2,
-    account: "tz1SKPFJP4bFp6Y56iD2mVvoiYiMCAEaoj9v",
-    email: "dmarre1@msn.com",
-    password: "KscuOM98PC13",
-    name: "Dukie Marre",
-    introduction: "68.181.142.33",
-    avatar: "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
-    cover: "https://robohash.org/quasiipsumvoluptatem.png?size=50x50&set=set1",
-    role: "admin",
-  },
-  {
-    id: 3,
-    account: "tz1VJJNhqL3irfvxKcJtuEn3Ti97hNUWQWcd",
-    email: "fklasing2@china.com.cn",
-    password: "He1xnjP",
-    name: "Florri Klasing",
-    introduction: "96.72.192.4",
-    avatar: "https://robohash.org/sedvitaeeveniet.png?size=50x50&set=set1",
-    cover: "https://robohash.org/autimpeditillo.png?size=50x50&set=set1",
-    role: "",
-  },
-  {
-    id: 4,
-    account: "tz1NbWnzR4y3RXaWbNbxqBise7mhwUKdbDE9",
-    email: "twhalley3@seattletimes.com",
-    password: "M6E2oR",
-    name: "Tisha Whalley",
-    introduction: "45.183.172.212",
-    avatar: "https://robohash.org/rerumautemnesciunt.png?size=50x50&set=set1",
-    cover: "https://robohash.org/minusblanditiiseum.png?size=50x50&set=set1",
-    role: "",
-  },
-  {
-    id: 5,
-    account: "tz1TVNB6KoER4jhrwn7zT2zNzioU8MCR1L22",
-    email: "asiene4@comsenz.com",
-    password: "PK3YN1MGmpg",
-    name: "Antoinette Siene",
-    introduction: "33.208.93.148",
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    cover: "https://robohash.org/quisexomnis.png?size=50x50&set=set1",
-    role: "",
-  },
-  {
-    id: 6,
-    account: "tz1gnidYyxRuGPPsdoSFH66nGWNW8TC9Y3yR",
-    email: "emorsey5@blinklist.com",
-    password: "cBIGgrFpAL",
-    name: "Emylee Morsey",
-    introduction: "157.40.7.185",
-    avatar: "https://robohash.org/nemolaboriosamin.png?size=50x50&set=set1",
-    cover: "https://robohash.org/voluptatemquivelit.png?size=50x50&set=set1",
-    role: "",
-  },
-  {
-    id: 7,
-    account: "tz1irDLapEzgQDEinShczzcddx3PWDLEMcQK",
-    email: "wcragg6@github.com",
-    password: "CF2yom3hg",
-    name: "Winslow Cragg",
-    introduction: "14.27.230.34",
-    avatar: "https://robohash.org/debitisveroet.png?size=50x50&set=set1",
-    cover:
-      "https://robohash.org/doloribusrecusandaefugiat.png?size=50x50&set=set1",
-    role: "",
-  },
-  {
-    id: 8,
-    account: "tz1Pn4y7MJo1wt11oC8Gk1er5pgG1tDyHgCU",
-    email: "dbraghini7@networkadvertising.org",
-    password: "btJ2SzVcO",
-    name: "Dexter Braghini",
-    introduction: "74.64.199.89",
-    avatar: "https://robohash.org/aliquidnemooptio.png?size=50x50&set=set1",
-    cover:
-      "https://robohash.org/voluptatibusrepellenduset.png?size=50x50&set=set1",
-    role: "",
-  },
-  {
-    id: 9,
-    account: "tz1SFP5AqHsSUcRSmtYkUNucCiwnif1nT6S6",
-    email: "kcalbaithe8@jugem.jp",
-    password: "UuO7qrvFObMZ",
-    name: "Keriann Calbaithe",
-    introduction: "18.188.140.26",
-    avatar: "https://robohash.org/teneturiureet.png?size=50x50&set=set1",
-    cover:
-      "https://robohash.org/quivoluptatemnecessitatibus.png?size=50x50&set=set1",
-    role: "",
-  },
-  {
-    id: 10,
-    account: "tz1VNvAnRWy9XYGhSHNsQjL1ZRQdYUpgs1Mu",
-    email: "chobben9@whitehouse.gov",
-    password: "b6qH20ch",
-    name: "Clementius Hobben",
-    introduction: "68.11.51.112",
-    avatar: "https://robohash.org/fugitnonqui.png?size=50x50&set=set1",
-    cover: "https://robohash.org/ipsaassumendaitaque.png?size=50x50&set=set1",
-    role: "",
-  },
-];
+import usersAPI from "@/apis/users";
 export default {
   data() {
     return {
-      users: [],
+      topUsers: [],
     };
   },
-
-  mounted() {
-    this.fetchCurrentUser();
+  created() {
+    this.getTopFollowers();
   },
   methods: {
-    fetchCurrentUser() {
-      this.users = usersDummy;
+    async getTopFollowers() {
+      try {
+        const response = await usersAPI.follower.getTopFollowers();
+        this.topUsers = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async addFollowShips(id) {
+      try {
+        const { data } = await usersAPI.follower.addFollowShips(id);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.toggleFollow(id);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteFollowShips(id) {
+      try {
+        const { data } = await usersAPI.follower.deleteFollowShips(id);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.toggleFollow(id);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    handlePageRoute(account) {
+      this.$router.push({
+        name: "UserInfo",
+        params: { account },
+      });
+    },
+    toggleFollow(id) {
+      this.topUsers.map((_user) => {
+        _user.id === id ? (_user.isFollowed = !_user.isFollowed) : _user;
+      });
     },
   },
 };
@@ -159,6 +95,9 @@ export default {
     display: flex;
     border-top: 1px solid $clr-border;
     padding: 10px 15px;
+  }
+  &__header {
+    margin-right: 10px;
   }
   &__img {
     width: 50px;
