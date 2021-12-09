@@ -160,7 +160,7 @@ export default {
 
             this.toggleNotice({
               type: "error",
-              message: "此帳號非管理者帳號",
+              message: "帳號不存在",
             });
             this.isProcessing = false;
             return
@@ -191,7 +191,7 @@ export default {
 
             this.toggleNotice({
               type: "error",
-              message: "請勿使用管理者帳號登入前台",
+              message: "帳號不存在",
             });
             this.isProcessing = false;
             return
