@@ -24,7 +24,6 @@ export default {
 .popular-list {
   margin-left: 30px;
   margin-top: 15px;
-  margin-right: 82px;
 
   &__wrapper {
     min-width: 350px;

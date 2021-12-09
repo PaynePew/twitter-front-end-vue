@@ -56,6 +56,7 @@ export default {};
     justify-content: center;
     height: 100%;
     flex: 1 0 auto;
+    color: $clr-secondary;
     &:visited {
       color: inherit;
     }

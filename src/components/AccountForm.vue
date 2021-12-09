@@ -1,6 +1,17 @@
 <template>
-  <form @submit.stop.prevent="handleSubmit">
-    <div class="account-form__input-box form__input-box">
+  <form
+    @submit.stop.prevent="handleSubmit"
+    class="account-form__form"
+    :class="[
+      { 'account-form__form--setting': $route.name == 'SettingAccount' },
+    ]"
+  >
+    <div
+      class="account-form__input-box form__input-box"
+      :class="[
+        { 'account-form__input-box--setting': $route.name == 'SettingAccount' },
+      ]"
+    >
       <label class="form__label" for="account">帳號</label>
       <div class="account-form__input-container form__input-container">
         <input
@@ -24,7 +35,12 @@
       </div>
     </div>
 
-    <div class="account-form__input-box form__input-box">
+    <div
+      class="account-form__input-box form__input-box"
+      :class="[
+        { 'account-form__input-box--setting': $route.name == 'SettingAccount' },
+      ]"
+    >
       <label class="form__label" for="name">名稱</label>
       <div class="account-form__input-container form__input-container">
         <input
@@ -46,7 +62,12 @@
       </div>
     </div>
 
-    <div class="account-form__input-box form__input-box">
+    <div
+      class="account-form__input-box form__input-box"
+      :class="[
+        { 'account-form__input-box--setting': $route.name == 'SettingAccount' },
+      ]"
+    >
       <label class="form__label" for="email">email</label>
       <div class="account-form__input-container form__input-container">
         <input
@@ -60,7 +81,12 @@
       </div>
     </div>
 
-    <div class="account-form__input-box form__input-box">
+    <div
+      class="account-form__input-box form__input-box"
+      :class="[
+        { 'account-form__input-box--setting': $route.name == 'SettingAccount' },
+      ]"
+    >
       <label class="form__label" for="password">密碼</label>
       <div class="account-form__input-container form__input-container">
         <input
@@ -74,7 +100,12 @@
       </div>
     </div>
 
-    <div class="account-form__input-box form__input-box">
+    <div
+      class="account-form__input-box form__input-box"
+      :class="[
+        { 'account-form__input-box--setting': $route.name == 'SettingAccount' },
+      ]"
+    >
       <label class="form__label" for="checkPassword">密碼確認</label>
       <div class="account-form__input-container form__input-container">
         <input
@@ -267,6 +298,17 @@ export default {
 @import "./../assets/scss/components/_button-share.scss";
 
 .account-form {
+  &__form {
+    padding: 0 16px;
+    &--setting {
+      width: 642px;
+    }
+  }
+  &__input-box {
+    &--setting {
+      width: 642px;
+    }
+  }
   &__btn {
     width: 540px;
     height: 46px;
@@ -278,7 +320,7 @@ export default {
       margin-top: 20px;
     }
     &--setting {
-      margin-top: 50px;
+      margin-top: 40px;
       width: 116px;
       height: 46px;
       cursor: pointer;
