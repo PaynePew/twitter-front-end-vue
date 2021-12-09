@@ -21,7 +21,7 @@
             class="navbar__menu"
             :to="{
               name: 'UserInfo',
-              params: { account: currentUser.account || 'null' },
+              params: { userId: currentUser.id || 'null' },
             }"
           >
             <img src="@/assets/img/icon_user@2x.png" class="navbar__icon" />

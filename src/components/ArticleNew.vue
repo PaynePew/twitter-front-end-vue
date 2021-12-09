@@ -10,9 +10,18 @@
             class="article-create__input"
             type="textarea"
             placeholder="有甚麼新鮮事?"
+            name="description"
+            v-model="description"
           />
           <div class="article-create__footer">
-            <button class="article-create__btn btn">推文</button>
+            <button
+              type="button"
+              :disabled="isProcessing"
+              @click.prevent="handleSubmit"
+              class="article-create__btn btn btn--primary"
+            >
+              推文
+            </button>
           </div>
         </form>
       </div>
@@ -21,18 +30,35 @@
 </template>
 
 <script>
+import articlesAPI from "@/apis/articles";
 export default {
   props: {
     currentUser: Object,
   },
   data() {
-    return {};
+    return {
+      description: "",
+      isProcessing: false,
+    };
+  },
+  methods: {
+    async handleSubmit() {
+      try {
+        this.isProcessing = true;
+        const response = await articlesAPI.createArticle(this.description);
+        console.log(response);
+        this.description = "";
+        this.$emit("after-submit");
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/components/_button.scss";
+@import "@/assets/scss/components/_button-share.scss";
 .article-create {
   &__wrapper {
     display: flex;
