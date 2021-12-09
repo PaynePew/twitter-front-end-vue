@@ -44,8 +44,9 @@
     justify-content: center;
     height: 100%;
     flex: 1 0 auto;
+    color: $clr-secondary;
     &:visited {
-      color: inherit;
+      color: $clr-secondary;
     }
   }
   .exact-active {
