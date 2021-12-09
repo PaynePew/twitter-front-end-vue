@@ -28,13 +28,13 @@ export default {
     }),
   },
   mounted() {
-    this.fetchUsers();
+    this.fetchFollowers(this.$route.params.userId);
   },
   methods: {
-    async fetchUsers(userId) {
+    async fetchFollowers(userId) {
       try {
         const { data } = await usersAPI.follower.getFollowers(userId);
-        this.users = data.users;
+        this.users = data;
       } catch (error) {
         console.log(error);
       }
