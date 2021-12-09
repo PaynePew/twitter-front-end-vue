@@ -3,20 +3,20 @@
     v-for="article in articles"
     :key="article.id"
     class="article-card"
-    @click="handlePageRoute(article.User.account, article.id)"
+    @click="handlePageRoute(article.User.id, article.id)"
   >
     <div class="article-card__wrapper">
       <div class="article-card__container">
         <div
           class="article-card__side"
-          @click.stop="handlePageRoute(article.User.account)"
+          @click.stop="handlePageRoute(article.User.id)"
         >
           <img class="article-card__avatar" :src="article.User.avatar" alt="" />
         </div>
         <div class="article-card__main">
           <div
             class="article-card__header"
-            @click.stop="handlePageRoute(article.User.account)"
+            @click.stop="handlePageRoute(article.User.id)"
           >
             <div class="article-card__name">
               {{ article.User.name }}
@@ -44,12 +44,14 @@
               </div>
               <div class="article-card__like">
                 <img
+                  v-if="!article.isLiked"
                   @click.stop="postLike(article.id)"
                   class="article-card__icon"
                   src="@/assets/img/icon_like@2x.png"
                   alt=""
                 />
                 <img
+                  v-else
                   @click.stop="deleteLike(article.id)"
                   class="article-card__icon"
                   src="@/assets/img/icon_like_active@2x.png"
@@ -71,34 +73,53 @@
 import { fromNowMixin } from "@/utils/mixins";
 import { mapMutations, mapState } from "vuex";
 import articlesAPI from "@/apis/articles";
-// import usersAPI from "@/apis/users";
+
 export default {
   props: {
-    articles: Array,
+    initArticles: Array,
   },
   data() {
-    return {};
+    return {
+      articles: this.initArticles,
+    };
   },
   computed: {
     ...mapState("authentication", ["currentUser"]),
   },
+  watch: {
+    initArticles(newValue) {
+      this.articles = newValue;
+    },
+  },
   methods: {
     ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
-    handlePageRoute(account, id) {
-      if (!id) {
+    handlePageRoute(userId, articleId) {
+      if (!articleId) {
         this.$router.push({
           name: "UserInfo",
-          params: { account },
+          params: { userId },
         });
         return;
       }
       this.$router.push({
         name: "ArticleShow",
-        params: { account, articleId: id },
+        params: { userId, articleId },
+      });
+    },
+    toggleIsLike(articleId) {
+      this.articles.map((_article) => {
+        if (_article.id === articleId) {
+          _article.isLiked
+            ? (_article.likedCount -= 1)
+            : (_article.likedCount += 1);
+          _article.isLiked = !_article.isLiked;
+        }
+        return _article;
       });
     },
     async postLike(articleId) {
       try {
+        this.toggleIsLike(articleId);
         const { data } = await articlesAPI.like.create(articleId);
         if (data.status !== "success") {
           throw new Error(data.message);
@@ -109,6 +130,7 @@ export default {
     },
     async deleteLike(articleId) {
       try {
+        this.toggleIsLike(articleId);
         const { data } = await articlesAPI.like.delete(articleId);
         if (data.status !== "success") {
           throw new Error(data.message);

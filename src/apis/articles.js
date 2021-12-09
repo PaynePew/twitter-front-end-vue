@@ -7,6 +7,9 @@ export default {
   getArticleShow(id) {
     return apiHelper.get(`/tweets/${id}`);
   },
+  createArticle(description) {
+    return apiHelper.post("/tweets", { description });
+  },
   reply: {
     get(tweetId) {
       return apiHelper.get(`/tweets/${tweetId}`);
