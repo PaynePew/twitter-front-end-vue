@@ -163,7 +163,7 @@ export default {
               message: "帳號不存在",
             });
             this.isProcessing = false;
-            return
+            return;
           }
 
           localStorage.setItem("token", data.token);
@@ -194,7 +194,7 @@ export default {
               message: "帳號不存在",
             });
             this.isProcessing = false;
-            return
+            return;
           }
 
           localStorage.setItem("token", data.token);
