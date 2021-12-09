@@ -1,46 +1,4 @@
 <template>
-  <div
-    :class="[
-      isNotice && notice.type === 'success'
-        ? ['form__notice-box', 'form__notice-box--show']
-        : 'form__notice-box',
-    ]"
-  >
-    <div class="form__notice-message">{{ notice.message }}</div>
-    <div class="form__notice-bg form__notice-bg--success">
-      <img
-        class="form__notice-icon"
-        src="./../assets/img/icon_success@2x.png"
-        alt=""
-      />
-    </div>
-  </div>
-
-  <div
-    :class="[
-      isNotice && notice.type === 'error'
-        ? ['form__notice-box', 'form__notice-box--show']
-        : 'form__notice-box',
-    ]"
-  >
-    <div class="form__notice-message">{{ notice.message }}</div>
-    <div class="form__notice-bg form__notice-bg--error">
-      <img
-        class="form__notice-icon"
-        src="./../assets/img/icon_error@2x.png"
-        alt=""
-      />
-    </div>
-  </div>
-
-  <!-- <button 
-    type="button" 
-    class="btn btn-primary" 
-    id="liveAlertBtn"
-    @click="toggleNotice('You found me','success')"
-  >
-    Notice Test
-  </button> -->
   <form @submit.stop.prevent="handleSubmit">
     <div class="login-form__input-box form__input-box">
       <label class="form__label" for="account">帳號</label>
@@ -106,10 +64,10 @@ export default {
       isProcessing: false,
       adminToggled: false,
       isNotice: false,
-      notice: {
-        type: "",
-        message: "",
-      },
+      // notice: {
+      //   type: "",
+      //   message: "",
+      // },
     };
   },
 
@@ -157,8 +115,7 @@ export default {
             //阻擋前台帳號登入後台
             this.$store.commit("authentication/revokeAuthentication");
             this.$router.push("/login");
-
-            this.toggleNotice({
+            this.$store.commit("noticeInfo/toggleNotice", {
               type: "error",
               message: "帳號不存在",
             });
@@ -188,8 +145,7 @@ export default {
             //阻擋後台帳號登入前台
             this.$store.commit("authentication/revokeAuthentication");
             this.$router.push("/login");
-
-            this.toggleNotice({
+            this.$store.commit("noticeInfo/toggleNotice", {
               type: "error",
               message: "帳號不存在",
             });
@@ -204,29 +160,13 @@ export default {
           this.$router.push("/home");
         }
       } catch (error) {
-        this.toggleNotice({
+        console.log("LoginForm handleSubmit error: ", error);
+        this.$store.commit("noticeInfo/toggleNotice", {
           type: "error",
           message: error.response.data.message,
         });
         this.isProcessing = false;
       }
-    },
-
-    toggleNotice({ type, message }) {
-      clearTimeout(this.timeoutId);
-      console.log("before", this.timeoutId);
-      this.isNotice = true;
-      this.notice.message = message;
-      this.notice.type = type;
-
-      this.timeoutId = setTimeout(() => {
-        this.isNotice = false;
-      }, 4000);
-
-      // setTimeout(() => {
-      //   this.notice.type = "";
-      //   this.notice.message = "";
-      // }, 6000);
     },
   },
 };

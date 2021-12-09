@@ -2,6 +2,7 @@
   <div class="container">
     <section class="header">
       <router-view name="nav" @after-click="TOGGLE_MODAL" />
+      <Notice/>
     </section>
     <section class="main">
       <section class="content" :class="{ 'content--admin': isAdmin }">
@@ -17,12 +18,14 @@
 
 <script>
 import Modal from "./components/Modal.vue";
+import Notice from "./components/Notice.vue";
 import { usersDummy } from "@/store/dummy/usersDummy";
 import { mapMutations, mapState } from "vuex";
 
 export default {
   components: {
     Modal,
+    Notice,
   },
   data() {
     return {
