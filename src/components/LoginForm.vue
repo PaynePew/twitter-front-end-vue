@@ -163,7 +163,7 @@ export default {
         console.log("LoginForm handleSubmit error: ", error);
         this.$store.commit("noticeInfo/toggleNotice", {
           type: "error",
-          message: error.response.data.message,
+          message: "帳號不存在",
         });
         this.isProcessing = false;
       }
