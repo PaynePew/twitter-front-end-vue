@@ -153,6 +153,19 @@ export default {
             throw new Error(data.message);
           }
 
+          if (data.user.role !== "admin") {
+            //阻擋前台帳號登入後台
+            this.$store.commit("authentication/revokeAuthentication");
+            this.$router.push("/login");
+
+            this.toggleNotice({
+              type: "error",
+              message: "此帳號非管理者帳號",
+            });
+            this.isProcessing = false;
+            return
+          }
+
           localStorage.setItem("token", data.token);
 
           this.$store.commit("authentication/setCurrentUser", data.user);
@@ -169,6 +182,19 @@ export default {
 
           if (data.status !== "success") {
             throw new Error(data.message);
+          }
+
+          if (data.user.role === "admin") {
+            //阻擋後台帳號登入前台
+            this.$store.commit("authentication/revokeAuthentication");
+            this.$router.push("/login");
+
+            this.toggleNotice({
+              type: "error",
+              message: "請勿使用管理者帳號登入前台",
+            });
+            this.isProcessing = false;
+            return
           }
 
           localStorage.setItem("token", data.token);
