@@ -3,36 +3,34 @@
     <div class="article-show__wrapper">
       <div class="article-show__container">
         <div class="article-show__header">
-          <img
-            class="article-show__avatar"
-            :src="article.tweet.User.avatar"
-            alt=""
-          />
+          <img class="article-show__avatar" :src="article.User.avatar" alt="" />
           <div class="article-show__title">
             <div class="article-show__name">
-              {{ article.tweet.User.name }}
+              {{ article.User.name }}
             </div>
-            <div class="article-show__account">
-              @{{ article.tweet.User.account }}
-            </div>
+            <div class="article-show__account">@{{ article.User.account }}</div>
           </div>
         </div>
         <div class="article-show__main">
           <div class="article-show__des">
-            {{ article.tweet.description }}
+            {{ article.description }}
           </div>
           <div class="article-show__time-box">
             <div class="article-show__time">
-              <span>·</span>{{ article.tweet.createdAt }}
+              <span>·</span>{{ article.createdAt }}
             </div>
           </div>
           <div class="article-show__popular-box">
             <div class="article-show__popular">
-              <div class="article-show__prefix">34&nbsp;</div>
+              <div class="article-show__prefix">
+                {{ article.repliedCount }}&nbsp;
+              </div>
               <div class="article-show__suffix">回覆</div>
             </div>
             <div class="article-show__popular">
-              <div class="article-show__prefix">808&nbsp;</div>
+              <div class="article-show__prefix">
+                {{ article.likedCount }}&nbsp;
+              </div>
               <div class="article-show__suffix">喜歡次數</div>
             </div>
           </div>
@@ -63,12 +61,11 @@ import { fromNowMixin } from "@/utils/mixins";
 import { mapMutations } from "vuex";
 export default {
   props: {
-    currentUser: Object,
-    article: Array,
+    currentArticle: { Object },
   },
   data() {
     return {
-      allarticles: [],
+      article: this.currentArticle,
     };
   },
   methods: {
@@ -80,10 +77,9 @@ export default {
       });
     },
   },
-
   watch: {
-    articles(newValue) {
-      this.allarticles = newValue;
+    currentArticle(newValue) {
+      this.article = newValue;
     },
   },
   mixins: [fromNowMixin],
