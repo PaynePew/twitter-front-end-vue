@@ -332,6 +332,7 @@ export default {
     margin-top: 40px;
     cursor: pointer;
     &--small {
+      display: flex;
       justify-content: center;
       margin-top: 20px;
     }
