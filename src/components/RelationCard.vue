@@ -1,6 +1,6 @@
 <template>
   <section v-for="user in topUsers" :key="user.id" class="relation">
-    <div @click.stop="handlePageRoute(user.account)" class="relation__wrapper">
+    <div @click.stop="handlePageRoute(user.id)" class="relation__wrapper">
       <div class="relation__header">
         <div class="relation__avatar">
           <img class="relation__img" :src="user.avatar" alt="" />
@@ -72,10 +72,10 @@ export default {
         console.log(error);
       }
     },
-    handlePageRoute(account) {
+    handlePageRoute(userId) {
       this.$router.push({
         name: "UserInfo",
-        params: { account },
+        params: { userId },
       });
     },
     toggleFollow(id) {
