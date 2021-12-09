@@ -12,7 +12,7 @@ export default {
   },
   mutations: {
     [toggleNotice]: (state, notice) => {
-      console.log('mutations toggleNotice: ', notice);
+      console.log("mutations toggleNotice: ", notice);
       clearTimeout(state.setTimeoutObject);
       state.isNotice = true;
       state.notice = {
@@ -24,8 +24,8 @@ export default {
       }, 4000);
     },
   },
-actions: { },
-getters: { },
+  actions: {},
+  getters: {},
 };
 
 /*

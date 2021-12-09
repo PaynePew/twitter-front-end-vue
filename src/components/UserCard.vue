@@ -71,7 +71,6 @@ export default {
           ...this.user,
           isFollowed: true,
         };
-
       } catch (error) {
         console.log(error);
       }
@@ -87,7 +86,6 @@ export default {
           ...this.user,
           isFollowed: false,
         };
-
       } catch (error) {
         console.log(error);
       }

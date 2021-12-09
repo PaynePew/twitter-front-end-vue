@@ -244,8 +244,11 @@ export default {
             type: "success",
             message: "成功編輯帳號資料",
           });
-          
-          this.$router.push({name: "UserInfo", params:{userId: this.initialUser.id}})
+
+          this.$router.push({
+            name: "UserInfo",
+            params: { userId: this.initialUser.id },
+          });
         }
       } catch (error) {
         this.$store.commit("noticeInfo/toggleNotice", {
