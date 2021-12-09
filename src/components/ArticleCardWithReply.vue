@@ -33,17 +33,17 @@
 import { fromNowMixin } from "@/utils/mixins";
 export default {
   props: {
-    allReplies: Array,
+    initArticle: Array,
     owner: Object,
   },
   data() {
     return {
-      replies: this.allReplies,
+      replies: this.initArticle,
     };
   },
 
   watch: {
-    allReplies(newValue) {
+    initArticle(newValue) {
       this.replies = newValue;
     },
   },
