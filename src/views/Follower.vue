@@ -8,133 +8,8 @@
 import AppBar from "@/components/AppBar.vue";
 import ConnectTable from "@/components/ConnectTable.vue";
 import UserCard from "@/components/UserCard.vue";
-
-const dummyCurrentUser = {
-  id: 2,
-  account: "VvoiYiMCA",
-  email: "dmarre1@msn.com",
-  password: "KscuOM98PC13",
-  name: "Dukie Marre",
-  introduction: "68.181.142.33",
-  avatar: "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
-  cover: "https://robohash.org/quasiipsumvoluptatem.png?size=50x50&set=set1",
-  role: "admin",
-  isFollowing: false,
-};
-
-const usersDummy = [
-  {
-    id: 1,
-    account: "tz1Mp67VLh4",
-    email: "pcobbing0@oracle.com",
-    password: "PcQxT3f1J",
-    name: "Phineas Cobbing",
-    introduction: "150.255.148.96",
-    avatar: "https://robohash.org/utetenim.png?size=50x50&set=set1",
-    cover: "https://robohash.org/nihilhicet.png?size=50x50&set=set1",
-    role: "admin",
-    isFollowing: false,
-  },
-  {
-    id: 3,
-    account: "3Ti97hNUWQWcd",
-    email: "fklasing2@china.com.cn",
-    password: "He1xnjP",
-    name: "Florri Klasing",
-    introduction: "96.72.192.4",
-    avatar: "https://robohash.org/sedvitaeeveniet.png?size=50x50&set=set1",
-    cover: "https://robohash.org/autimpeditillo.png?size=50x50&set=set1",
-    role: "",
-    isFollowing: true,
-  },
-  {
-    id: 4,
-    account: "mhwUKdbDE9",
-    email: "twhalley3@seattletimes.com",
-    password: "M6E2oR",
-    name: "Tisha Whalley",
-    introduction: "45.183.172.212",
-    avatar: "https://robohash.org/rerumautemnesciunt.png?size=50x50&set=set1",
-    cover: "https://robohash.org/minusblanditiiseum.png?size=50x50&set=set1",
-    role: "",
-    isFollowing: false,
-  },
-  {
-    id: 5,
-    account: "8MCR1L22",
-    email: "asiene4@comsenz.com",
-    password: "PK3YN1MGmpg",
-    name: "Antoinette Siene",
-    introduction: "33.208.93.148",
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    cover: "https://robohash.org/quisexomnis.png?size=50x50&set=set1",
-    role: "",
-    isFollowing: true,
-  },
-  {
-    id: 6,
-    account: "NW8TC9Y3yR",
-    email: "emorsey5@blinklist.com",
-    password: "cBIGgrFpAL",
-    name: "Emylee Morsey",
-    introduction: "157.40.7.185",
-    avatar: "https://robohash.org/nemolaboriosamin.png?size=50x50&set=set1",
-    cover: "https://robohash.org/voluptatemquivelit.png?size=50x50&set=set1",
-    role: "",
-    isFollowing: false,
-  },
-  {
-    id: 7,
-    account: "LEMcQK",
-    email: "wcragg6@github.com",
-    password: "CF2yom3hg",
-    name: "Winslow Cragg",
-    introduction: "14.27.230.34",
-    avatar: "https://robohash.org/debitisveroet.png?size=50x50&set=set1",
-    cover:
-      "https://robohash.org/doloribusrecusandaefugiat.png?size=50x50&set=set1",
-    role: "",
-    isFollowing: false,
-  },
-  {
-    id: 8,
-    account: "G1tDyHgCU",
-    email: "dbraghini7@networkadvertising.org",
-    password: "btJ2SzVcO",
-    name: "Dexter Braghini",
-    introduction: "74.64.199.89",
-    avatar: "https://robohash.org/aliquidnemooptio.png?size=50x50&set=set1",
-    cover:
-      "https://robohash.org/voluptatibusrepellenduset.png?size=50x50&set=set1",
-    role: "",
-    isFollowing: false,
-  },
-  {
-    id: 9,
-    account: "nif1nT6S6",
-    email: "kcalbaithe8@jugem.jp",
-    password: "UuO7qrvFObMZ",
-    name: "Keriann Calbaithe",
-    introduction: "18.188.140.26",
-    avatar: "https://robohash.org/teneturiureet.png?size=50x50&set=set1",
-    cover:
-      "https://robohash.org/quivoluptatemnecessitatibus.png?size=50x50&set=set1",
-    role: "",
-    isFollowing: false,
-  },
-  {
-    id: 10,
-    account: "QdYUpgs1Mu",
-    email: "chobben9@whitehouse.gov",
-    password: "b6qH20ch",
-    name: "Clementius Hobben",
-    introduction: "68.11.51.112",
-    avatar: "https://robohash.org/fugitnonqui.png?size=50x50&set=set1",
-    cover: "https://robohash.org/ipsaassumendaitaque.png?size=50x50&set=set1",
-    role: "",
-    isFollowing: false,
-  },
-];
+import usersAPI from "@/apis/users.js";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -144,20 +19,25 @@ export default {
   },
   data() {
     return {
-      currentUser: {},
       users: [],
     };
   },
+  computed: {
+    ...mapState({
+      currentUser: (state) => state.authentication.currentUser,
+    }),
+  },
   mounted() {
-    this.fetchCurrentUser();
     this.fetchUsers();
   },
   methods: {
-    fetchCurrentUser() {
-      this.currentUser = dummyCurrentUser;
-    },
-    fetchUsers() {
-      this.users = usersDummy;
+    async fetchUsers(userId) {
+      try {
+        const { data } = await usersAPI.follower.getFollowers(userId);
+        this.users = data.users;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
