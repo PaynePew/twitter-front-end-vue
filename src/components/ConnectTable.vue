@@ -23,6 +23,7 @@
 .user-tab {
   &__wrapper {
     border-bottom: 1px solid $clr-border;
+    width: 600px;
   }
   &__tablist {
     display: flex;
