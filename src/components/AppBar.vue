@@ -11,9 +11,7 @@
         </div>
         <div class="appbar__title-box">
           <div v-if="status" class="appbar__title">{{ status }}</div>
-          <div v-if="articleCount" class="appbar__des">
-            {{ articleCount }} 推文
-          </div>
+          <div v-if="tweetNum" class="appbar__des">{{ tweetNum }} 推文</div>
         </div>
       </div>
     </div>
@@ -21,6 +19,8 @@
 </template>
 
 <script>
+import usersAPI from "@/apis/users.js";
+
 export default {
   props: {
     currentUser: {
@@ -28,18 +28,27 @@ export default {
     },
     status: {
       String,
-      default: "首頁",
     },
     stepper: {
       Boolean,
       default: false,
     },
-    articleCount: {
-      Number,
-    },
   },
   data() {
-    return {};
+    return {
+      tweetNum: "",
+    };
+  },
+
+  mounted() {
+    this.fetchTweetsNum(this.$route.params.userId);
+  },
+
+  methods: {
+    async fetchTweetsNum(id) {
+      const { data } = await usersAPI.tweet.getTweets(id);
+      this.tweetNum = data.length;
+    },
   },
 };
 </script>

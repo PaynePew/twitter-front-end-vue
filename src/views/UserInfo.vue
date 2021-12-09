@@ -1,5 +1,5 @@
 <template>
-  <AppBar :stepper="true" :article-count="25" />
+  <AppBar :status="userInfo.name" :stepper="true" />
   <Spinner v-if="isLoading" />
   <UserInfoCard
     v-else

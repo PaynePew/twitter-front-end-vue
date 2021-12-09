@@ -1,5 +1,5 @@
 <template>
-  <AppBar :status="currentUser.name" :stepper="true" :article-count="25" />
+  <AppBar :status="currentUser.name" :stepper="true" />
   <ConnectTable />
   <UserCard v-for="user in users" :key="user.id" :initialUser="user" />
 </template>
