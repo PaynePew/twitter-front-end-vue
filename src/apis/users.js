@@ -21,7 +21,7 @@ export default {
     },
   },
   follower: {
-    getFollower(id) {
+    getFollowers(id) {
       return apiHelper.get(`/users/${id}/followers`);
     },
     getFollowings(id) {
