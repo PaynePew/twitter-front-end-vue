@@ -3,58 +3,78 @@
     <div class="userinfo-card__wrapper">
       <div class="userinfo-card__container">
         <div class="userinfo-card__cover-box">
-          <img :src="currentUser.cover" alt="" class="userinfo-card__cover" />
+          <img :src="userInfo.cover" alt="" class="userinfo-card__cover" />
         </div>
         <div class="userinfo-card__main">
           <div class="userinfo-card__header">
             <div class="userinfo-card__avatar-box">
               <img
-                :src="currentUser.avatar"
+                :src="userInfo.avatar"
                 alt=""
                 class="userinfo-card__avatar"
               />
             </div>
             <div class="userinfo-card__setting">
               <!-- 此處需增加currentUser判定 -->
-              <div v-if="isShow" class="userinfo-card__utils">
+              <div v-if="!isSelf" class="userinfo-card__utils">
                 <img
                   class="userinfo-card__btn"
                   src="@/assets/img/btn_messege@2x.png"
                   alt=""
                 />
                 <img
+                  v-if="!isNoti"
+                  @click.stop="handleNoti"
                   class="userinfo-card__btn"
                   src="@/assets/img/btn_noti@2x.png"
                   alt=""
                 />
-                <!-- 此處需要判定開啟提醒 -->
                 <img
-                  v-if="active"
+                  v-else
+                  @click.stop="handleNoti"
                   class="userinfo-card__btn"
                   src="@/assets/img/btn_noti_active@2x.png"
                   alt=""
                 />
                 <!-- 此處需要判定追蹤 -->
-                <button v-if="active" class="btn btn--opacity">跟隨</button>
-                <button class="btn btn--primary">正在跟隨</button>
+                <button
+                  @click.stop="addFollowShips(userInfo.id)"
+                  v-if="!userInfo.isFollowed"
+                  class="btn btn--opacity"
+                >
+                  跟隨
+                </button>
+                <button
+                  @click.stop="deleteFollowShips(userInfo.id)"
+                  v-else
+                  class="btn btn--primary"
+                >
+                  正在跟隨
+                </button>
               </div>
-              <button @click.stop="TOGGLE_MODAL" class="btn btn--opacity">
+              <button
+                v-if="isSelf"
+                @click.stop="TOGGLE_MODAL"
+                class="btn btn--opacity"
+              >
                 編輯個人檔案
               </button>
             </div>
           </div>
           <div class="userinfo-card__title">
-            <div class="userinfo-card__name">{{ currentUser.name }}</div>
-            <div class="userinfo-card__account">@{{ currentUser.account }}</div>
+            <div class="userinfo-card__name">{{ userInfo.name }}</div>
+            <div class="userinfo-card__account">@{{ userInfo.account }}</div>
           </div>
-          <div class="userinfo-card__des">{{ currentUser.introduction }}</div>
+          <div class="userinfo-card__des">{{ userInfo.introduction }}</div>
           <div class="userinfo-card__relation-list">
             <div class="userinfo-card__relation">
               <router-link
                 class="userinfo-card__nav"
                 :to="{ name: 'Following' }"
               >
-                <span class="userinfo-card__prefix">2 個</span>
+                <span class="userinfo-card__prefix"
+                  >{{ userInfo.FollowingCount }} 個</span
+                >
                 <span class="userinfo-card__suffix">跟隨中</span>
               </router-link>
             </div>
@@ -63,7 +83,9 @@
                 class="userinfo-card__nav"
                 :to="{ name: 'Follower' }"
               >
-                <span class="userinfo-card__prefix">59 位</span>
+                <span class="userinfo-card__prefix"
+                  >{{ userInfo.FollowerCount }} 位</span
+                >
                 <span class="userinfo-card__suffix">跟隨者</span>
               </router-link>
             </div>
@@ -76,15 +98,58 @@
 
 <script>
 import { mapMutations } from "vuex";
+import usersAPI from "@/apis/users";
 export default {
   props: {
-    currentUser: {
+    initUserInfo: {
       Object,
     },
+    initIsSelf: {
+      Boolean,
+    },
   },
-
+  data() {
+    return {
+      userInfo: this.initUserInfo,
+      isSelf: this.initIsSelf,
+      isNoti: false,
+    };
+  },
+  watch: {
+    initUserInfo(newValue) {
+      this.userInfo = newValue;
+    },
+    initIsSelf(newValue) {
+      this.isSelf = newValue;
+    },
+  },
   methods: {
     ...mapMutations("modalUserInfo", ["TOGGLE_MODAL"]),
+    async addFollowShips(id) {
+      try {
+        const { data } = await usersAPI.follower.addFollowShips(id);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.$emit("after-follow");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteFollowShips(id) {
+      try {
+        const { data } = await usersAPI.follower.deleteFollowShips(id);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.$emit("after-follow");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    handleNoti() {
+      this.isNoti = !this.isNoti;
+    },
   },
 };
 </script>

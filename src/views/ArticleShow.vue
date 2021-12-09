@@ -3,7 +3,7 @@
   <Spinner v-if="isLoading" />
   <div v-else>
     <ArticleCardShow :current-article="currentArticle" />
-    <ArticleCardWithReply :allReplies="allReplies" :owner="owner" />
+    <ArticleCardWithReply :init-article="allReplies" :owner="owner" />
   </div>
 </template>
 

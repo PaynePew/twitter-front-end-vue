@@ -1,48 +1,130 @@
 <template>
   <AppBar :stepper="true" :article-count="25" />
-  <UserInfoCard :currentUser="currentUser" />
-  <ModalUserEdit v-if="isShow" />
-  <UserInfoTab />
-  <ArticleCard
-    v-if="$route.name !== 'UserInfoWithReply'"
-    :articles="articles"
+  <Spinner v-if="isLoading" />
+  <UserInfoCard
+    v-else
+    :init-userInfo="userInfo"
+    :init-isSelf="isSelf"
+    @after-follow="handleRelation"
   />
-  <ArticleCardWithReply v-else :articles="articles" />
+  <ModalUserEdit v-if="isShow" />
+
+  <UserInfoTab />
+  <Spinner v-if="isTabLoading" />
+  <div v-if="!isTabLoading">
+    <ArticleCard v-if="$route.name === 'UserInfo'" :init-articles="articles" />
+    <ArticleCardWithReplyTab
+      v-if="$route.name === 'UserInfoWithReply'"
+      :init-articles="replyArticle"
+    />
+    <ArticleCardWithLike
+      v-if="$route.name === 'UserInfoWithLike'"
+      :init-articles="likeArticle"
+    />
+  </div>
 </template>
 
 <script>
+import usersAPI from "@/apis/users";
 import AppBar from "@/components/AppBar.vue";
 import UserInfoCard from "@/components/UserInfoCard.vue";
 import UserInfoTab from "@/components/UserInfoTab.vue";
 import ArticleCard from "@/components/ArticleCard.vue";
-import ArticleCardWithReply from "@/components/ArticleCardWithReply.vue";
-import { articlesDummy } from "@/store/dummy/articlesDummy";
+import ArticleCardWithLike from "@/components/ArticleCardWithLike.vue";
+import ArticleCardWithReplyTab from "@/components/ArticleCardWithReplyTab.vue";
 import ModalUserEdit from "@/components/ModalUserEdit.vue";
+import Spinner from "@/components/Spinner.vue";
 import { mapState } from "vuex";
 
 export default {
   components: {
     ArticleCard,
-    ArticleCardWithReply,
+    ArticleCardWithLike,
+    ArticleCardWithReplyTab,
     UserInfoCard,
     UserInfoTab,
     AppBar,
     ModalUserEdit,
+    Spinner,
   },
   data() {
     return {
-      currentUser: [],
+      userInfo: {},
       articles: [],
+      likeArticle: [],
+      replyArticle: [],
+      owner: [],
+      isLoading: true,
+      isTabLoading: true,
     };
   },
-  beforeMount() {
-    this.currentUser = articlesDummy[0].tweet.User;
-    this.articles = articlesDummy;
+  created() {
+    const { userId } = this.$route.params;
+    this.getUser(userId);
   },
   computed: {
-    ...mapState("modalUserInfo", {
-      isShow: (state) => state.isShow,
+    ...mapState({
+      isShow: (state) => state.modalUserInfo.isShow,
+      currentUser: (state) => state.authentication.currentUser,
     }),
+    isSelf() {
+      return Number(this.$route.params.userId) === this.currentUser.id;
+    },
+  },
+  methods: {
+    async getUser(id) {
+      try {
+        const { data } = await usersAPI.getUser(id);
+        this.userInfo = data;
+        await this.getArticle(id);
+        await this.getLikes(id);
+        await this.getReplies(id);
+        this.isTabLoading = false;
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error);
+      }
+    },
+    async getArticle(userId) {
+      try {
+        const { data } = await usersAPI.tweet.getTweets(userId);
+        this.articles = data;
+        this.articles = this.articles.map((_articles) => {
+          return { ..._articles, User: { ...this.userInfo } };
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getLikes(userId) {
+      try {
+        const { data } = await usersAPI.like.getLikes(userId);
+        this.likeArticle = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getReplies(userId) {
+      try {
+        const { data } = await usersAPI.reply.getReplies(userId);
+        this.replyArticle = data;
+        this.replyArticle = this.replyArticle.map((_replyArticle) => {
+          return { ..._replyArticle, owner: { ...this.userInfo } };
+        });
+        console.log(this.replyArticle);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    handleRelation() {
+      this.userInfo.isFollowed = !this.userInfo.isFollowed;
+      this.getUser(this.userInfo.id);
+    },
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log(to);
+    next();
   },
 };
 </script>
