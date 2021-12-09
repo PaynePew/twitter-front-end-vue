@@ -2,7 +2,7 @@
   <div class="container">
     <section class="header">
       <router-view name="nav" @after-click="TOGGLE_MODAL" />
-      <Notice/>
+      <Notice />
     </section>
     <section class="main">
       <section class="content" :class="{ 'content--admin': isAdmin }">

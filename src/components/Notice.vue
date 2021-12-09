@@ -43,7 +43,7 @@ export default {
       notice: (state) => state.noticeInfo.notice,
       isNotice: (state) => state.noticeInfo.isNotice,
     }),
-  }
+  },
 };
 </script>
 
