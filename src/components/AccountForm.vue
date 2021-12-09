@@ -212,7 +212,6 @@ export default {
       this.account = newValue.account;
       this.name = newValue.name;
       this.email = newValue.email;
-      this.password = newValue.password;
     },
   },
 
@@ -290,13 +289,11 @@ export default {
             throw new Error(data.message);
           }
 
-          this.$router.push({
-            name: "UserInfo",
-            params: { account: this.account },
-          });
+          this.toggleNotice({type: "success", message: "成功編輯帳號資料"})
+          this.password = "";
+          this.checkPassword = "";
         }
       } catch (error) {
-        console.log("error");
         this.toggleNotice({ type: "error", message: error.message });
       }
     },
