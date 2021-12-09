@@ -1,11 +1,21 @@
 <template>
   <div class="container">
-    <section class="header">
-      <router-view name="nav" @after-click="TOGGLE_MODAL" />
+    <section
+      class="header"
+      :class="[{ 'header--width': noSideBar.includes($route.name) }]"
+    >
+      <router-view class="nav" name="nav" @after-click="TOGGLE_MODAL" />
       <Notice />
     </section>
     <section class="main">
-      <section class="content" :class="{ 'content--admin': isAdmin }">
+      <section
+        class="content"
+        :class="[
+          { 'content--admin': isAdmin },
+          { 'content--login': $route.name === 'Login' },
+          { 'content--setting': $route.name === 'SettingAccount' },
+        ]"
+      >
         <router-view />
         <Modal v-show="isShow" @close="TOGGLE_MODAL" :users="currentUser" />
       </section>
@@ -30,6 +40,14 @@ export default {
   data() {
     return {
       users: [],
+      noSideBar: [
+        "Login",
+        "Signup",
+        "AdminLogin",
+        "AdminUsers",
+        "AdminArticles",
+        "SettingAccount",
+      ],
     };
   },
   created() {
@@ -69,9 +87,13 @@ export default {
 .header {
   display: flex;
   position: relative;
-  padding: 0 20px;
+  padding-right: 30px;
   flex: 1 0 auto;
   justify-content: flex-end;
+  border-right: 1px solid $clr-border;
+  &--width {
+    padding-right: 40px;
+  }
 }
 .main {
   display: flex;
@@ -80,10 +102,17 @@ export default {
 .content {
   display: flex;
   flex-direction: column;
-  max-width: 600px;
-  border: 1px solid $clr-border;
+  width: 600px;
+  border-right: 1px solid $clr-border;
   &--admin {
     max-width: none;
+  }
+  &--login {
+    border: none;
+  }
+  &--setting {
+    flex: 1;
+    border: none;
   }
 }
 </style>

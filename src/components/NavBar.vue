@@ -7,7 +7,16 @@
         </div>
         <div class="navbar__body" v-if="!isAdminPage">
           <router-link class="navbar__menu" to="/home">
-            <img src="@/assets/img/icon_house@2x.png" class="navbar__icon" />
+            <img
+              v-if="HomeURL.includes(currentPage)"
+              src="@/assets/img/icon_house_active@2x.png"
+              class="navbar__icon"
+            />
+            <img
+              v-else
+              src="@/assets/img/icon_house@2x.png"
+              class="navbar__icon"
+            />
             <div
               :class="[
                 'navbar__title',
@@ -24,18 +33,39 @@
               params: { userId: currentUser.id || 'null' },
             }"
           >
-            <img src="@/assets/img/icon_user@2x.png" class="navbar__icon" />
+            <img
+              v-if="$route.params.userId == currentUser.id"
+              src="@/assets/img/icon_user_active@2x.png"
+              class="navbar__icon"
+            />
+            <img
+              v-else
+              src="@/assets/img/icon_user@2x.png"
+              class="navbar__icon"
+            />
             <div
               :class="[
                 'navbar__title',
-                { 'navbar__title--active': UserURL.includes(currentPage) },
+                {
+                  'navbar__title--active':
+                    $route.params.userId == currentUser.id,
+                },
               ]"
             >
               個人資料
             </div>
           </router-link>
           <router-link class="navbar__menu" to="/settings/account">
-            <img src="@/assets/img/icon_gear@2x.png" class="navbar__icon" />
+            <img
+              v-if="currentPage === 'SettingAccount'"
+              src="@/assets/img/icon_gear_active@2x.png"
+              class="navbar__icon"
+            />
+            <img
+              v-else
+              src="@/assets/img/icon_gear@2x.png"
+              class="navbar__icon"
+            />
             <div
               :class="[
                 'navbar__title',
@@ -94,13 +124,12 @@ export default {
   data() {
     return {
       HomeURL: ["Home", "ArticleShow"],
-      UserURL: ["UserInfo"],
+      UserURL: ["UserInfo", "UserInfoWithReply", "UserInfoWithLike"],
     };
   },
-
   computed: {
     isAdminPage() {
-      const currentURL = this.$route;
+      let currentURL = this.$route;
       console.log("URL.name", currentURL.name);
       const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
       if (pathWithoutSideRender.includes(currentURL.name)) {
@@ -134,9 +163,9 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  width: 275px;
+  width: 235px;
   height: 100vh;
-  padding: 0 20px;
+  // padding: 0 20px;
   display: flex;
   flex: 0 1 auto;
   align-items: stretch;
