@@ -17,7 +17,7 @@
           </div>
           <div class="article-show__time-box">
             <div class="article-show__time">
-              <span>·</span>{{ article.createdAt }}
+              {{ moment(article.createdAt) }}
             </div>
           </div>
           <div class="article-show__popular-box">

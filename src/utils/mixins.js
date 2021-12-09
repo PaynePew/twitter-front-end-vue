@@ -1,11 +1,14 @@
 import moment from "moment";
 
-moment.locale('zh-tw');
+moment.locale("zh-tw");
 
 export const fromNowMixin = {
   methods: {
     fromNow: function (datetime) {
       return datetime ? moment(datetime).fromNow() : "-";
+    },
+    moment: function (datetime) {
+      return datetime ? moment(datetime).format("a h:mm·LL") : "-";
     },
   },
 };
