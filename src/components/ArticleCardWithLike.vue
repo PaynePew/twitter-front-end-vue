@@ -69,9 +69,11 @@
                   src="@/assets/img/icon_like_active@2x.png"
                   alt=""
                 />
-                <span class="article-card__count">{{
-                  article.likedCount
-                }}</span>
+                <span
+                  class="article-card__count"
+                  :class="[{ 'article-card__count--like': article.isLiked }]"
+                  >{{ article.likedCount }}</span
+                >
               </div>
             </div>
           </div>
@@ -160,6 +162,7 @@ export default {
 <style lang="scss" scoped>
 .article-card {
   border-bottom: 1px solid $clr-border;
+  cursor: pointer;
   &__wrapper {
     max-width: 600px;
   }
@@ -221,6 +224,9 @@ export default {
   &__icon {
     width: 15px;
     height: 15px;
+  }
+  &__count--like {
+    color: #e0245e;
   }
 }
 </style>
