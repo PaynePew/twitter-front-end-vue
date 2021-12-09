@@ -1,7 +1,7 @@
 <template>
   <div class="user-card__container">
     <div class="user-card__card">
-      <router-link :to="{ name: 'UserInfo', params: { userName: user.name } }">
+      <router-link :to="{ name: 'UserInfo', params: { userId: user.id } }">
         <img class="user-card__side" :src="user.avatar" />
       </router-link>
       <div class="user-card__main">
@@ -15,16 +15,16 @@
           {{ user.introduction }}
         </div>
         <button
-          v-if="user.isFollowing"
+          v-if="user.isFollowed"
           class="btn btn--primary user-card__button"
-          @click.stop.prevent="deleteFollowing(user.id)"
+          @click.stop.prevent="deleteFollowShips(user.id)"
         >
           <span>正在跟隨</span>
         </button>
         <button
-          v-if="!user.isFollowing"
+          v-if="!user.isFollowed"
           class="btn user-card__button--frame"
-          @click.stop.prevent="addFollowing(user.id)"
+          @click.stop.prevent="addFollowShips(user.id)"
         >
           <span>跟隨</span>
         </button>
@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import usersAPI from "@/apis/users";
+
 export default {
   props: {
     initialUser: {
@@ -58,18 +60,37 @@ export default {
   // },
 
   methods: {
-    addFollowing() {
-      this.user = {
-        ...this.user,
-        isFollowing: true,
-      };
-    },
+    async addFollowShips(id) {
+      try {
+        const { data } = await usersAPI.follower.addFollowShips(id);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
 
-    deleteFollowing() {
-      this.user = {
-        ...this.user,
-        isFollowing: false,
-      };
+        this.user = {
+          ...this.user,
+          isFollowed: true,
+        };
+
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteFollowShips(id) {
+      try {
+        const { data } = await usersAPI.follower.deleteFollowShips(id);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        this.user = {
+          ...this.user,
+          isFollowed: false,
+        };
+
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
@@ -86,7 +107,7 @@ export default {
     position: relative;
     display: flex;
     border-bottom: 1px solid $clr-border;
-    height: 105px;
+    padding-bottom: 10px;
   }
   &__side {
     width: 50px;
