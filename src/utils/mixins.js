@@ -1,5 +1,7 @@
 import moment from "moment";
 
+moment.locale('zh-tw');
+
 export const fromNowMixin = {
   methods: {
     fromNow: function (datetime) {
