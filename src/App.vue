@@ -6,7 +6,7 @@
     <section class="main">
       <section class="content" :class="{ 'content--admin': isAdmin }">
         <router-view />
-        <Modal v-show="isShow" @close="TOGGLE_MODAL" :users="users" />
+        <Modal v-show="isShow" @close="TOGGLE_MODAL" :users="currentUser" />
       </section>
       <section class="sidebar">
         <router-view name="side" />
@@ -49,6 +49,7 @@ export default {
     },
     ...mapState({
       isShow: (state) => state.modalArticle.isShow,
+      currentUser: (state) => state.authentication.currentUser,
     }),
   },
 };

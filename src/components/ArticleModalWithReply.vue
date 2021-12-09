@@ -1,15 +1,11 @@
 <template>
-  <section
-    v-for="article in articles"
-    :key="article.id"
-    class="article-modal-reply"
-  >
+  <section class="article-modal-reply">
     <div class="article-modal-reply__wrapper">
       <div class="article-modal-reply__container">
         <div class="article-modal-reply__side">
           <img
             class="article-modal-reply__avatar"
-            :src="article.tweet.User.avatar"
+            :src="article.User.avatar"
             alt=""
           />
           <span class="article-modal-reply__dash"></span>
@@ -17,24 +13,24 @@
         <div class="article-modal-reply__main">
           <div class="article-modal-reply__header">
             <div class="article-modal-reply__name">
-              {{ article.tweet.User.name }}
+              {{ article.User.name }}
             </div>
             <div class="article-modal-reply__account">
-              @{{ article.tweet.User.account }}
+              @{{ article.User.account }}
             </div>
             <span>·</span>
             <div class="article-modal-reply__time">
-              {{ fromNow(article.tweet.createdAt) }}
+              {{ fromNow(article.createdAt) }}
             </div>
           </div>
 
           <div class="article-modal-reply__body">
-            {{ article.tweet.description }}
+            {{ article.description }}
           </div>
           <div class="article-modal-reply__subtitle">
             <span class="article-modal-reply__prefix">回覆</span>
             <div class="article-modal-reply__suffix">
-              @{{ article.tweet.User.account }}
+              @{{ article.User.account }}
             </div>
           </div>
         </div>
@@ -47,19 +43,10 @@
 import { fromNowMixin } from "@/utils/mixins";
 export default {
   props: {
-    currentUser: Object,
-    articles: Array,
+    article: Object,
   },
   data() {
-    return {
-      allarticles: [],
-    };
-  },
-
-  watch: {
-    articles(newValue) {
-      this.allarticles = newValue;
-    },
+    return {};
   },
   mixins: [fromNowMixin],
 };

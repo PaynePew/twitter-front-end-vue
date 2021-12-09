@@ -1,39 +1,27 @@
 <template>
-  <section
-    v-for="article in articles"
-    :key="article.id"
-    class="article-card-reply"
-  >
+  <section v-for="reply in replies" :key="reply.id" class="article-card-reply">
     <div class="article-card-reply__wrapper">
       <div class="article-card-reply__container">
         <div class="article-card-reply__side">
-          <img
-            class="article-card-reply__avatar"
-            :src="article.tweet.User.avatar"
-            alt=""
-          />
+          <img class="article-card-reply__avatar" :src="reply.avatar" alt="" />
         </div>
         <div class="article-card-reply__main">
           <div class="article-card-reply__header">
             <div class="article-card-reply__name">
-              {{ article.tweet.User.name }}
+              {{ reply.name }}
             </div>
-            <div class="article-card-reply__account">
-              @{{ article.tweet.User.account }}
-            </div>
+            <div class="article-card-reply__account">@{{ reply.account }}</div>
             <span>·</span>
             <div class="article-card-reply__time">
-              {{ fromNow(article.tweet.createdAt) }}
+              {{ fromNow(reply.Reply.createdAt) }}
             </div>
           </div>
           <div class="article-card-reply__subtitle">
             <span class="article-card-reply__prefix">回覆</span>
-            <div class="article-card-reply__suffix">
-              @{{ article.tweet.User.account }}
-            </div>
+            <div class="article-card-reply__suffix">@{{ owner.account }}</div>
           </div>
           <div class="article-card-reply__body">
-            {{ article.tweet.description }}
+            {{ reply.Reply.comment }}
           </div>
         </div>
       </div>
@@ -45,18 +33,18 @@
 import { fromNowMixin } from "@/utils/mixins";
 export default {
   props: {
-    currentUser: Object,
-    articles: Array,
+    allReplies: Array,
+    owner: Object,
   },
   data() {
     return {
-      allarticles: [],
+      replies: this.allReplies,
     };
   },
 
   watch: {
-    articles(newValue) {
-      this.allarticles = newValue;
+    allReplies(newValue) {
+      this.replies = newValue;
     },
   },
   mixins: [fromNowMixin],

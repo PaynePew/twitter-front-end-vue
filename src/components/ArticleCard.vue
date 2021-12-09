@@ -32,7 +32,13 @@
           </div>
           <div class="article-card__footer">
             <div class="article-card__response">
-              <div class="article-card__comment" @click.stop="TOGGLE_MODAL">
+              <div
+                class="article-card__comment"
+                @click.stop="
+                  TOGGLE_MODAL();
+                  LOAD_ARTICLE(article);
+                "
+              >
                 <img
                   class="article-card__icon"
                   src="@/assets/img/icon_reply@2x.png"
@@ -92,7 +98,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
+    ...mapMutations("modalArticle", ["TOGGLE_MODAL", "LOAD_ARTICLE"]),
     handlePageRoute(userId, articleId) {
       if (!articleId) {
         this.$router.push({

@@ -12,12 +12,19 @@
             />
           </div>
           <div class="modal__body">
-            <ArticleModalWithReply :articles="articles" />
+            <ArticleModalWithReply
+              v-if="articleReply.User"
+              :article="articleReply"
+            />
             <div class="modal__post">
               <div class="modal__side">
-                <img class="modal__avatar" :src="users[0].avatar" alt="" />
+                <img class="modal__avatar" :src="users.avatar" alt="" />
               </div>
-              <form class="article-create__form" action="">
+              <form
+                v-if="!articleReply.User"
+                class="article-create__form"
+                action=""
+              >
                 <div class="article-create__input-box">
                   <input
                     class="article-create__input"
@@ -26,10 +33,34 @@
                     rows="5"
                     cols="33"
                     maxlength="40"
+                    v-model="description"
                   />
                 </div>
                 <div class="article-create__footer">
-                  <button class="article-create__btn btn">推文</button>
+                  <button @click="postArticle" class="article-create__btn btn">
+                    推文
+                  </button>
+                </div>
+              </form>
+              <form v-else class="article-create__form" action="">
+                <div class="article-create__input-box">
+                  <input
+                    class="article-create__input"
+                    type="textarea"
+                    placeholder="推你的回覆"
+                    rows="5"
+                    cols="33"
+                    maxlength="40"
+                    v-model="description"
+                  />
+                </div>
+                <div class="article-create__footer">
+                  <button
+                    @click.prevent="postReply"
+                    class="article-create__btn btn"
+                  >
+                    回覆
+                  </button>
                 </div>
               </form>
             </div>
@@ -42,8 +73,8 @@
 
 <script>
 import ArticleModalWithReply from "@/components/ArticleModalWithReply.vue";
-// eslint-disable-next-line no-unused-vars
-import { articlesDummy } from "@/store/dummy/articlesDummy";
+import articlesAPI from "@/apis/articles";
+import { mapState } from "vuex";
 export default {
   props: {
     users: {
@@ -55,11 +86,42 @@ export default {
   },
   data() {
     return {
-      articles: [],
+      description: "",
+      isProcessing: false,
     };
   },
-  created() {
-    this.articles = Array(articlesDummy[0]);
+  created() {},
+  computed: {
+    ...mapState("modalArticle", ["articleReply", "isReply"]),
+  },
+  methods: {
+    async postArticle() {
+      try {
+        this.isProcessing = true;
+        const { data } = await articlesAPI.createArticle(this.description);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.description = "";
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async postReply() {
+      try {
+        this.isProcessing = true;
+        const { data } = await articlesAPI.reply.create(
+          this.description,
+          this.articleReply.id
+        );
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.description = "";
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>

@@ -45,8 +45,10 @@ export default {
     async handleSubmit() {
       try {
         this.isProcessing = true;
-        const response = await articlesAPI.createArticle(this.description);
-        console.log(response);
+        const { data } = await articlesAPI.createArticle(this.description);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
         this.description = "";
         this.$emit("after-submit");
       } catch (error) {
