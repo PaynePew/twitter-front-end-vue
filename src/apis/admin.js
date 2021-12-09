@@ -1,6 +1,6 @@
 import { apiHelper } from "../utils/helpers";
 
-export default {  
+export default {
   signIn({ account, password }) {
     console.log("admin login account: ", account, " password: ", password);
     return apiHelper.post("/admin/signin", {
@@ -13,7 +13,7 @@ export default {
       console.log("admin getAll article");
       return apiHelper.get("admin/tweets");
     },
-    delete({tweetId}) {
+    delete({ tweetId }) {
       console.log("admin delete article");
       return apiHelper.delete(`admin/tweets/${tweetId}`);
     },
