@@ -1,46 +1,4 @@
 <template>
-  <div
-    :class="[
-      isNotice && notice.type === 'success'
-        ? ['form__notice-box', 'form__notice-box--show']
-        : 'form__notice-box',
-    ]"
-  >
-    <div class="form__notice-message">{{ notice.message }}</div>
-    <div class="form__notice-bg form__notice-bg--success">
-      <img
-        class="form__notice-icon"
-        src="./../assets/img/icon_success@2x.png"
-        alt=""
-      />
-    </div>
-  </div>
-
-  <div
-    :class="[
-      isNotice && notice.type === 'error'
-        ? ['form__notice-box', 'form__notice-box--show']
-        : 'form__notice-box',
-    ]"
-  >
-    <div class="form__notice-message">{{ notice.message }}</div>
-    <div class="form__notice-bg form__notice-bg--error">
-      <img
-        class="form__notice-icon"
-        src="./../assets/img/icon_error@2x.png"
-        alt=""
-      />
-    </div>
-  </div>
-
-  <!-- <button 
-    type="button" 
-    class="btn btn-primary" 
-    id="liveAlertBtn"
-    @click="toggleNotice({type: 'error', message: 'something wrong'})"
-  >
-    Notice Test
-  </button> -->
   <form @submit.stop.prevent="handleSubmit">
     <div class="account-form__input-box form__input-box">
       <label class="form__label" for="account">帳號</label>
@@ -189,11 +147,6 @@ export default {
       isProcessing: false,
       adminToggled: false,
       focus: null,
-      isNotice: false,
-      notice: {
-        type: "",
-        message: "",
-      },
     };
   },
 
@@ -256,7 +209,6 @@ export default {
 
         if (this.$route.name === "Signup") {
           //若router為signup為註冊
-          console.log("sign up new account");
           const { data } = await authorizationAPI.signUp({
             id: this.initialUser.id,
             name: this.name,
@@ -275,7 +227,6 @@ export default {
           });
         } else {
           //若router不為signup為更新資料
-          console.log("updating user account");
           const { data } = await usersAPI.account.update({
             id: this.initialUser.id,
             name: this.name,
@@ -289,30 +240,20 @@ export default {
             throw new Error(data.message);
           }
 
-          this.toggleNotice({type: "success", message: "成功編輯帳號資料"})
-          this.password = "";
-          this.checkPassword = "";
+          this.$store.commit("noticeInfo/toggleNotice", {
+            type: "success",
+            message: "成功編輯帳號資料",
+          });
+          
+          this.$router.push({name: "UserInfo", params:{userId: this.initialUser.id}})
         }
       } catch (error) {
-        this.toggleNotice({ type: "error", message: error.message });
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "error",
+          message: error.message,
+        });
+        this.isProcessing = false;
       }
-    },
-
-    toggleNotice({ type, message }) {
-      clearTimeout(this.timeoutId);
-      console.log("before", this.timeoutId);
-      this.isNotice = true;
-      this.notice.message = message;
-      this.notice.type = type;
-
-      this.timeoutId = setTimeout(() => {
-        this.isNotice = false;
-      }, 4000);
-
-      // setTimeout(() => {
-      //   this.notice.type = "";
-      //   this.notice.message = "";
-      // }, 6000);
     },
   },
 };
