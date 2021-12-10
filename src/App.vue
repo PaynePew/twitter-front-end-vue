@@ -4,7 +4,7 @@
       class="header"
       :class="[
         { 'header--width': noSideBar.includes($route.name) },
-        { 'header--login': signURL.includes($route.name)},
+        { 'header--login': signURL.includes($route.name) },
       ]"
     >
       <router-view class="nav" name="nav" @after-click="TOGGLE_MODAL" />
@@ -14,8 +14,10 @@
       <section
         class="content"
         :class="[
-          { 'content--admin': isAdmin },
-          { 'content--login': signURL.includes($route.name)},
+          {
+            'content--fit-content': isAdmin || $route.name === 'PublicMessage',
+          },
+          { 'content--login': signURL.includes($route.name) },
           { 'content--setting': $route.name === 'SettingAccount' },
         ]"
       >
@@ -50,11 +52,7 @@ export default {
         "AdminArticles",
         "SettingAccount",
       ],
-      signURL: [
-        "Login",
-        "Signup",
-        "AdminLogin",
-      ]
+      signURL: ["Login", "Signup", "AdminLogin"],
     };
   },
   created() {},
@@ -109,7 +107,7 @@ export default {
   flex-direction: column;
   width: 600px;
   border: 1px solid $clr-border;
-  &--admin {
+  &--fit-content {
     width: fit-content;
     width: none;
   }
@@ -118,9 +116,6 @@ export default {
   }
   &--setting {
     flex: 1;
-    border: none;
-  }
-  &--login {
     border: none;
   }
 }
