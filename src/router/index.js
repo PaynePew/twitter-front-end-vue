@@ -55,6 +55,14 @@ const routes = [
     components: { default: Home, nav: NavBar, side: PopularList },
   },
   {
+    path: "/message/public",
+    name: "PublicMessage",
+    components: {
+      default: () => import("../views/PublicMessage.vue"),
+      nav: NavBar,
+    },
+  },
+  {
     path: "/:userId",
     name: "UserInfo",
     components: {
