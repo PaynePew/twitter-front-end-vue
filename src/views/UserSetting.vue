@@ -40,10 +40,11 @@ export default {
       try {
         const { data } = await usersAPI.getCurrentUser();
 
-        const { account, name, email } = data.user;
+        const { id, account, name, email } = data.user;
 
         this.currentUser = {
           ...this.currentUser,
+          id,
           account,
           name,
           email,
