@@ -10,7 +10,7 @@ export default {
       account: "",
       email: "",
       name: "",
-      image: "",
+      avatar: "",
       cover: "",
       role: "",
       introduction: "",
@@ -49,7 +49,7 @@ export default {
           throw new Error(data.message);
         }
 
-        const { id, account, name, email, image, cover, role, introduction } =
+        const { id, account, name, email, avatar, cover, role, introduction } =
           data.user;
 
         commit("setCurrentUser", {
@@ -57,7 +57,7 @@ export default {
           account,
           name,
           email,
-          image,
+          avatar,
           cover,
           role,
           introduction,
