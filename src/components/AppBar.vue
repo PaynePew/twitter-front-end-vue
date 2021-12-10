@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import usersAPI from "@/apis/users.js";
 
 export default {
   props: {
@@ -33,23 +32,20 @@ export default {
       Boolean,
       default: false,
     },
+    tweetNum: {
+      Number,
+    }
   },
-  data() {
-    return {
-      tweetNum: "",
-    };
-  },
+    // mounted() {
+  //   this.fetchTweetsNum(this.$route.params.userId);
+  // },
 
-  mounted() {
-    this.fetchTweetsNum(this.$route.params.userId);
-  },
-
-  methods: {
-    async fetchTweetsNum(id) {
-      const { data } = await usersAPI.tweet.getTweets(id);
-      this.tweetNum = data.length;
-    },
-  },
+  // methods: {
+  //   async fetchTweetsNum(id) {
+  //     const { data } = await usersAPI.tweet.getTweets(id);
+  //     this.tweetNum = data.length;
+  //   },
+  // },
 };
 </script>
 

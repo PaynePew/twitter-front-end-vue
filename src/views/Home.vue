@@ -1,5 +1,5 @@
 <template>
-  <AppBar :currentUser="currentUser" :status="'首頁'" />
+  <AppBar :status="'首頁'" />
   <ArticleNew :current-user="currentUser" @after-submit="fetchArticles" />
   <Spinner v-if="isLoading" />
   <ArticleCard v-else :init-articles="articles" />

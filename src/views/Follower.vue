@@ -1,5 +1,5 @@
 <template>
-  <AppBar :status="currentUser.name" :stepper="true" />
+  <AppBar :status="currentUser.name" :stepper="true" :tweetNum="tweetNum" />
   <ConnectTable />
   <UserCard v-for="user in users" :key="user.id" :initialUser="user" />
 </template>
@@ -20,6 +20,7 @@ export default {
   data() {
     return {
       users: [],
+      tweetNum: "",
     };
   },
   computed: {
@@ -29,6 +30,7 @@ export default {
   },
   mounted() {
     this.fetchFollowers(this.$route.params.userId);
+    this.fetchTweetsNum(this.$route.params.userId);
   },
   methods: {
     async fetchFollowers(userId) {
@@ -37,6 +39,14 @@ export default {
         this.users = data;
       } catch (error) {
         console.log(error);
+      }
+    },
+    async fetchTweetsNum(id) {
+      try{
+        const { data } = await usersAPI.tweet.getTweets(id);
+        this.tweetNum = data.length;
+      } catch(error) {
+        console.log(error)
       }
     },
   },
