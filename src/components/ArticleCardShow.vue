@@ -2,7 +2,10 @@
   <section class="article-show">
     <div class="article-show__wrapper">
       <div class="article-show__container">
-        <div class="article-show__header">
+        <div
+          class="article-show__header"
+          @click.stop="handlePageRoute(article.User.id)"
+        >
           <img class="article-show__avatar" :src="article.User.avatar" alt="" />
           <div class="article-show__title">
             <div class="article-show__name">
@@ -35,7 +38,13 @@
             </div>
           </div>
           <div class="article-show__action-box">
-            <div class="article-show__reply" @click.stop="TOGGLE_MODAL">
+            <div
+              class="article-show__reply"
+              @click.stop="
+                TOGGLE_MODAL();
+                LOAD_ARTICLE(article);
+              "
+            >
               <img
                 class="article-show__icon"
                 src="@/assets/img/icon_reply@2x.png"
@@ -44,8 +53,17 @@
             </div>
             <div class="article-show__like">
               <img
+                v-if="!article.isLiked"
+                @click.stop="postLike(article.id)"
                 class="article-show__icon"
                 src="@/assets/img/icon_like@2x.png"
+                alt=""
+              />
+              <img
+                v-else
+                @click.stop="deleteLike(article.id)"
+                class="article-show__icon"
+                src="@/assets/img/icon_like_active@2x.png"
                 alt=""
               />
             </div>
@@ -59,6 +77,7 @@
 <script>
 import { fromNowMixin } from "@/utils/mixins";
 import { mapMutations } from "vuex";
+import articlesAPI from "@/apis/articles";
 export default {
   props: {
     currentArticle: { Object },
@@ -69,12 +88,37 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["TOGGLE_MODAL"]),
-    handlePageRoute(account, id) {
+    ...mapMutations("modalArticle", ["TOGGLE_MODAL", "LOAD_ARTICLE"]),
+    handlePageRoute(userId) {
       this.$router.push({
-        name: "ArticleShow",
-        params: { account, articleId: id },
+        name: "UserInfo",
+        params: { userId },
       });
+    },
+    toggleIsLike() {
+      this.article.isLiked = !this.article.isLiked;
+    },
+    async postLike(articleId) {
+      try {
+        this.toggleIsLike();
+        const { data } = await articlesAPI.like.create(articleId);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteLike(articleId) {
+      try {
+        this.toggleIsLike();
+        const { data } = await articlesAPI.like.delete(articleId);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   watch: {
