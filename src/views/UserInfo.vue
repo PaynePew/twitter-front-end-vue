@@ -7,7 +7,7 @@
     :init-isSelf="isSelf"
     @after-follow="handleRelation"
   />
-  <ModalUserEdit v-if="isShow" />
+  <ModalUserEdit v-if="isShow" :init-user-info="userInfo" />
 
   <UserInfoTab />
   <Spinner v-if="isTabLoading" />

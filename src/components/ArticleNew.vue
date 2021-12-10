@@ -6,9 +6,8 @@
       </div>
       <div class="article-create__body">
         <form class="article-create__form" action="">
-          <input
+          <textarea
             class="article-create__input"
-            type="textarea"
             placeholder="有甚麼新鮮事?"
             name="description"
             v-model="description"

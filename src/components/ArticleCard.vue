@@ -147,7 +147,6 @@ export default {
         console.log(error);
       }
     },
-    async getLikes() {},
   },
   mixins: [fromNowMixin],
 };

@@ -1,19 +1,29 @@
 <template>
-  <section v-for="reply in replies" :key="reply.id" class="article-card-reply">
+  <section
+    v-for="(reply, index) in replies"
+    :key="index"
+    class="article-card-reply"
+  >
     <div class="article-card-reply__wrapper">
       <div class="article-card-reply__container">
         <div class="article-card-reply__side">
-          <img class="article-card-reply__avatar" :src="reply.avatar" alt="" />
+          <img
+            class="article-card-reply__avatar"
+            :src="reply.User.avatar"
+            alt=""
+          />
         </div>
         <div class="article-card-reply__main">
           <div class="article-card-reply__header">
             <div class="article-card-reply__name">
-              {{ reply.name }}
+              {{ reply.User.name }}
             </div>
-            <div class="article-card-reply__account">@{{ reply.account }}</div>
+            <div class="article-card-reply__account">
+              @{{ reply.User.account }}
+            </div>
             <span>·</span>
             <div class="article-card-reply__time">
-              {{ fromNow(reply.Reply.createdAt) }}
+              {{ fromNow(reply.createdAt) }}
             </div>
           </div>
           <div class="article-card-reply__subtitle">
@@ -21,7 +31,7 @@
             <div class="article-card-reply__suffix">@{{ owner.account }}</div>
           </div>
           <div class="article-card-reply__body">
-            {{ reply.Reply.comment }}
+            {{ reply.comment }}
           </div>
         </div>
       </div>

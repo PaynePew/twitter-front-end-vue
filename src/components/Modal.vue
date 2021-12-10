@@ -37,7 +37,10 @@
                   />
                 </div>
                 <div class="article-create__footer">
-                  <button @click="postArticle" class="article-create__btn btn">
+                  <button
+                    @click.stop.prevent="postArticle"
+                    class="article-create__btn btn"
+                  >
                     推文
                   </button>
                 </div>
@@ -74,7 +77,7 @@
 <script>
 import ArticleModalWithReply from "@/components/ArticleModalWithReply.vue";
 import articlesAPI from "@/apis/articles";
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 export default {
   props: {
     users: {
@@ -93,6 +96,7 @@ export default {
   created() {},
   computed: {
     ...mapState("modalArticle", ["articleReply", "isReply"]),
+    ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
   },
   methods: {
     async postArticle() {
@@ -103,6 +107,7 @@ export default {
           throw new Error(data.message);
         }
         this.description = "";
+        this.TOGGLE_MODAL();
       } catch (error) {
         console.log(error);
       }
@@ -110,14 +115,15 @@ export default {
     async postReply() {
       try {
         this.isProcessing = true;
-        const { data } = await articlesAPI.reply.create(
-          this.description,
-          this.articleReply.id
-        );
+        const { data } = await articlesAPI.reply.create({
+          comment: this.description,
+          tweetId: this.articleReply.id,
+        });
         if (data.status !== "success") {
           throw new Error(data.message);
         }
         this.description = "";
+        this.TOGGLE_MODAL();
       } catch (error) {
         console.log(error);
       }

@@ -12,42 +12,88 @@
             />
             <div class="modal__appBar">
               <span>編輯個人資料</span>
-              <button class="btn btn--primary">儲存</button>
+              <button @click.stop="handleSubmit" class="btn btn--primary">
+                儲存
+              </button>
             </div>
           </div>
-          <div class="modal__body">
-            <section class="userinfo-card">
-              <div class="userinfo-card__wrapper">
-                <div class="userinfo-card__container">
-                  <div class="userinfo-card__cover-box">
+          <section class="userinfo-card">
+            <div class="userinfo-card__wrapper">
+              <div class="userinfo-card__container">
+                <div class="userinfo-card__cover-box">
+                  <img
+                    :src="userInfo.coverTemp"
+                    alt=""
+                    class="userinfo-card__cover"
+                  />
+                  <div class="userinfo-card__cover-utils">
+                    <label for="cover-input">
+                      <img
+                        class="userinfo-card__cover-upload"
+                        src="@/assets/img/icon_upload@2x.png"
+                        alt=""
+                      />
+                    </label>
                     <img
-                      :src="currentUser.cover"
-                      alt=""
-                      class="userinfo-card__cover"
+                      @click.stop="handleDeleteCover"
+                      class="userinfo-card__cover-delete"
+                      src="@/assets/img/icon_delete@2x.png"
+                    />
+                    <input
+                      id="cover-input"
+                      type="file"
+                      name="cover"
+                      accept="image/*"
+                      class="form-control-file"
+                      @change="handleCoverChange"
                     />
                   </div>
-                  <div class="userinfo-card__main">
-                    <div class="userinfo-card__header">
-                      <div class="userinfo-card__avatar-box">
-                        <img
-                          :src="currentUser.avatar"
-                          alt=""
-                          class="userinfo-card__avatar"
+                </div>
+                <div class="userinfo-card__main">
+                  <div class="userinfo-card__header">
+                    <div class="userinfo-card__avatar-box">
+                      <img
+                        v-if="userInfo.avatarTemp"
+                        :src="userInfo.avatarTemp"
+                        alt=""
+                        class="userinfo-card__avatar"
+                      />
+                      <div class="userinfo-card__image-upload">
+                        <label for="avatar-input">
+                          <img
+                            class="userinfo-card__avatar-upload"
+                            src="@/assets/img/icon_upload@2x.png"
+                            alt=""
+                          />
+                        </label>
+                        <input
+                          id="avatar-input"
+                          type="file"
+                          name="avatar"
+                          accept="image/*"
+                          class="form-control-file"
+                          @change="handleAvatarChange"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </section>
+            </div>
+          </section>
+          <div class="modal__body">
             <section class="modal__edit-wrapper">
-              <form class="modal__form form">
+              <form
+                @submit.stop.prevent="handleSubmit"
+                class="modal__form form"
+                enctype="multipart/form-data"
+              >
                 <div class="form__input-box">
                   <label class="form__label" for="name">名稱</label>
                   <div class="form__input-container">
                     <input
                       id="name"
-                      v-model="name"
+                      v-model="userInfo.name"
                       name="name"
                       type="text"
                       class="form__input"
@@ -66,16 +112,16 @@
                   </div>
                 </div>
                 <div class="form__input-box form__input-box--textarea">
-                  <label class="form__label" for="name">自我介紹</label>
+                  <label class="form__label" for="introduction">自我介紹</label>
                   <div class="form__input-container">
                     <input
-                      id="name"
-                      v-model="name"
-                      name="name"
-                      type="textarea"
+                      id="introduction"
+                      v-model="userInfo.introduction"
+                      name="introduction"
+                      type="text"
                       class="form__input form__input--textarea"
                       required
-                      @focus="focus = 'name'"
+                      @focus="focus = 'introduction'"
                       @blur="focus = null"
                     />
                   </div>
@@ -98,20 +144,80 @@
 </template>
 
 <script>
-import { articlesDummy } from "@/store/dummy/articlesDummy";
 import { mapMutations } from "vuex";
+import usersAPI from "@/apis/users";
 export default {
-  components: {},
+  props: {
+    initUserInfo: Object,
+  },
   data() {
     return {
-      currentUser: [],
+      userInfo: {
+        name: "",
+        introduction: "",
+        cover: "",
+        avatar: "",
+        coverTemp: "",
+        avatarTemp: "",
+      },
     };
   },
   created() {
-    this.currentUser = articlesDummy[0].tweet.User;
+    this.loadUserInfo();
   },
   methods: {
     ...mapMutations("modalUserInfo", ["TOGGLE_MODAL"]),
+    async handleSubmit() {
+      try {
+        const formData = new FormData();
+        formData.append("avatar", this.userInfo.avatar[0]);
+        formData.append("cover", this.userInfo.cover[0]);
+        formData.append("name", this.userInfo.name);
+        formData.append("introduction", this.userInfo.introduction);
+        for (let [name, value] of formData.entries()) {
+          console.log(name + ":" + value);
+        }
+        const { data } = await usersAPI.info.update({ formData });
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    loadUserInfo() {
+      const { name, introduction, avatar, cover } = this.initUserInfo;
+      this.userInfo = {
+        name,
+        introduction,
+        avatar,
+        cover,
+        coverTemp: cover,
+        avatarTemp: avatar,
+      };
+    },
+    handleCoverChange(e) {
+      const files = e.target.files;
+      if (files.length === 0) {
+        this.userInfo.cover = "";
+      } else {
+        const imageURL = window.URL.createObjectURL(files[0]);
+        this.userInfo.cover = files;
+        this.userInfo.coverTemp = imageURL;
+      }
+    },
+    handleAvatarChange(e) {
+      const files = e.target.files;
+      console.log(files);
+      if (files.length === 0) {
+        this.userInfo.avatar = "";
+      } else {
+        const imageURL = window.URL.createObjectURL(files[0]);
+        this.userInfo.avatar = files;
+        this.userInfo.avatarTemp = imageURL;
+      }
+    },
+    handleDeleteCover() {
+      this.userInfo.cover = "https://i.imgur.com/l8uvSR5.jpeg";
+    },
   },
 };
 </script>
@@ -196,6 +302,9 @@ export default {
   }
   &__avatar-box {
     position: relative;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
     margin-top: -75px;
   }
   &__avatar {
@@ -203,6 +312,42 @@ export default {
     width: 120px;
     height: 120px;
     border: 4px solid $clr-fourth;
+  }
+  &__cover-box {
+    position: relative;
+    height: 200px;
+    width: 100%;
+  }
+  &__cover-utils {
+    position: absolute;
+    z-index: 999;
+    top: 45%;
+    left: 45%;
+    > input {
+      display: none;
+    }
+  }
+  &__cover-upload {
+    width: 20px;
+    height: 20px;
+    margin-right: 36.5px;
+  }
+  &__cover-delete {
+    width: 20px;
+    height: 20px;
+  }
+  &__avatar-upload {
+    width: 20px;
+    height: 20px;
+  }
+  &__image-upload {
+    position: absolute;
+    z-index: 990;
+    left: 45%;
+    top: 45%;
+    > input {
+      display: none;
+    }
   }
 }
 .btn {

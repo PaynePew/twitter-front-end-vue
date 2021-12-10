@@ -12,9 +12,9 @@ export default {
   },
   reply: {
     get(tweetId) {
-      return apiHelper.get(`/tweets/${tweetId}`);
+      return apiHelper.get(`/tweets/${tweetId}/replies`);
     },
-    create(comment, tweetId) {
+    create({ comment, tweetId }) {
       return apiHelper.post(`/tweets/${tweetId}/replies`, { comment });
     },
   },
