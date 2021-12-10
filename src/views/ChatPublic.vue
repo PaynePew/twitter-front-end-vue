@@ -1,17 +1,17 @@
 <template>
   <div class="public-message__container">
-    <OnlineList />
+    <ChatUserList />
     <Chatroom />
   </div>
 </template>
 
 <script>
-import OnlineList from "./../components/OnlineList.vue";
-import Chatroom from "./../components/Chatroom.vue";
+import ChatUserList from "../components/ChatUserList.vue";
+import Chatroom from "../components/Chatroom.vue";
 
 export default {
   components: {
-    OnlineList,
+    ChatUserList,
     Chatroom,
   },
 };

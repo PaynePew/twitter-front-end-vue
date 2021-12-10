@@ -56,9 +56,9 @@ const routes = [
   },
   {
     path: "/message/public",
-    name: "PublicMessage",
+    name: "ChatPublic",
     components: {
-      default: () => import("../views/PublicMessage.vue"),
+      default: () => import("../views/ChatPublic.vue"),
       nav: NavBar,
     },
   },
