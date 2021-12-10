@@ -1,5 +1,5 @@
 <template>
-  <AppBar :status="userInfo.name" :stepper="true" />
+  <AppBar :status="userInfo.name" :stepper="true" :tweetNum="tweetNum" />
   <Spinner v-if="isLoading" />
   <UserInfoCard
     v-else
@@ -56,11 +56,13 @@ export default {
       owner: [],
       isLoading: true,
       isTabLoading: true,
+      tweetNum: "",
     };
   },
   created() {
     const { userId } = this.$route.params;
     this.getUser(userId);
+    
   },
   computed: {
     ...mapState({
@@ -90,6 +92,7 @@ export default {
       try {
         const { data } = await usersAPI.tweet.getTweets(userId);
         this.articles = data;
+        this.tweetNum = data.length;
         this.articles = this.articles.map((_articles) => {
           return { ..._articles, User: { ...this.userInfo } };
         });

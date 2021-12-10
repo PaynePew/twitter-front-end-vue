@@ -12,7 +12,13 @@
             />
             <div class="modal__appBar">
               <span>編輯個人資料</span>
-              <button @click.stop="handleSubmit" class="btn btn--primary">
+              <button
+                @click.stop="
+                  handleSubmit();
+                  TOGGLE_MODAL();
+                "
+                class="btn btn--primary"
+              >
                 儲存
               </button>
             </div>

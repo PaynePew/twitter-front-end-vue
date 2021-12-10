@@ -54,6 +54,7 @@
 
 <script>
 import authorizationAPI from "./../apis/authorization";
+import adminAPI from "./../apis/admin";
 
 export default {
   name: "LoginForm",
@@ -100,7 +101,7 @@ export default {
 
         if (this.isRouterAdmin) {
           //若isRouterAdmin則為後台登入
-          const response = await authorizationAPI.signIn({
+          const response = await adminAPI.signIn({
             account: this.account,
             password: this.password,
           });

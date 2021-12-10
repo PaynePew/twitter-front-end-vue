@@ -2,7 +2,10 @@
   <div class="container">
     <section
       class="header"
-      :class="[{ 'header--width': noSideBar.includes($route.name) }]"
+      :class="[
+        { 'header--width': noSideBar.includes($route.name) },
+        { 'header--login': signURL.includes($route.name)},
+      ]"
     >
       <router-view class="nav" name="nav" @after-click="TOGGLE_MODAL" />
       <Notice />
@@ -12,7 +15,7 @@
         class="content"
         :class="[
           { 'content--admin': isAdmin },
-          { 'content--login': $route.name === 'Login' },
+          { 'content--login': signURL.includes($route.name)},
           { 'content--setting': $route.name === 'SettingAccount' },
         ]"
       >
@@ -47,6 +50,11 @@ export default {
         "AdminArticles",
         "SettingAccount",
       ],
+      signURL: [
+        "Login",
+        "Signup",
+        "AdminLogin",
+      ]
     };
   },
   created() {},
@@ -88,6 +96,9 @@ export default {
   &--width {
     padding-right: 40px;
   }
+  &--login {
+    border-right: none;
+  }
 }
 .main {
   display: flex;
@@ -97,8 +108,9 @@ export default {
   display: flex;
   flex-direction: column;
   width: 600px;
-  border-right: 1px solid $clr-border;
+  border: 1px solid $clr-border;
   &--admin {
+    width: fit-content;
     width: none;
   }
   &--login {
@@ -106,6 +118,9 @@ export default {
   }
   &--setting {
     flex: 1;
+    border: none;
+  }
+  &--login {
     border: none;
   }
 }
