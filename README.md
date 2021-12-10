@@ -2,6 +2,11 @@
 
 ## Project setup
 ```
+git clone https://github.com/PaynePew/twitter-front-end-vue.git
+```
+
+## Project setup
+```
 npm install
 ```
 
