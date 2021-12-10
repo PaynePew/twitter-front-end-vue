@@ -161,6 +161,9 @@ export default {
     display: flex;
     flex-direction: column;
   }
+  &__cover-box {
+    height: 200px;
+  }
   &__cover {
     width: 100%;
     height: 100%;

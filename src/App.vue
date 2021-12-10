@@ -29,7 +29,6 @@
 <script>
 import Modal from "./components/Modal.vue";
 import Notice from "./components/Notice.vue";
-import { usersDummy } from "@/store/dummy/usersDummy";
 import { mapMutations, mapState } from "vuex";
 
 export default {
@@ -50,14 +49,9 @@ export default {
       ],
     };
   },
-  created() {
-    this.fetchUsers();
-  },
+  created() {},
   methods: {
     ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
-    fetchUsers() {
-      this.users = usersDummy;
-    },
   },
   computed: {
     isAdmin() {
@@ -106,6 +100,7 @@ export default {
   border-right: 1px solid $clr-border;
   &--admin {
     width: fit-content;
+    width: none;
   }
   &--login {
     border: none;

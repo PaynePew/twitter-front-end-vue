@@ -17,10 +17,10 @@ export default {
   },
   info: {
     get() {
-      return apiHelper.get("/user/edit/");
+      return apiHelper.get("/user/edit");
     },
-    update(formData) {
-      return apiHelper.put("/user/edit/", formData);
+    update({ formData }) {
+      return apiHelper.put("/users", formData);
     },
   },
   follower: {

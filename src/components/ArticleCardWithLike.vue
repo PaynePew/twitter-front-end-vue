@@ -57,14 +57,14 @@
               <div class="article-card__like">
                 <img
                   v-if="!article.isLiked"
-                  @click.stop="postLike(article.id)"
+                  @click.stop="postLike(article.TweetId)"
                   class="article-card__icon"
                   src="@/assets/img/icon_like@2x.png"
                   alt=""
                 />
                 <img
                   v-else
-                  @click.stop="deleteLike(article.id)"
+                  @click.stop="deleteLike(article.TweetId)"
                   class="article-card__icon"
                   src="@/assets/img/icon_like_active@2x.png"
                   alt=""
@@ -122,7 +122,7 @@ export default {
     },
     toggleIsLike(articleId) {
       this.articles.map((_article) => {
-        if (_article.id === articleId) {
+        if (_article.TweetId === articleId) {
           _article.isLiked
             ? (_article.likedCount -= 1)
             : (_article.likedCount += 1);
@@ -133,6 +133,7 @@ export default {
     },
     async postLike(articleId) {
       try {
+        console.log(articleId);
         this.toggleIsLike(articleId);
         const { data } = await articlesAPI.like.create(articleId);
         if (data.status !== "success") {
