@@ -26,17 +26,19 @@
                 action=""
               >
                 <div class="article-create__input-box">
-                  <input
+                  <textarea
                     class="article-create__input"
-                    type="textarea"
                     placeholder="有甚麼新鮮事?"
-                    rows="5"
-                    cols="33"
-                    maxlength="40"
+                    rows="3"
+                    cols="50"
+                    maxlength="140"
                     v-model="description"
                   />
                 </div>
                 <div class="article-create__footer">
+                  <p class="article-create__warn" v-if="!description">
+                    內容不可空白
+                  </p>
                   <button
                     @click.stop.prevent="postArticle"
                     class="article-create__btn btn"
@@ -58,6 +60,9 @@
                   />
                 </div>
                 <div class="article-create__footer">
+                  <p class="article-create__warn" v-if="!description">
+                    內容不可空白
+                  </p>
                   <button
                     @click.prevent="postReply"
                     class="article-create__btn btn"
@@ -202,6 +207,11 @@ export default {
     border-style: none;
     width: 100%;
     margin-top: 12px;
+    border: none;
+    resize: none;
+    &::-webkit-scrollbar {
+      background: transparent;
+    }
     &:focus {
       outline: none;
     }
@@ -211,6 +221,12 @@ export default {
     margin-bottom: 10px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+  }
+  &__warn {
+    color: $clr-form-error;
+    padding-right: 20px;
+    margin: 0;
   }
   &__btn {
     width: 66px;

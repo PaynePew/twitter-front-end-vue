@@ -10,9 +10,13 @@
             class="article-create__input"
             placeholder="有甚麼新鮮事?"
             name="description"
+            rows="3"
+            cols="50"
+            maxlength="140"
             v-model="description"
           />
           <div class="article-create__footer">
+            <p class="article-create__warn" v-if="!description">內容不可空白</p>
             <button
               type="button"
               :disabled="isProcessing"
@@ -90,6 +94,11 @@ export default {
     height: 100%;
     margin-top: 20px;
     border-style: none;
+    border: none;
+    resize: none;
+    &::-webkit-scrollbar {
+      background: transparent;
+    }
     &:focus {
       outline: none;
     }
@@ -99,9 +108,15 @@ export default {
     margin-bottom: 10px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
   }
   &__btn {
     width: 66px;
+  }
+  &__warn {
+    color: $clr-form-error;
+    padding-right: 20px;
+    margin: 0;
   }
 }
 </style>
