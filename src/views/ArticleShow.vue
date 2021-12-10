@@ -40,6 +40,7 @@ export default {
         this.isLoading = true;
         const { data } = await articlesAPI.getArticleShow(articleId);
         this.currentArticle = data;
+        this.owner = data.User;
         await this.getArticleReply(articleId);
         this.isLoading = false;
       } catch (error) {
@@ -50,9 +51,8 @@ export default {
     async getArticleReply(articleId) {
       try {
         const { data } = await articlesAPI.reply.get(articleId);
-        console.log(data);
-        this.allReplies = data.RepliedUsers;
-        this.owner = data.User;
+        console.log("AR", data);
+        this.allReplies = data;
       } catch (error) {
         console.log(error);
       }
