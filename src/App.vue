@@ -105,7 +105,7 @@ export default {
   width: 600px;
   border-right: 1px solid $clr-border;
   &--admin {
-    max-width: none;
+    width: fit-content;
   }
   &--login {
     border: none;
