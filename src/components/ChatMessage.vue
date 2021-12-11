@@ -49,21 +49,15 @@ import { mapState } from "vuex";
 import { fromNowMixin } from "@/utils/mixins";
 
 export default {
-  props: {
-    messageList: Array,
-  },
+
   emits: ["scroll"],
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
+      messageList: (state) => state.chat.messageList,
     }),
   },
-  watch: {
-    messageList(newValue) {
-      console.log("ChatMessage messageList update:", newValue);
-      this.$emit("scroll");
-    },
-  },
+
   mixins: [fromNowMixin],
 };
 </script>
