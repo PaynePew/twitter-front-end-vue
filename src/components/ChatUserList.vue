@@ -22,8 +22,11 @@ export default {
 
 <style lang="scss" scoped>
 .user-list {
-  width: 390px;
+  position: relative;
+  width: 390px;  
   &__header {
+    display: absolute;
+    top: 0;
     padding: 15px;
     border-bottom: 1px solid $clr-border;
   }
@@ -31,6 +34,13 @@ export default {
     margin: 0;
     font-size: 18px;
     font-weight: 700;
+  }
+  &__body {
+    overflow-y: scroll;
+    height: calc(100vh - 55px);
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 </style>

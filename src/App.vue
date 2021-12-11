@@ -15,7 +15,7 @@
         class="content"
         :class="[
           {
-            'content--fit-content': isAdmin || $route.name === 'PublicMessage',
+            'content--fit-content': isAdmin || $route.name === 'ChatPublic',
           },
           { 'content--login': signURL.includes($route.name) },
           { 'content--setting': $route.name === 'SettingAccount' },
@@ -106,7 +106,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 600px;
-  border: 1px solid $clr-border;
+  border-right: 1px solid $clr-border;
   &--fit-content {
     width: fit-content;
     width: none;
