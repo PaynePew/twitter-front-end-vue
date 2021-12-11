@@ -23,7 +23,7 @@ export default {
 <style lang="scss" scoped>
 .user-list {
   position: relative;
-  width: 390px;  
+  width: 390px;
   &__header {
     display: absolute;
     top: 0;

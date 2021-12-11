@@ -15,7 +15,7 @@
         class="content"
         :class="[
           {
-            'content--fit-content': isAdmin || $route.name === 'ChatPublic',
+            'content--fit-content': isWide,
           },
           { 'content--login': signURL.includes($route.name) },
           { 'content--setting': $route.name === 'SettingAccount' },
@@ -53,6 +53,7 @@ export default {
         "SettingAccount",
       ],
       signURL: ["Login", "Signup", "AdminLogin"],
+      chatURL: ["ChatPublic", "ChatPrivate"],
     };
   },
   created() {},
@@ -60,14 +61,20 @@ export default {
     ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
   },
   computed: {
-    isAdmin() {
+    isWide() {
       const currentURL = this.$route.name;
-      const contentWithoutMax = ["AdminUsers", "AdminArticles"];
+      const contentWithoutMax = [
+        "AdminUsers",
+        "AdminArticles",
+        "ChatPublic",
+        "ChatPrivate",
+      ];
       if (contentWithoutMax.includes(currentURL)) {
         return true;
       }
       return false;
     },
+
     ...mapState({
       isShow: (state) => state.modalArticle.isShow,
       currentUser: (state) => state.authentication.currentUser,
