@@ -5,7 +5,8 @@
         <p class="user-list__title">線上使用者 (5)</p>
       </div>
       <div class="user-list__body">
-        <ChatUserCard />
+        <ChatUserCard v-if="$route.name == 'ChatPublic'" />
+        <ChatUserCardPrivate v-if="$route.name == 'ChatPrivate'" />
       </div>
     </div>
   </section>
@@ -13,9 +14,17 @@
 
 <script>
 import ChatUserCard from "@/components/ChatUserCard.vue";
+import ChatUserCardPrivate from "@/components/ChatUserCardPrivate.vue";
+
 export default {
   components: {
     ChatUserCard,
+    ChatUserCardPrivate,
+  },
+  data() {
+    return {
+      currentURL: this.$route.name,
+    };
   },
 };
 </script>
