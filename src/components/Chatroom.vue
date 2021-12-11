@@ -43,6 +43,9 @@ export default {
     });
     this.onChatLoading();
     this.onChatStatus();
+    window.onbeforeunload = () => {
+      this.socket.emit("publicLogout", "hello");
+    };
   },
   mounted() {
     this.scrollToggle();
@@ -56,7 +59,7 @@ export default {
     emitLogin() {
       const { id } = this.currentUser;
       console.log(id);
-      this.socket.emit("public", id);
+      this.socket.emit("publicLogin", id);
       console.log("登入訊息發送", id);
     },
     onChatLoading() {
@@ -66,7 +69,7 @@ export default {
       });
     },
     onChatStatus() {
-      this.socket.on("Login", (data) => {
+      this.socket.on("publicEnter", (data) => {
         console.log("登入訊息接收", data);
         const { name, content } = data;
         const login = {
@@ -90,22 +93,12 @@ export default {
         await this.messageList.push(newMessage);
         this.scrollToggle();
       });
-      this.socket.on("Logout", (data) => {
+      this.socket.on("publicLeave", (data) => {
         console.log("登出訊息發送");
         console.log(data);
       });
     },
     async chatSubmit(content) {
-      // await this.messageList.push({
-      //   id: this.messageList.length,
-      //   type: "message",
-      //   user: "Orange",
-      //   userId: this.currentUser.id,
-      //   avatar:
-      //     "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
-      //   content: content,
-      //   creatAt: this.now(),
-      // });
       const { id } = this.currentUser;
       await this.socket.emit("sendMessage", { content, id });
       this.content = "";
