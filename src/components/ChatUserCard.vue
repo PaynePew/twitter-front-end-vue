@@ -42,12 +42,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* @import "@/assets/scss/components/_button.scss"; */
-
 .relation {
   &__wrapper {
     display: flex;
-    border-top: 1px solid $clr-border;
+    border-bottom: 1px solid $clr-border;
     padding: 10px 15px;
   }
   &__header {
