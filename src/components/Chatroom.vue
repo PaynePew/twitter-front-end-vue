@@ -23,14 +23,17 @@ import { fromNowMixin } from "@/utils/mixins";
 import { mapState } from "vuex";
 import io from "socket.io-client";
 
+
 export default {
   el: "#app",
   components: {
     ChatMessage,
   },
+  props: {
+    initialMessageList: Array,
+  },
   data() {
     return {
-      messageList: [],
       content: "",
       socket: -1,
     };
@@ -50,12 +53,14 @@ export default {
   mounted() {
     this.scrollToggle();
   },
+
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
     }),
   },
   methods: {
+
     emitLogin() {
       const { id } = this.currentUser;
       console.log(id);
@@ -101,9 +106,23 @@ export default {
     async chatSubmit(content) {
       const { id } = this.currentUser;
       await this.socket.emit("sendMessage", { content, id });
+      
+      await this.$store.commit("chat/addNewMessage", {
+        id: this.$store.state.chat.messageList.length,
+        type: "message",
+        user: "Orange",
+        userId: this.currentUser.id,
+        avatar:
+          "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
+        content: content,
+        creatAt: this.now(),
+      });
+
+
       this.content = "";
       this.scrollToggle();
     },
+
     scrollToggle() {
       let container = this.$refs.temp;
       container.scrollIntoView({ behavior: "smooth" });

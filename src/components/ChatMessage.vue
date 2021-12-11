@@ -48,17 +48,14 @@ export default {
   props: {
     messageList: Array,
   },
+
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
+      messageList: (state) => state.chat.messageList,
     }),
   },
-  // watch: {
-  //   messageList(newValue) {
-  //     console.log("ChatMessage messageList update:", newValue);
-  //     this.$emit("scroll");
-  //   },
-  // },
+
   mixins: [fromNowMixin],
 };
 </script>

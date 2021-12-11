@@ -63,6 +63,14 @@ const routes = [
     },
   },
   {
+    path: "/message/private",
+    name: "ChatPrivate",
+    components: {
+      default: () => import("../views/ChatPrivate.vue"),
+      nav: NavBar,
+    },
+  },
+  {
     path: "/:userId",
     name: "UserInfo",
     components: {
