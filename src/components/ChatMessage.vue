@@ -6,38 +6,34 @@
   >
     <div v-if="message.type === 'notice'" class="chat-message__notice-box">
       <div class="chat-message__notice">
-        {{ message.user }} {{ message.content === "online" ? "上線" : "下線" }}
+        {{ message.name }}
+        {{ message.content }}
       </div>
     </div>
     <div
-      v-if="message.type === 'message' && message.userId !== currentUser.id"
+      v-if="!message.type && message.User.id !== currentUser.id"
       class="chat-message__message-box"
     >
       <div class="chat-message__side">
-        <img class="chat-message__avatar" :src="message.avatar" />
+        <img class="chat-message__avatar" :src="message.User.avatar" />
       </div>
       <div class="chat-message__main">
         <div class="chat-message__content chat-message__content--other">
           {{ message.content }}
         </div>
-        <div class="chat-message__time">{{ chatTime(message.creatAt) }}</div>
+        <div class="chat-message__time">{{ chatTime(message.createdAt) }}</div>
       </div>
     </div>
     <div
-      v-if="message.type === 'message' && message.userId === currentUser.id"
+      v-if="!message.type && message.User.id === currentUser.id"
       class="chat-message__message-box chat-message__message-box--self"
     >
-      <div class="chat-message__side">
-        <img
-          class="chat-message__avatar chat-message__avatar--self"
-          :src="message.avatar"
-        />
-      </div>
+      <div class="chat-message__side"></div>
       <div class="chat-message__main chat-message__main--self">
         <div class="chat-message__content chat-message__content--self">
           {{ message.content }}
         </div>
-        <div class="chat-message__time">{{ chatTime(message.creatAt) }}</div>
+        <div class="chat-message__time">{{ chatTime(message.createdAt) }}</div>
       </div>
     </div>
   </div>
@@ -49,8 +45,10 @@ import { mapState } from "vuex";
 import { fromNowMixin } from "@/utils/mixins";
 
 export default {
+  props: {
+    messageList: Array,
+  },
 
-  emits: ["scroll"],
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,

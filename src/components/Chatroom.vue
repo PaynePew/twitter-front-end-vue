@@ -4,7 +4,7 @@
       <p class="chatroom__title">公開聊天室</p>
     </div>
     <div class="chatroom__body">
-      <ChatMessage @scroll="scrollToggle" />
+      <ChatMessage :messageList="messageList" />
       <div class="chatroom__temp" ref="temp"></div>
     </div>
     <div class="chatroom__footer">
@@ -21,6 +21,8 @@
 import ChatMessage from "../components/ChatMessage.vue";
 import { fromNowMixin } from "@/utils/mixins";
 import { mapState } from "vuex";
+import io from "socket.io-client";
+
 
 export default {
   el: "#app",
@@ -33,6 +35,19 @@ export default {
   data() {
     return {
       content: "",
+      socket: -1,
+    };
+  },
+  created() {
+    this.socket = io("http://localhost:3000");
+    this.socket.on("connect", () => {
+      console.log("進入聊天室");
+      this.emitLogin();
+    });
+    this.onChatLoading();
+    this.onChatStatus();
+    window.onbeforeunload = () => {
+      this.socket.emit("publicLogout", "hello");
     };
   },
   mounted() {
@@ -45,7 +60,53 @@ export default {
     }),
   },
   methods: {
+
+    emitLogin() {
+      const { id } = this.currentUser;
+      console.log(id);
+      this.socket.emit("publicLogin", id);
+      console.log("登入訊息發送", id);
+    },
+    onChatLoading() {
+      this.socket.on("allMessage", (data) => {
+        console.log("歷史訊息載入", data);
+        this.messageList = data;
+      });
+    },
+    onChatStatus() {
+      this.socket.on("publicEnter", (data) => {
+        console.log("登入訊息接收", data);
+        const { name, content } = data;
+        const login = {
+          name,
+          id: Math.random() * 10000,
+          content,
+          type: "notice",
+        };
+        this.messageList.push(login);
+      });
+      this.socket.on("newMessage", async (data) => {
+        console.log("新的聊天訊息接收", data);
+        const { name, avatar } = data[1];
+        const { content, createdAt, id, UserId } = data[0];
+        const newMessage = {
+          User: { id: UserId, name, avatar },
+          content,
+          id,
+          createdAt,
+        };
+        await this.messageList.push(newMessage);
+        this.scrollToggle();
+      });
+      this.socket.on("publicLeave", (data) => {
+        console.log("登出訊息發送");
+        console.log(data);
+      });
+    },
     async chatSubmit(content) {
+      const { id } = this.currentUser;
+      await this.socket.emit("sendMessage", { content, id });
+      
       await this.$store.commit("chat/addNewMessage", {
         id: this.$store.state.chat.messageList.length,
         type: "message",
@@ -57,9 +118,9 @@ export default {
         creatAt: this.now(),
       });
 
+
       this.content = "";
-      let container = this.$refs.temp;
-      container.scrollIntoView({ behavior: "smooth" });
+      this.scrollToggle();
     },
 
     scrollToggle() {
