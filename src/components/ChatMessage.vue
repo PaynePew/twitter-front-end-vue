@@ -41,6 +41,7 @@
       </div>
     </div>
   </div>
+  <div class="chat-message__bottom-index"></div>
 </template>
 
 <script>
@@ -51,15 +52,15 @@ export default {
   props: {
     messageList: Array,
   },
-  eimts: ["scroll"],
+  emits: ["scroll"],
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
     }),
   },
   watch: {
-    messageList() {
-      console.log("ChatMessage messageList update");
+    messageList(newValue) {
+      console.log("ChatMessage messageList update:", newValue);
       this.$emit("scroll")
     }
   },

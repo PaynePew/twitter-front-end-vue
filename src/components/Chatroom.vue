@@ -4,20 +4,23 @@
       <p class="chatroom__title">公開聊天室</p>
     </div>
     <div class="chatroom__body">
-      <ChatMessage :messageList="messageList" @scroll="scrollToggle"/>
+      <ChatMessage :messageList="messageList" @scroll="scrollToggle" />
+      <div class="chatroom__temp" ref="temp"></div>
     </div>
     <div class="chatroom__footer">
-      <input class="chatroom__input" type="text" v-model="content"/>
-      <img src="@/assets/img/icon_send@2x.png" class="chatroom__icon" @click="chatSubmit(content)"/>
+      <input class="chatroom__input" type="text" v-model="content" />
+      <img
+        src="@/assets/img/icon_send@2x.png"
+        class="chatroom__icon"
+        @click="chatSubmit(content)"
+      />
     </div>
   </div>
 </template>
-
 <script>
 import ChatMessage from "../components/ChatMessage.vue";
 import { fromNowMixin } from "@/utils/mixins";
 import { mapState } from "vuex";
-
 const dummyData = [
   {
     id: 1,
@@ -113,9 +116,8 @@ const dummyData = [
     creatAt: "2021-12-01T10:47:28.000Z",
   },
 ];
-
 export default {
-  el: '#app',
+  el: "#app",
   components: {
     ChatMessage,
   },
@@ -127,6 +129,7 @@ export default {
   },
   mounted() {
     this.messageList = dummyData;
+    this.scrollToggle();
   },
   computed: {
     ...mapState({
@@ -134,8 +137,8 @@ export default {
     }),
   },
   methods: {
-    chatSubmit(content) {
-      this.messageList.push({
+    async chatSubmit(content) {
+      await this.messageList.push({
         id: this.messageList.length,
         type: "message",
         user: "Orange",
@@ -146,12 +149,15 @@ export default {
         creatAt: this.now(),
       });
       this.content = "";
+      let container = this.$refs.temp;
+      container.scrollIntoView({ behavior: "smooth" });
     },
     scrollToggle() {
-      console.log("Chatroom got scroll");
-      let container = this.$el.querySelector(".chatroom__body");
-      container.scrollTop = container.scrollHeight;
-    }
+      let container = this.$refs.temp;
+      container.scrollIntoView({ behavior: "smooth" });
+      // let container = this.$el.querySelector(".chatroom__body");
+      // container.scrollTop = container.scrollHeight;
+    },
   },
   mixins: [fromNowMixin],
 };
