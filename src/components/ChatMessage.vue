@@ -61,8 +61,8 @@ export default {
   watch: {
     messageList(newValue) {
       console.log("ChatMessage messageList update:", newValue);
-      this.$emit("scroll")
-    }
+      this.$emit("scroll");
+    },
   },
   mixins: [fromNowMixin],
 };
@@ -118,7 +118,7 @@ export default {
     background-color: #e6ecf0;
     width: fit-content;
     max-width: 80%;
-    word-wrap:break-word;
+    word-wrap: break-word;
     &--other {
       border-radius: 25px 25px 25px 0;
     }
