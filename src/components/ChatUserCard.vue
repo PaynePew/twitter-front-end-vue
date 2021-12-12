@@ -1,5 +1,5 @@
 <template>
-  <section v-for="user in onlineUsers" :key="user.id" class="relation">
+  <section v-for="user in users" :key="user.id" class="relation">
     <div class="relation__wrapper">
       <div class="relation__header">
         <div class="relation__avatar">
@@ -18,8 +18,8 @@
 
 <script>
 export default {
-  props:{
-    onlineUsers:Array,
+  props: {
+    users: Array,
   },
 };
 </script>

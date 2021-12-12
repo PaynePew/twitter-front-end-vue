@@ -19,6 +19,10 @@
           $emit('chat-submit', content);
           content = '';
         "
+        @keyup.enter="
+          $emit('chat-submit', content);
+          content = '';
+        "
       />
     </div>
   </div>

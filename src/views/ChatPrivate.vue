@@ -126,7 +126,8 @@ export default {
   created() {
     // eslint-disable-next-line no-unused-vars
     const { id } = this.currentUser;
-    this.socket = io("http://localhost:3000");
+    this.socket = io("https://twitter-chatroom-test.herokuapp.com");
+    // this.socket = io("http://localhost:3000/");
     this.socket.on("connect", () => {
       console.log("進入聊天室");
     });
