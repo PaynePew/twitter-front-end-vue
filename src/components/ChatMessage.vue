@@ -11,11 +11,11 @@
       </div>
     </div>
     <div
-      v-if="!message.type && message.User.id !== currentUser.id"
+      v-if="!message.type && message.userId !== currentUser.id"
       class="chat-message__message-box"
     >
       <div class="chat-message__side">
-        <img class="chat-message__avatar" :src="message.User.avatar" />
+        <img class="chat-message__avatar" :src="message.avatar" />
       </div>
       <div class="chat-message__main">
         <div class="chat-message__content chat-message__content--other">
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div
-      v-if="!message.type && message.User.id === currentUser.id"
+      v-if="!message.type && message.userId === currentUser.id"
       class="chat-message__message-box chat-message__message-box--self"
     >
       <div class="chat-message__side"></div>
@@ -45,10 +45,6 @@ import { mapState } from "vuex";
 import { fromNowMixin } from "@/utils/mixins";
 
 export default {
-  props: {
-    messageList: Array,
-  },
-
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,

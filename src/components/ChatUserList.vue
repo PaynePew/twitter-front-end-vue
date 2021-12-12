@@ -2,11 +2,17 @@
   <section class="user-list">
     <div class="user-list__container">
       <div class="user-list__header">
-        <p class="user-list__title">線上使用者 (5)</p>
+        <p v-if="$route.name == 'ChatPublic'" class="user-list__title">
+          線上使用者 {{ users.length }}
+        </p>
+        <p v-else class="user-list__title">私人訊息</p>
       </div>
       <div class="user-list__body">
-        <ChatUserCard v-if="$route.name == 'ChatPublic'" />
-        <ChatUserCardPrivate v-if="$route.name == 'ChatPrivate'" />
+        <ChatUserCard v-if="$route.name == 'ChatPublic'" :users="users" />
+        <ChatUserCardPrivate
+          v-if="$route.name == 'ChatPrivate'"
+          :users="users"
+        />
       </div>
     </div>
   </section>
@@ -20,6 +26,9 @@ export default {
   components: {
     ChatUserCard,
     ChatUserCardPrivate,
+  },
+  props: {
+    users: Array,
   },
   data() {
     return {

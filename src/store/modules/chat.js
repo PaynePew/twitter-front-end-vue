@@ -1,10 +1,29 @@
-import { selectChat, removeSelect, setMessageList, addNewMessage } from "../mutation-types";
+import {
+  selectChat,
+  removeSelect,
+  setMessageList,
+  addNewMessage,
+} from "../mutation-types";
 
 export default {
   namespaced: true,
   state: {
     activeChat: -1,
     messageList: [],
+    privateMessageList: {},
+    // {
+    //   {
+    //     id1:{
+    //       message.....
+    //     }
+    //     id2:{message....}
+    //   },
+    //   roomId:[id1,id2,id3,id4],
+
+    // }
+
+    // content: "",
+    //privateMessageList.userId
   },
   mutations: {
     [selectChat]: (state, selectId) => {
@@ -20,9 +39,16 @@ export default {
     },
 
     [addNewMessage]: (state, message) => {
+      console.log("addMessage", message);
       state.messageList.push(message);
-    }
+    },
+    // [updateContent]: (state, value) => {
+    //   state.content = value;
+    // },
   },
   actions: {},
-  getters: {},
+  getters: {
+    
+
+  },
 };

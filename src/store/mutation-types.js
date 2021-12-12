@@ -7,3 +7,4 @@ export const selectChat = "selectChat";
 export const removeSelect = "removeSelect";
 export const setMessageList = "setMessageList";
 export const addNewMessage = "addNewMessage";
+export const updateContent = "updateContent";

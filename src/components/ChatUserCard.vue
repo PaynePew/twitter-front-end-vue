@@ -1,5 +1,5 @@
 <template>
-  <section v-for="user in chatUsers" :key="user.id" class="relation">
+  <section v-for="user in onlineUsers" :key="user.id" class="relation">
     <div class="relation__wrapper">
       <div class="relation__header">
         <div class="relation__avatar">
@@ -17,26 +17,9 @@
 </template>
 
 <script>
-import { articlesDummy } from "@/store/dummy/articlesDummy";
-
 export default {
-  data() {
-    return {
-      chatUsers: [],
-    };
-  },
-  created() {
-    this.getChatUser();
-  },
-  methods: {
-    async getChatUser() {
-      try {
-        const response = await articlesDummy;
-        this.chatUsers = response.map((_dummy) => _dummy.tweet.User);
-      } catch (error) {
-        console.log(error);
-      }
-    },
+  props:{
+    onlineUsers:Array,
   },
 };
 </script>

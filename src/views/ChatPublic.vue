@@ -1,110 +1,16 @@
 <template>
   <div class="public-message__container">
-    <ChatUserList />
-    <Chatroom />
+    <ChatUserList :users="onlineUsers" />
+    <Chatroom @chat-submit="chatSubmit" ref="chatroomRef" />
   </div>
 </template>
 
 <script>
-const dummyData = [
-  {
-    id: 1,
-    type: "notice",
-    user: "Apple",
-    userId: 3,
-    avatar: "https://robohash.org/utetenim.png?size=50x50&set=set1",
-    content: "online",
-    creatAt: "2021-11-02T22:54:49.000Z",
-  },
-  {
-    id: 2,
-    type: "notice",
-    user: "Banana",
-    userId: 4,
-    avatar: "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
-    content: "online",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 3,
-    type: "notice",
-    user: "Mango",
-    userId: 5,
-    avatar: "https://robohash.org/sedvitaeeveniet.png?size=50x50&set=set1",
-    content: "online",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 4,
-    type: "message",
-    user: "Peach",
-    userId: 6,
-    avatar: "https://robohash.org/rerumautemnesciunt.png?size=50x50&set=set1",
-    content: "good morning",
-    creatAt: "2021-12-01T10:47:29.000Z",
-  },
-  {
-    id: 5,
-    type: "message",
-    user: "Papaya",
-    userId: 7,
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    content: "not good",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 6,
-    type: "notice",
-    user: "Pineapple",
-    userId: 8,
-    avatar: "https://robohash.org/nemolaboriosamin.png?size=50x50&set=set1",
-    content: "offline",
-    creatAt: "2021-12-01T10:47:29.000Z",
-  },
-  {
-    id: 7,
-    type: "message",
-    user: "CurrentUser",
-    userId: 21,
-    avatar: "https://robohash.org/nemolaboriosamin.png?size=50x50&set=set1",
-    content: "賣造",
-    creatAt: "2021-12-01T11:47:29.000Z",
-  },
-  {
-    id: 5,
-    type: "message",
-    user: "Papaya",
-    userId: 7,
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    content:
-      "666666666666666666666666666666666666666666666666666666666666666666666",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 5,
-    type: "message",
-    user: "Papaya",
-    userId: 7,
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    content:
-      "666666666666666666666666666666666666666666666666666666666666666666666",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 5,
-    type: "message",
-    user: "Papaya",
-    userId: 7,
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    content:
-      "666666666666666666666666666666666666666666666666666666666666666666666",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-];
-
 import ChatUserList from "../components/ChatUserList.vue";
 import Chatroom from "../components/Chatroom.vue";
+import { fromNowMixin } from "@/utils/mixins";
 import { mapState } from "vuex";
+
 import io from "socket.io-client";
 
 export default {
@@ -115,82 +21,130 @@ export default {
 
   data() {
     return {
-      messageList: [],
       content: "",
       socket: -1,
+      onlineUsers: [],
       selectedId: this.$store.state.activeChat,
     };
   },
   created() {
+    const { id } = this.currentUser;
     this.socket = io("http://localhost:3000");
     this.socket.on("connect", () => {
       console.log("進入聊天室");
-      this.emitLogin();
     });
+    this.onLogin();
+    this.onLogout();
     this.onChatLoading();
     this.onChatStatus();
-    
-        this.fetchMessage();
-    this.$store.commit("chat/removeSelect");
+    this.emitLogin();
+    window.onbeforeunload = () => {
+      this.socket.emit("publicLeave", id);
+    };
+    // this.$store.commit("chat/removeSelect");
   },
 
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
+      messageList: (state) => state.chat.messageList,
     }),
   },
   methods: {
-      fetchMessage() {
-      this.$store.commit("chat/setMessageList", dummyData);
+    async fetchMessage(data) {
+      await this.$store.commit("chat/setMessageList", data);
+    },
+    async addMessage(message) {
+      await this.$store.commit("chat/addNewMessage", message);
     },
     emitLogin() {
       const { id } = this.currentUser;
       console.log(id);
-      this.socket.emit("publicLogin", id);
+      this.socket.emit("publicEnter", id);
       console.log("登入訊息發送", id);
     },
-    onChatLoading() {
-      this.socket.on("allMessage", (data) => {
-        console.log("歷史訊息載入", data);
-        this.messageList = data;
-      });
-    },
-    onChatStatus() {
-      this.socket.on("publicEnter", (data) => {
-        console.log("登入訊息接收", data);
-        const { name, content } = data;
+    onLogin() {
+      this.socket.on("publicLogin", async (user, onlineUsers) => {
+        console.log("登入訊息接收", user, onlineUsers);
+        const { name, content } = user;
         const login = {
           name,
           id: Math.random() * 10000,
           content,
           type: "notice",
         };
-        this.messageList.push(login);
+        await this.addMessage(login);
+        this.onlineUsers = onlineUsers;
+        this.$refs.chatroomRef.scrollToggle();
       });
+    },
+    onLogout() {
+      this.socket.on("publicLogout", (user, onlineUsers) => {
+        console.log("登出訊息接收", user, onlineUsers);
+        this.onlineUsers = onlineUsers;
+      });
+    },
+    onChatLoading() {
+      this.socket.on("allMessage", (data) => {
+        console.log("歷史訊息載入", data);
+        const history = data.map((_data) => {
+          const { name, avatar, id: userId } = _data.User;
+          const { content, createdAt, id } = _data;
+          const unwrappedMessage = {
+            userId,
+            name,
+            avatar,
+            content,
+            id,
+            createdAt,
+          };
+          return unwrappedMessage;
+        });
+        this.fetchMessage(history);
+      });
+    },
+    onChatStatus() {
       this.socket.on("newMessage", async (data) => {
         console.log("新的聊天訊息接收", data);
         const { name, avatar } = data[1];
-        const { content, createdAt, id, UserId } = data[0];
+        const { content, createdAt, id, UserId: userId } = data[0];
         const newMessage = {
-          User: { id: UserId, name, avatar },
+          userId,
+          name,
+          avatar,
           content,
           id,
           createdAt,
         };
-        await this.messageList.push(newMessage);
-      });
-      this.socket.on("publicLeave", (data) => {
-        console.log("登出訊息發送");
-        console.log(data);
+        console.log("準備寫入新訊息");
+        await this.addMessage(newMessage);
+        this.$refs.chatroomRef.scrollToggle();
       });
     },
     async chatSubmit(content) {
       const { id } = this.currentUser;
       await this.socket.emit("sendMessage", { content, id });
-      this.content = "";
-    },
-  },
 
+      // const newMessage = {
+      //   id: this.$store.state.chat.messageList.length,
+      //   type: "message",
+      //   user: this.currentUser.name,
+      //   userId: this.currentUser.id,
+      //   avatar: this.currentUser.avatar,
+      //   content: content,
+      //   creatAt: this.now(),
+      // };
+
+      // this.addMessage(newMessage);
+      this.content = "";
+      // this.$refs.chatroomRef.scrollToggle();
+    },
+    // scrollToggle() {
+    //   console.log("scrollToggle")
+    //   this.$refs.temp.scrollIntoView({ behavior: "smooth" });
+    // },
+  },
+  mixins: [fromNowMixin],
 };
 </script>
 
