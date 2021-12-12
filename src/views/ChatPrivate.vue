@@ -1,7 +1,7 @@
 <template>
   <div class="private-message__container">
-    <ChatUserList />
-    <Chatroom />
+    <ChatUserList :users="users" />
+    <Chatroom @chat-submit="chatSubmit" ref="chatroomRef" />
   </div>
 </template>
 
@@ -104,28 +104,65 @@ const dummyData = [
 
 import ChatUserList from "../components/ChatUserList.vue";
 import Chatroom from "../components/Chatroom.vue";
+import { mapState } from "vuex";
+
+import io from "socket.io-client";
 
 export default {
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     ChatUserList,
     Chatroom,
   },
-
   data() {
     return {
-      selectedId: this.$store.state.activeChat,
+      content: "",
+      socket: -1,
+      users: [],
+      selectedId: this.$store.state.chat.activeChat,
     };
+  },
+
+  created() {
+    // eslint-disable-next-line no-unused-vars
+    const { id } = this.currentUser;
+    this.socket = io("http://localhost:3000");
+    this.socket.on("connect", () => {
+      console.log("進入聊天室");
+    });
+    this.onLogin();
+    this.emitLogin(id, this.selectedId);
+  },
+  computed: {
+    ...mapState({
+      currentUser: (state) => state.authentication.currentUser,
+      messageList: (state) => state.chat.messageList,
+      activeChat: (state) => state.chat.activeChat,
+    }),
   },
 
   methods: {
     fetchMessage() {
       this.$store.commit("chat/setMessageList", dummyData);
     },
-  },
-
-  created() {
-    this.fetchMessage();
-    this.$store.commit("chat/removeSelect");
+    emitLogin(UserId, UserId2) {
+      this.socket.emit("privateEnter", [UserId, UserId2]);
+      console.log("房間登入訊息發送", [UserId, UserId2]);
+    },
+    onLogin() {
+      this.socket.on("join_privateroom", (results) => {
+        console.log("房間登入訊息接收", results);
+        // const { name, content } = results;
+        // const login = {
+        //   name,
+        //   id: Math.random() * 10000,
+        //   content,
+        //   type: "notice",
+        // };
+        // this.addMessage(login);
+        // this.onlineUsers = onlineUsers;
+      });
+    },
   },
 };
 </script>

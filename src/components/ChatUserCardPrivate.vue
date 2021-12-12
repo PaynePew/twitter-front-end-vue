@@ -31,6 +31,9 @@
 import { articlesDummy } from "@/store/dummy/articlesDummy";
 
 export default {
+  props: {
+    users: Array,
+  },
   data() {
     return {
       chatUsers: [],

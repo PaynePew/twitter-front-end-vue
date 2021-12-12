@@ -17,11 +17,14 @@
             <div class="userinfo-card__setting">
               <!-- 此處需增加currentUser判定 -->
               <div v-if="!isSelf" class="userinfo-card__utils">
-                <img
-                  class="userinfo-card__btn"
-                  src="@/assets/img/btn_messege@2x.png"
-                  alt=""
-                />
+                <router-link :to="{ name: 'ChatPrivate' }">
+                  <img
+                    class="userinfo-card__btn"
+                    src="@/assets/img/btn_messege@2x.png"
+                    alt=""
+                    @click="selectChat(userInfo.id)"
+                  />
+                </router-link>
                 <img
                   v-if="!isNoti"
                   @click.stop="handleNoti"
@@ -125,6 +128,7 @@ export default {
   },
   methods: {
     ...mapMutations("modalUserInfo", ["TOGGLE_MODAL"]),
+    ...mapMutations("chat", ["selectChat"]),
     async addFollowShips(id) {
       try {
         const { data } = await usersAPI.follower.addFollowShips(id);
