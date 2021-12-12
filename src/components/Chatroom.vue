@@ -11,15 +11,15 @@
       <div class="chatroom__temp" ref="temp"></div>
     </div>
     <div class="chatroom__footer">
-      <input class="chatroom__input" type="text" v-model="content" />
+      <input 
+        class="chatroom__input" 
+        type="text" v-model="content" 
+        @keyup.enter=" $emit('chat-submit', content); content = '';"
+      />
       <img
         src="@/assets/img/icon_send@2x.png"
         class="chatroom__icon"
         @click="
-          $emit('chat-submit', content);
-          content = '';
-        "
-        @keyup.enter="
           $emit('chat-submit', content);
           content = '';
         "
