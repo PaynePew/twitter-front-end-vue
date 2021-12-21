@@ -28,9 +28,9 @@ export default {
     };
   },
   created() {
-    const { id } = this.currentUser;
-    this.socket = io("https://twitter-chatroom-test.herokuapp.com");
-    // this.socket = io("http://localhost:3000/");
+    // const { id } = this.currentUser;
+    // this.socket = io("https://twitter-chatroom-test.herokuapp.com");
+    this.socket = io("http://localhost:3000/");
     this.socket.on("connect", () => {
       console.log("進入聊天室");
     });
@@ -39,10 +39,14 @@ export default {
     this.onChatLoading();
     this.onChatStatus();
     this.emitLogin();
-    window.onbeforeunload = () => {
-      this.socket.emit("publicLeave", id);
-    };
-    // this.$store.commit("chat/removeSelect");
+  //   window.onbeforeunload = () => {
+  //     this.socket.emit("publicLeave", id);
+  // }
+  },
+  beforeUnmount() {
+    const { id } = this.currentUser;
+    this.socket.emit("publicLeave", id);
+    this.socket.disconnect();
   },
 
   computed: {
@@ -58,12 +62,14 @@ export default {
     async addMessage(message) {
       await this.$store.commit("chat/addNewMessage", message);
     },
+    
     emitLogin() {
       const { id } = this.currentUser;
       console.log(id);
       this.socket.emit("publicEnter", id);
       console.log("登入訊息發送", id);
     },
+
     onLogin() {
       this.socket.on("publicLogin", async (user, onlineUsers) => {
         console.log("登入訊息接收", user, onlineUsers);
@@ -79,12 +85,23 @@ export default {
         this.$refs.chatroomRef.scrollToggle();
       });
     },
+
     onLogout() {
-      this.socket.on("publicLogout", (user, onlineUsers) => {
+      this.socket.on("publicLogout", async (user, onlineUsers) => {
         console.log("登出訊息接收", user, onlineUsers);
+        const { name, content } = user;
+        const logout = {
+          name,
+          id: Math.random() * 10000,
+          content,
+          type: "notice",
+        };
+        await this.addMessage(logout);
         this.onlineUsers = onlineUsers;
+        this.$refs.chatroomRef.scrollToggle();
       });
     },
+
     onChatLoading() {
       this.socket.on("allMessage", (data) => {
         console.log("歷史訊息載入", data);
@@ -104,6 +121,7 @@ export default {
         this.fetchMessage(history);
       });
     },
+
     onChatStatus() {
       this.socket.on("newMessage", async (data) => {
         console.log("新的聊天訊息接收", data);
@@ -122,28 +140,12 @@ export default {
         this.$refs.chatroomRef.scrollToggle();
       });
     },
+    
     async chatSubmit(content) {
       const { id } = this.currentUser;
       await this.socket.emit("sendMessage", { content, id });
-
-      // const newMessage = {
-      //   id: this.$store.state.chat.messageList.length,
-      //   type: "message",
-      //   user: this.currentUser.name,
-      //   userId: this.currentUser.id,
-      //   avatar: this.currentUser.avatar,
-      //   content: content,
-      //   creatAt: this.now(),
-      // };
-
-      // this.addMessage(newMessage);
       this.content = "";
-      // this.$refs.chatroomRef.scrollToggle();
     },
-    // scrollToggle() {
-    //   console.log("scrollToggle")
-    //   this.$refs.temp.scrollIntoView({ behavior: "smooth" });
-    // },
   },
   mixins: [fromNowMixin],
 };
