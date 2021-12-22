@@ -27,6 +27,12 @@ export default {
       selectedId: this.$store.state.activeChat,
     };
   },
+  sockets: {
+    conncet: function () {
+      console.log("socket connected");
+    },
+  },
+
   created() {
     // const { id } = this.currentUser;
     // this.socket = io("https://twitter-chatroom-test.herokuapp.com");
@@ -39,9 +45,9 @@ export default {
     this.onChatLoading();
     this.onChatStatus();
     this.emitLogin();
-  //   window.onbeforeunload = () => {
-  //     this.socket.emit("publicLeave", id);
-  // }
+    //   window.onbeforeunload = () => {
+    //     this.socket.emit("publicLeave", id);
+    // }
   },
   beforeUnmount() {
     const { id } = this.currentUser;
@@ -62,7 +68,7 @@ export default {
     async addMessage(message) {
       await this.$store.commit("chat/addNewMessage", message);
     },
-    
+
     emitLogin() {
       const { id } = this.currentUser;
       console.log(id);
@@ -140,7 +146,7 @@ export default {
         this.$refs.chatroomRef.scrollToggle();
       });
     },
-    
+
     async chatSubmit(content) {
       const { id } = this.currentUser;
       await this.socket.emit("sendMessage", { content, id });

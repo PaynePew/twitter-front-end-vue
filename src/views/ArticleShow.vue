@@ -51,7 +51,6 @@ export default {
     async getArticleReply(articleId) {
       try {
         const { data } = await articlesAPI.reply.get(articleId);
-        console.log("AR", data);
         this.allReplies = data;
       } catch (error) {
         console.log(error);

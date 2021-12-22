@@ -39,7 +39,6 @@ export default {
     },
 
     [addNewMessage]: (state, message) => {
-      console.log("addMessage", message);
       state.messageList.push(message);
     },
     // [updateContent]: (state, value) => {

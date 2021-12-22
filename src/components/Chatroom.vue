@@ -54,7 +54,6 @@ export default {
   },
   methods: {
     scrollToggle() {
-      console.log("scrollToggle");
       let container = this.$refs.temp;
       container.scrollIntoView({ behavior: "smooth" });
     },

@@ -12,7 +12,6 @@ export default {
   },
   mutations: {
     [toggleNotice]: (state, notice) => {
-      console.log("mutations toggleNotice: ", notice);
       clearTimeout(state.setTimeoutObject);
       state.isNotice = true;
       state.notice = {
