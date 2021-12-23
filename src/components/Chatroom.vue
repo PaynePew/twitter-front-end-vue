@@ -11,10 +11,14 @@
       <div class="chatroom__temp" ref="temp"></div>
     </div>
     <div class="chatroom__footer">
-      <input 
-        class="chatroom__input" 
-        type="text" v-model="content" 
-        @keyup.enter="$emit('chat-submit', content); content = ''"
+      <input
+        class="chatroom__input"
+        type="text"
+        v-model="content"
+        @keyup.enter="
+          $emit('chat-submit', content);
+          content = '';
+        "
       />
       <img
         src="@/assets/img/icon_send@2x.png"
@@ -105,7 +109,7 @@ export default {
     padding: 0 12px;
     border: none;
     outline: none;
-    text-align: end;
+    text-align: start;
   }
   &__icon {
     width: 24px;
