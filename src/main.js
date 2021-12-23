@@ -5,9 +5,11 @@ import store from "./store";
 import VueSocketIO from "vue-3-socket.io";
 import SocketIO from "socket.io-client";
 
+const baseURL = process.env.VUE_APP_SOCKET_URL;
+
 const socket = new VueSocketIO({
   debug: true,
-  connection: SocketIO("https://twitter-chatroom-test.herokuapp.com", {
+  connection: SocketIO(baseURL, {
     autoConnect: false,
     transports: ["websocket"],
   }),
