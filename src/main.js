@@ -2,12 +2,15 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import VueSocketIO from 'vue-3-socket.io'
-import SocketIO from 'socket.io-client'
+import VueSocketIO from "vue-3-socket.io";
+import SocketIO from "socket.io-client";
 
 const socket = new VueSocketIO({
   debug: true,
-  connection: SocketIO("http://localhost:3000/"),
+  connection: SocketIO("http://localhost:3000", {
+    autoConnect: false,
+    transports: ["websocket"],
+  }),
   vuex: {
     store,
     actionPrefix: "SOCKET_",

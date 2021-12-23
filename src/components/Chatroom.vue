@@ -33,16 +33,11 @@ import { fromNowMixin } from "@/utils/mixins";
 import { mapState } from "vuex";
 
 export default {
-  el: "#app",
   components: {
     ChatMessage,
   },
-  props: {
-    initialMessageList: Array,
-  },
   data() {
     return {
-      socket: -1,
       content: "",
     };
   },
