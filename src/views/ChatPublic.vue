@@ -17,31 +17,22 @@ export default {
     ChatUserList,
     Chatroom,
   },
-
   data() {
     return {
       onlineUsers: [],
-      // selectedId: this.$store.state.activeChat,
     };
   },
-    computed: {
+  computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
     }),
   },
   sockets: {
     connect() {
-      console.log(this.$socket.id);
-      console.log("```````````````");
-      const engine = this.$socket;
-      console.log(engine);
+      console.log("進入聊天室");
     },
     disconnect() {
-      console.log("disconnect");
-      console.log("```````````````");
-      // const { id } = this.currentUser;
-      // this.$socket.emit("publicLeave", id);
-      // this.$socket.disconnect();
+      console.log("離開聊天室");
     },
     publicLogin(onlineUsers) {
       const { name, content } = onlineUsers[0];
@@ -52,7 +43,6 @@ export default {
         type: "notice",
       };
       this.addMessage(login);
-      console.log(login)
       this.onlineUsers = onlineUsers[1];
     },
     publicLogout: function (onlineUsers) {
@@ -63,7 +53,6 @@ export default {
         content,
         type: "notice",
       };
-      console.log(logout)
       this.addMessage(logout);
       this.onlineUsers = onlineUsers[1];
     },
@@ -81,10 +70,9 @@ export default {
         };
         return unwrappedMessage;
       });
-      console.log(history);
       this.fetchMessage(history);
     },
-    newMessage: function (data) {
+    newMessage: async function (data) {
       const { name, avatar } = data[1];
       const { content, createdAt, id, UserId: userId } = data[0];
       const newMessage = {
@@ -95,32 +83,31 @@ export default {
         id,
         createdAt,
       };
-      this.addMessage(newMessage);
+      await this.addMessage(newMessage);
     },
   },
   created() {
-    // this.$socket.removeAllListeners();
-    // this.$socket.disconnect();
     this.$socket.connect();
   },
   mounted() {
-    // this.$socket.connect();
     const { id } = this.currentUser;
-    this.$socket.emit("publicEnter", id);
-    this.$refs.chatroomRef.scrollToggle();
+    this.$nextTick(function () {
+      this.$socket.emit("publicEnter", id);
+      this.$refs.chatroomRef.scrollToggle();
+    });
   },
   beforeUnmount() {
     const { id } = this.currentUser;
     this.$socket.emit("publicLeave", id);
-    // this.$socket.removeAllListeners();
-    // this.$socket.disconnect();
+    this.$socket.disconnect();
   },
   methods: {
     fetchMessage(data) {
       this.$store.commit("chat/setMessageList", data);
     },
-    addMessage(message) {
-      this.$store.commit("chat/addNewMessage", message);
+    async addMessage(message) {
+      await this.$store.commit("chat/addNewMessage", message);
+      this.$refs.chatroomRef.scrollToggle();
     },
     chatSubmit(content) {
       const { id } = this.currentUser;
