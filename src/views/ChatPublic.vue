@@ -11,104 +11,56 @@ import Chatroom from "../components/Chatroom.vue";
 import { fromNowMixin } from "@/utils/mixins";
 import { mapState } from "vuex";
 
-import io from "socket.io-client";
-
 export default {
+  name: "ChatPublic",
   components: {
     ChatUserList,
     Chatroom,
   },
-
   data() {
     return {
-      content: "",
-      socket: -1,
       onlineUsers: [],
-      selectedId: this.$store.state.activeChat,
     };
   },
-  created() {
-    const { id } = this.currentUser;
-    this.socket = io("http://localhost:3000");
-    this.socket.on("connect", () => {
-      console.log("進入聊天室");
-    });
-    this.onLogin();
-    this.onLogout();
-    this.onChatLoading();
-    this.onChatStatus();
-    this.emitLogin();
-    window.onbeforeunload = () => {
-      this.socket.emit("publicLeave", id);
-    };
-    // this.$store.commit("chat/removeSelect");
-  },
-
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
-      messageList: (state) => state.chat.messageList,
     }),
   },
-  methods: {
-    async fetchMessage(data) {
-      await this.$store.commit("chat/setMessageList", data);
+  sockets: {
+    connect() {
+      console.log("進入聊天室");
     },
-    async addMessage(message) {
-      await this.$store.commit("chat/addNewMessage", message);
+    disconnect() {
+      console.log("離開聊天室");
     },
-    emitLogin() {
-      const { id } = this.currentUser;
-      console.log(id);
-      this.socket.emit("publicEnter", id);
-      console.log("登入訊息發送", id);
+    publicLogin(onlineUsers) {
+      const { name, content } = onlineUsers[0];
+      const login = {
+        name,
+        id: Math.random() * 10000,
+        content,
+        type: "notice",
+      };
+      this.addMessage(login);
+      this.onlineUsers = onlineUsers[1];
     },
-    onLogin() {
-      this.socket.on("publicLogin", async (user, onlineUsers) => {
-        console.log("登入訊息接收", user, onlineUsers);
-        const { name, content } = user;
-        const login = {
-          name,
-          id: Math.random() * 10000,
-          content,
-          type: "notice",
-        };
-        await this.addMessage(login);
-        this.onlineUsers = onlineUsers;
-        this.$refs.chatroomRef.scrollToggle();
-      });
+    publicLogout: function (onlineUsers) {
+      const { name, content } = onlineUsers[0];
+      const logout = {
+        name,
+        id: Math.random() * 10000,
+        content,
+        type: "notice",
+      };
+      this.addMessage(logout);
+      this.onlineUsers = onlineUsers[1];
     },
-    onLogout() {
-      this.socket.on("publicLogout", (user, onlineUsers) => {
-        console.log("登出訊息接收", user, onlineUsers);
-        this.onlineUsers = onlineUsers;
-      });
-    },
-    onChatLoading() {
-      this.socket.on("allMessage", (data) => {
-        console.log("歷史訊息載入", data);
-        const history = data.map((_data) => {
-          const { name, avatar, id: userId } = _data.User;
-          const { content, createdAt, id } = _data;
-          const unwrappedMessage = {
-            userId,
-            name,
-            avatar,
-            content,
-            id,
-            createdAt,
-          };
-          return unwrappedMessage;
-        });
-        this.fetchMessage(history);
-      });
-    },
-    onChatStatus() {
-      this.socket.on("newMessage", async (data) => {
-        console.log("新的聊天訊息接收", data);
-        const { name, avatar } = data[1];
-        const { content, createdAt, id, UserId: userId } = data[0];
-        const newMessage = {
+    allMessage: function (data) {
+      const history = data.map((_data) => {
+        const { name, avatar, id: userId } = _data.User;
+        const { content, createdAt, id } = _data;
+        const unwrappedMessage = {
           userId,
           name,
           avatar,
@@ -116,33 +68,51 @@ export default {
           id,
           createdAt,
         };
-        console.log("準備寫入新訊息");
-        await this.addMessage(newMessage);
-        this.$refs.chatroomRef.scrollToggle();
+        return unwrappedMessage;
       });
+      this.fetchMessage(history);
     },
-    async chatSubmit(content) {
+    newMessage: async function (data) {
+      const { name, avatar } = data[1];
+      const { content, createdAt, id, UserId: userId } = data[0];
+      const newMessage = {
+        userId,
+        name,
+        avatar,
+        content,
+        id,
+        createdAt,
+      };
+      await this.addMessage(newMessage);
+    },
+  },
+  created() {
+    this.$socket.connect();
+  },
+  mounted() {
+    const { id } = this.currentUser;
+    this.$nextTick(function () {
+      this.$socket.emit("publicEnter", id);
+      this.$refs.chatroomRef.scrollToggle();
+    });
+  },
+  beforeUnmount() {
+    const { id } = this.currentUser;
+    this.$socket.emit("publicLeave", id);
+    this.$socket.disconnect();
+  },
+  methods: {
+    fetchMessage(data) {
+      this.$store.commit("chat/setMessageList", data);
+    },
+    async addMessage(message) {
+      await this.$store.commit("chat/addNewMessage", message);
+      this.$refs.chatroomRef.scrollToggle();
+    },
+    chatSubmit(content) {
       const { id } = this.currentUser;
-      await this.socket.emit("sendMessage", { content, id });
-
-      // const newMessage = {
-      //   id: this.$store.state.chat.messageList.length,
-      //   type: "message",
-      //   user: this.currentUser.name,
-      //   userId: this.currentUser.id,
-      //   avatar: this.currentUser.avatar,
-      //   content: content,
-      //   creatAt: this.now(),
-      // };
-
-      // this.addMessage(newMessage);
-      this.content = "";
-      // this.$refs.chatroomRef.scrollToggle();
+      this.$socket.emit("sendMessage", { content, id });
     },
-    // scrollToggle() {
-    //   console.log("scrollToggle")
-    //   this.$refs.temp.scrollIntoView({ behavior: "smooth" });
-    // },
   },
   mixins: [fromNowMixin],
 };

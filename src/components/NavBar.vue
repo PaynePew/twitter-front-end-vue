@@ -184,7 +184,6 @@ export default {
   computed: {
     isAdminPage() {
       let currentURL = this.$route;
-      console.log("URL.name", currentURL.name);
       const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
       if (pathWithoutSideRender.includes(currentURL.name)) {
         return true;
@@ -193,7 +192,6 @@ export default {
     },
 
     currentPage() {
-      console.log("currentPage:", this.$route.name);
       return this.$route.name;
     },
 

@@ -176,6 +176,11 @@ export default {
     async handleSubmit() {
       try {
         const formData = new FormData();
+        console.log("avatar type check", this.userInfo.avatar);
+        // if (typeof this.userInfo.avatar != "Object") {
+        //   formData.append("name", this.userInfo.name);
+        //   formData.append("introduction", this.userInfo.introduction);
+        // }
         formData.append("avatar", this.userInfo.avatar[0]);
         formData.append("cover", this.userInfo.cover[0]);
         formData.append("name", this.userInfo.name);
@@ -203,7 +208,7 @@ export default {
     handleCoverChange(e) {
       const files = e.target.files;
       if (files.length === 0) {
-        this.userInfo.cover = "";
+        this.userInfo.coverTemp = "";
       } else {
         const imageURL = window.URL.createObjectURL(files[0]);
         this.userInfo.cover = files;
@@ -222,6 +227,7 @@ export default {
       }
     },
     handleDeleteCover() {
+      this.userInfo.coverTemp = "https://i.imgur.com/l8uvSR5.jpeg";
       this.userInfo.cover = "https://i.imgur.com/l8uvSR5.jpeg";
     },
   },

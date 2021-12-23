@@ -160,8 +160,6 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const token = localStorage.getItem("token");
   const tokenInStore = store.state.token;
-  console.log("beforeEach: token:", token);
-  console.log("tokenInStore: ", tokenInStore);
   let isAuthenticated = store.state.isAuthenticated;
 
   if (token && token !== tokenInStore) {

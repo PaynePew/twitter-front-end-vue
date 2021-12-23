@@ -1,43 +1,49 @@
 <template>
-  <div
-    v-for="message in messageList"
-    :key="message.id"
-    class="chat-message__container"
-  >
-    <div v-if="message.type === 'notice'" class="chat-message__notice-box">
-      <div class="chat-message__notice">
-        {{ message.name }}
-        {{ message.content }}
-      </div>
-    </div>
+  <section>
     <div
-      v-if="!message.type && message.userId !== currentUser.id"
-      class="chat-message__message-box"
+      v-for="message in messageList"
+      :key="message.id"
+      class="chat-message__container"
     >
-      <div class="chat-message__side">
-        <img class="chat-message__avatar" :src="message.avatar" />
-      </div>
-      <div class="chat-message__main">
-        <div class="chat-message__content chat-message__content--other">
+      <div v-if="message.type === 'notice'" class="chat-message__notice-box">
+        <div class="chat-message__notice">
+          {{ message.name }}
           {{ message.content }}
         </div>
-        <div class="chat-message__time">{{ chatTime(message.createdAt) }}</div>
       </div>
-    </div>
-    <div
-      v-if="!message.type && message.userId === currentUser.id"
-      class="chat-message__message-box chat-message__message-box--self"
-    >
-      <div class="chat-message__side"></div>
-      <div class="chat-message__main chat-message__main--self">
-        <div class="chat-message__content chat-message__content--self">
-          {{ message.content }}
+      <div
+        v-if="!message.type && message.userId !== currentUser.id"
+        class="chat-message__message-box"
+      >
+        <div class="chat-message__side">
+          <img class="chat-message__avatar" :src="message.avatar" />
         </div>
-        <div class="chat-message__time">{{ chatTime(message.createdAt) }}</div>
+        <div class="chat-message__main">
+          <div class="chat-message__content chat-message__content--other">
+            {{ message.content }}
+          </div>
+          <div class="chat-message__time">
+            {{ chatTime(message.createdAt) }}
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="!message.type && message.userId === currentUser.id"
+        class="chat-message__message-box chat-message__message-box--self"
+      >
+        <div class="chat-message__side"></div>
+        <div class="chat-message__main chat-message__main--self">
+          <div class="chat-message__content chat-message__content--self">
+            {{ message.content }}
+          </div>
+          <div class="chat-message__time">
+            {{ chatTime(message.createdAt) }}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="chat-message__bottom-index"></div>
+  </section>
+  <!-- <div class="chat-message__bottom-index"></div> -->
 </template>
 
 <script>
@@ -51,7 +57,6 @@ export default {
       messageList: (state) => state.chat.messageList,
     }),
   },
-
   mixins: [fromNowMixin],
 };
 </script>

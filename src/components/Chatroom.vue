@@ -11,7 +11,11 @@
       <div class="chatroom__temp" ref="temp"></div>
     </div>
     <div class="chatroom__footer">
-      <input class="chatroom__input" type="text" v-model="content" />
+      <input 
+        class="chatroom__input" 
+        type="text" v-model="content" 
+        @keyup.enter="$emit('chat-submit', content); content = ''"
+      />
       <img
         src="@/assets/img/icon_send@2x.png"
         class="chatroom__icon"
@@ -27,95 +31,24 @@
 import ChatMessage from "../components/ChatMessage.vue";
 import { fromNowMixin } from "@/utils/mixins";
 import { mapState } from "vuex";
-// import io from "socket.io-client";
 
 export default {
-  el: "#app",
   components: {
     ChatMessage,
   },
-  props: {
-    initialMessageList: Array,
-  },
   data() {
     return {
-      socket: -1,
       content: "",
     };
   },
-  created() {
-    // this.socket = io("http://localhost:3000");
-    // this.onChatStatus();
-    // window.onbeforeunload = () => {
-    //   this.socket.emit("publicLogout", "hello");
-    // };
-  },
 
   computed: {
-    // content: {
-    //   get() {
-    //     return this.$store.state.chat.content;
-    //   },
-    //   set(value) {
-    //     this.$store.commit("chat/updateContent", value);
-    //   },
-    // },
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
     }),
   },
   methods: {
-    // onChatStatus() {
-    //   this.socket.on("publicEnter", (data) => {
-    //     console.log("登入訊息接收", data);
-    //     const { name, content } = data;
-    //     const login = {
-    //       name,
-    //       id: Math.random() * 10000,
-    //       content,
-    //       type: "notice",
-    //     };
-    //     this.messageList.push(login);
-    //   });
-    //   this.socket.on("newMessage", async (data) => {
-    //     console.log("新的聊天訊息接收", data);
-    //     const { name, avatar } = data[1];
-    //     const { content, createdAt, id, UserId } = data[0];
-    //     const newMessage = {
-    //       User: { id: UserId, name, avatar },
-    //       content,
-    //       id,
-    //       createdAt,
-    //     };
-    //     await this.messageList.push(newMessage);
-    //     this.scrollToggle();
-    //   });
-    //   this.socket.on("publicLeave", (data) => {
-    //     console.log("登出訊息發送");
-    //     console.log(data);
-    //   });
-    // },
-    // async chatSubmit(content) {
-    //   const { id } = this.currentUser;
-    //   await this.socket.emit("sendMessage", { content, id });
-
-    //   await this.$store.commit("chat/addNewMessage", {
-    //     id: this.$store.state.chat.messageList.length,
-    //     type: "message",
-    //     user: "Orange",
-    //     userId: this.currentUser.id,
-    //     avatar:
-    //       "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
-    //     content: content,
-    //     creatAt: this.now(),
-    //   });
-
-    //   this.content = "";
-    //   this.scrollToggle();
-    // },
-
     scrollToggle() {
-      console.log("scrollToggle");
       let container = this.$refs.temp;
       container.scrollIntoView({ behavior: "smooth" });
     },
