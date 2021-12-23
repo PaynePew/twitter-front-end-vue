@@ -7,7 +7,7 @@ import SocketIO from "socket.io-client";
 
 const socket = new VueSocketIO({
   debug: true,
-  connection: SocketIO("http://localhost:3000", {
+  connection: SocketIO("https://twitter-chatroom-test.herokuapp.com", {
     autoConnect: false,
     transports: ["websocket"],
   }),
