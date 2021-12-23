@@ -35,28 +35,12 @@ export default {
       console.log("離開聊天室");
     },
     publicLogin(onlineUsers) {
-      const { name, content } = onlineUsers[0];
-      const login = {
-        name,
-        id: Math.random() * 10000,
-        content,
-        type: "notice",
-      };
-      this.addMessage(login);
-      this.onlineUsers = onlineUsers[1];
+      this.updateStatus(onlineUsers);
     },
-    publicLogout: function (onlineUsers) {
-      const { name, content } = onlineUsers[0];
-      const logout = {
-        name,
-        id: Math.random() * 10000,
-        content,
-        type: "notice",
-      };
-      this.addMessage(logout);
-      this.onlineUsers = onlineUsers[1];
+    publicLogout(onlineUsers) {
+      this.updateStatus(onlineUsers);
     },
-    allMessage: function (data) {
+    allMessage(data) {
       const history = data.map((_data) => {
         const { name, avatar, id: userId } = _data.User;
         const { content, createdAt, id } = _data;
@@ -72,7 +56,7 @@ export default {
       });
       this.fetchMessage(history);
     },
-    newMessage: async function (data) {
+    newMessage(data) {
       const { name, avatar } = data[1];
       const { content, createdAt, id, UserId: userId } = data[0];
       const newMessage = {
@@ -83,7 +67,7 @@ export default {
         id,
         createdAt,
       };
-      await this.addMessage(newMessage);
+      this.addMessage(newMessage);
     },
   },
   created() {
@@ -112,6 +96,17 @@ export default {
     chatSubmit(content) {
       const { id } = this.currentUser;
       this.$socket.emit("sendMessage", { content, id });
+    },
+    updateStatus(onlineUsers) {
+      const { name, content } = onlineUsers[0];
+      const status = {
+        name,
+        id: Math.random() * 10000,
+        content,
+        type: "notice",
+      };
+      this.addMessage(status);
+      this.onlineUsers = onlineUsers[1];
     },
   },
   mixins: [fromNowMixin],
