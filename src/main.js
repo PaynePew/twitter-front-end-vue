@@ -8,7 +8,7 @@ import SocketIO from "socket.io-client";
 const baseURL = process.env.VUE_APP_SOCKET_URL;
 
 const socket = new VueSocketIO({
-  debug: true,
+  debug: process.env.NODE_ENV === "production" ? false : true,
   connection: SocketIO(baseURL, {
     autoConnect: false,
     transports: ["websocket"],
