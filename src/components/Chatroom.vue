@@ -52,9 +52,13 @@ export default {
     }),
   },
   methods: {
-    scrollToggle() {
-      let container = this.$refs.temp;
-      container.scrollIntoView({ behavior: "smooth" });
+    scrollToggle(behavior) {
+      const container = this.$refs.temp;
+      if (behavior) {
+        container.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+      container.scrollIntoView();
     },
   },
   mixins: [fromNowMixin],
