@@ -1,6 +1,6 @@
 <template>
   <section
-    v-for="user in chatUsers"
+    v-for="user in users"
     :key="user.id"
     class="relation"
     @click="clickUser(user.id)"
@@ -54,9 +54,6 @@ export default {
     clickUser(userId) {
       this.$store.commit("chat/selectChat", userId);
     },
-  },
-  provide: {
-    selectId: -1,
   },
 };
 </script>
