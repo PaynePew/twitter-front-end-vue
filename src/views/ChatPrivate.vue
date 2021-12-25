@@ -1,169 +1,153 @@
 <template>
   <div class="private-message__container">
-    <ChatUserList :users="users" />
+    <ChatUserList :users="userList" />
     <Chatroom @chat-submit="chatSubmit" ref="chatroomRef" />
   </div>
 </template>
 
 <script>
-const dummyData = [
-  {
-    id: 1,
-    type: "notice",
-    user: "Apple",
-    userId: 3,
-    avatar: "https://robohash.org/utetenim.png?size=50x50&set=set1",
-    content: "online",
-    creatAt: "2021-11-02T22:54:49.000Z",
-  },
-  {
-    id: 2,
-    type: "notice",
-    user: "Banana",
-    userId: 4,
-    avatar: "https://robohash.org/errorlaboriosamest.png?size=50x50&set=set1",
-    content: "online",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 3,
-    type: "notice",
-    user: "Mango",
-    userId: 5,
-    avatar: "https://robohash.org/sedvitaeeveniet.png?size=50x50&set=set1",
-    content: "online",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 4,
-    type: "message",
-    user: "Peach",
-    userId: 6,
-    avatar: "https://robohash.org/rerumautemnesciunt.png?size=50x50&set=set1",
-    content: "good morning",
-    creatAt: "2021-12-01T10:47:29.000Z",
-  },
-  {
-    id: 5,
-    type: "message",
-    user: "Papaya",
-    userId: 7,
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    content: "not good",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 6,
-    type: "notice",
-    user: "Pineapple",
-    userId: 8,
-    avatar: "https://robohash.org/nemolaboriosamin.png?size=50x50&set=set1",
-    content: "offline",
-    creatAt: "2021-12-01T10:47:29.000Z",
-  },
-  {
-    id: 7,
-    type: "message",
-    user: "CurrentUser",
-    userId: 21,
-    avatar: "https://robohash.org/nemolaboriosamin.png?size=50x50&set=set1",
-    content: "賣造",
-    creatAt: "2021-12-01T11:47:29.000Z",
-  },
-  {
-    id: 5,
-    type: "message",
-    user: "Papaya",
-    userId: 7,
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    content:
-      "666666666666666666666666666666666666666666666666666666666666666666666",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 5,
-    type: "message",
-    user: "Papaya",
-    userId: 7,
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    content:
-      "666666666666666666666666666666666666666666666666666666666666666666666",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-  {
-    id: 5,
-    type: "message",
-    user: "Papaya",
-    userId: 7,
-    avatar: "https://robohash.org/minimaenimcupiditate.png?size=50x50&set=set1",
-    content:
-      "666666666666666666666666666666666666666666666666666666666666666666666",
-    creatAt: "2021-12-01T10:47:28.000Z",
-  },
-];
-
 import ChatUserList from "../components/ChatUserList.vue";
 import Chatroom from "../components/Chatroom.vue";
 import { mapState } from "vuex";
 
-import io from "socket.io-client";
-
 export default {
+  name: "ChatPrivate",
   components: {
-    // eslint-disable-next-line vue/no-unused-components
     ChatUserList,
     Chatroom,
   },
   data() {
     return {
       content: "",
-      socket: -1,
-      users: [],
+      currentUserId: -1,
+      userList: [],
+      // 最後訊息時間需傳遞給ChatUserCardPrivate
       selectedId: this.$store.state.chat.activeChat,
     };
-  },
-
-  created() {
-    // eslint-disable-next-line no-unused-vars
-    const { id } = this.currentUser;
-    // this.socket = io("https://twitter-chatroom-test.herokuapp.com");
-    this.socket = io("http://localhost:3000/");
-    this.socket.on("connect", () => {
-      console.log("進入聊天室");
-    });
-    this.onLogin();
-    this.emitLogin(id, this.selectedId);
   },
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
-      messageList: (state) => state.chat.messageList,
+      privateMessageList: (state) => state.chat.privateMessageList,
+      // messageList: (state) => state.chat.messageList,
       activeChat: (state) => state.chat.activeChat,
     }),
   },
+  created() {
+    this.$socket.connect();
+    // NavBar登出會先revoke currentUser，導致id為null，此處存入data取消computed響應
+    this.currentUserId = this.currentUser.id;
+    window.onbeforeunload = () => {
+      // this.leavePublic(this.currentUserId);
+    };
+    // this.emitLogin(id, this.selectedId);
+  },
+  // vue3-sockets會在mounted階段註冊event
+  sockets: {
+    // 註冊接收登入狀況
+    privateHistory(data) {
+      this.handleHistoryData(data);
+    },
+    // 註冊接收登出狀況
+    // publicLogout(onlineUsers) {
+    //   this.updateStatus(onlineUsers);
+    // },
+    // 註冊接收歷史訊息
+    // allMessage(data) {
+    //   this.handleHistory(data);
+    // },
+    // 註冊接收新訊息
+    privateMessage(response) {
+      this.handleNewMessage(response);
+    },
+  },
+  // mounted後下一個Tick加入Private-Room
+  mounted() {
+    this.$nextTick(function () {
+      this.joinPrivate(this.currentUserId, this.selectedId);
+    });
+  },
 
   methods: {
-    fetchMessage() {
-      this.$store.commit("chat/setMessageList", dummyData);
+    joinPrivate(senderId, receiverId) {
+      this.$socket.emit("privateEnter", { senderId, receiverId });
     },
-    emitLogin(UserId, UserId2) {
-      this.socket.emit("privateEnter", [UserId, UserId2]);
-      console.log("房間登入訊息發送", [UserId, UserId2]);
+    // handleHistoryData(data) {
+    // const roomId = data.roomId;
+    // const { name, account, id, avatar } = data.user2;
+    // const response = { roomId, name, account, id, avatar };
+    // // fetchAllRoom需檢查
+    // if (
+    //   !this.userList.filter((_room) => _room.roomId === response.roomId)
+    //     .length
+    // ) {
+    //   this.userList = [...this.userList, response];
+    // }
+    // if (
+    //   !this.privateMessageList.rooms.filter((_room) => _rooms === roomId)
+    //     .length
+    // ) {
+    //   this.userList = [...this.userList, response];
+    // }
+    // const rooms = data.map((_data) => {
+    //   return _data.roomId;
+    // });
+    // data.map((_data) => {
+    //   const {id, senderId, }=_data.history
+    //   })
+
+    // console.log("privateHistory", data.history);
+    // },
+    handleNewMessage(response) {
+      const { id, createdAt, content } = response.newMessages;
+      const { name, id: userId, avatar } = response.user;
+      const newMessage = {
+        userId,
+        name,
+        avatar,
+        content,
+        id,
+        createdAt,
+      };
+      this.addMessage(newMessage);
     },
-    onLogin() {
-      this.socket.on("join_privateroom", (results) => {
-        console.log("房間登入訊息接收", results);
-        // const { name, content } = results;
-        // const login = {
-        //   name,
-        //   id: Math.random() * 10000,
-        //   content,
-        //   type: "notice",
-        // };
-        // this.addMessage(login);
-        // this.onlineUsers = onlineUsers;
+    chatSubmit(content) {
+      if (!content.trim()) {
+        return;
+      }
+      this.$socket.emit("privateMessage", {
+        content,
+        senderId: this.currentUserId,
+        receiverId: this.selectedId,
       });
     },
+    async addMessage(message) {
+      await this.$store.commit("chat/addNewMessage", message);
+      // 新訊息動畫滾動底部
+      this.$refs.chatroomRef.scrollToggle(true);
+    },
+
+    // fetchMessage() {
+    //   this.$store.commit("chat/setMessageList", dummyData);
+    // },
+    // emitLogin(UserId, UserId2) {
+    //   this.socket.emit("privateEnter", [UserId, UserId2]);
+    //   console.log("房間登入訊息發送", [UserId, UserId2]);
+    // },
+    // onLogin() {
+    //   this.socket.on("join_privateroom", (results) => {
+    //     console.log("房間登入訊息接收", results);
+    //     // const { name, content } = results;
+    //     // const login = {
+    //     //   name,
+    //     //   id: Math.random() * 10000,
+    //     //   content,
+    //     //   type: "notice",
+    //     // };
+    //     // this.addMessage(login);
+    //     // this.onlineUsers = onlineUsers;
+    //   });
+    // },
   },
 };
 </script>
