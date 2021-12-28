@@ -8,7 +8,7 @@
 <script>
 import ChatUserList from "../components/ChatUserList.vue";
 import Chatroom from "../components/Chatroom.vue";
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "ChatPrivate",
@@ -20,17 +20,18 @@ export default {
     return {
       content: "",
       currentUserId: -1,
-      userList: [],
       // 最後訊息時間需傳遞給ChatUserCardPrivate
-      selectedId: this.$store.state.chat.activeChat,
+      // selectedId: this.$store.state.chat.activeReceiver,
     };
   },
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
-      privateMessageList: (state) => state.chat.privateMessageList,
       // messageList: (state) => state.chat.messageList,
-      activeChat: (state) => state.chat.activeChat,
+      activeReceiver: (state) => state.chatPrivate.activeReceiver,
+    }),
+    ...mapGetters({
+      userList: "chatPrivate/getUserList",
     }),
   },
   created() {
@@ -45,8 +46,16 @@ export default {
   // vue3-sockets會在mounted階段註冊event
   sockets: {
     // 註冊接收登入狀況
+    // latestPrivateHistory(data) {
+    //   console.log("latestPrivate", data);
+    //   this.$store.commit("chatPrivate/setPrivateHistory", data);
+    // },
+    // privateReceiver(data) {
+    //   this.handleReceiver(data);
+    // },
     privateHistory(data) {
-      this.handleHistoryData(data);
+      this.$store.commit("chatPrivate/setPrivateUserList", data);
+      this.$store.commit("chatPrivate/setPrivateHistory", data);
     },
     // 註冊接收登出狀況
     // publicLogout(onlineUsers) {
@@ -58,19 +67,22 @@ export default {
     // },
     // 註冊接收新訊息
     privateMessage(response) {
-      this.handleNewMessage(response);
+      console.log(response);
     },
   },
   // mounted後下一個Tick加入Private-Room
   mounted() {
     this.$nextTick(function () {
-      this.joinPrivate(this.currentUserId, this.selectedId);
+      this.joinPrivate(this.currentUserId, this.activeReceiver);
     });
   },
 
   methods: {
     joinPrivate(senderId, receiverId) {
       this.$socket.emit("privateEnter", { senderId, receiverId });
+    },
+    handleReceiver(data) {
+      this.$store.commit("chatPrivate/setPrivateMessageList", data);
     },
     // handleHistoryData(data) {
     // const roomId = data.roomId;
@@ -118,7 +130,7 @@ export default {
       this.$socket.emit("privateMessage", {
         content,
         senderId: this.currentUserId,
-        receiverId: this.selectedId,
+        receiverId: this.activeReceiver,
       });
     },
     async addMessage(message) {
