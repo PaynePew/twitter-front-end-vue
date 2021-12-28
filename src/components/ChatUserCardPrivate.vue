@@ -3,7 +3,10 @@
     v-for="user in users"
     :key="user.id"
     class="relation"
-    @click="clickUser(user.id)"
+    @click="
+      clickUser(user.id);
+      clickRoom(user.roomId);
+    "
   >
     <div class="relation__wrapper">
       <div class="relation__header">
@@ -28,31 +31,16 @@
 </template>
 
 <script>
-import { articlesDummy } from "@/store/dummy/articlesDummy";
-
 export default {
   props: {
     users: Array,
   },
-  data() {
-    return {
-      chatUsers: [],
-    };
-  },
-  created() {
-    this.getChatUser();
-  },
   methods: {
-    async getChatUser() {
-      try {
-        const response = await articlesDummy;
-        this.chatUsers = response.map((_dummy) => _dummy.tweet.User);
-      } catch (error) {
-        console.log(error);
-      }
-    },
     clickUser(userId) {
-      this.$store.commit("chat/selectChat", userId);
+      this.$store.commit("chatPrivate/selectReceiver", userId);
+    },
+    clickRoom(roomId) {
+      this.$store.commit("chatPrivate/selectChat", roomId);
     },
   },
 };
