@@ -8,18 +8,25 @@ import {
 export default {
   namespaced: true,
   state: {
-    activeChat: -1,
+    activeChat: null,
     messageList: [],
     privateMessageList: {},
     // {
-    //   {
+    // rooms:{
     //     id1:{
-    //       message.....
+    //       messages:[mId1,mId2]
     //     }
     //     id2:{message....}
     //   },
-    //   roomId:[id1,id2,id3,id4],
-
+    // roomList:[id1,id2,id3,id4],
+    // messageList:{
+    // mId1:{},
+    // mId2:{},
+    //  },
+    // userList:{
+    //   id1:{},
+    //   id2:{},
+    // }
     // }
 
     // content: "",
@@ -46,8 +53,5 @@ export default {
     // },
   },
   actions: {},
-  getters: {
-    
-
-  },
+  getters: {},
 };

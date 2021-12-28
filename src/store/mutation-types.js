@@ -8,3 +8,7 @@ export const removeSelect = "removeSelect";
 export const setMessageList = "setMessageList";
 export const addNewMessage = "addNewMessage";
 export const updateContent = "updateContent";
+export const setPrivateMessageList = "setPrivateMessageList";
+export const setPrivateHistory = "setPrivateHistory";
+export const setPrivateUserList = "setPrivateUserList";
+export const selectReceiver = "selectReceiver";
