@@ -22,7 +22,7 @@
                     class="userinfo-card__btn"
                     src="@/assets/img/btn_messege@2x.png"
                     alt=""
-                    @click="selectChat(userInfo.id)"
+                    @click="selectReceiver(userInfo.id)"
                   />
                 </router-link>
                 <img
@@ -128,7 +128,7 @@ export default {
   },
   methods: {
     ...mapMutations("modalUserInfo", ["TOGGLE_MODAL"]),
-    ...mapMutations("chat", ["selectChat"]),
+    ...mapMutations("chatPrivate", ["selectReceiver"]),
     async addFollowShips(id) {
       try {
         const { data } = await usersAPI.follower.addFollowShips(id);

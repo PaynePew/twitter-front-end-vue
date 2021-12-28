@@ -7,10 +7,14 @@
       <p v-else class="chatroom__title">私人聊天室</p>
     </div>
     <div class="chatroom__body">
-      <ChatMessage />
+      <ChatMessage v-if="$route.name == 'ChatPublic'" />
+      <ChatMessagePrivate
+        v-if="$route.name == 'ChatPrivate' && activeChat !== null"
+        :activeChat="activeChat"
+      />
       <div class="chatroom__temp" ref="temp"></div>
     </div>
-    <div class="chatroom__footer">
+    <div v-if="activeChat" class="chatroom__footer">
       <input
         class="chatroom__input"
         type="text"
@@ -33,12 +37,14 @@
 </template>
 <script>
 import ChatMessage from "../components/ChatMessage.vue";
+import ChatMessagePrivate from "../components/ChatMessagePrivate.vue";
 import { fromNowMixin } from "@/utils/mixins";
 import { mapState } from "vuex";
 
 export default {
   components: {
     ChatMessage,
+    ChatMessagePrivate,
   },
   data() {
     return {
@@ -49,6 +55,7 @@ export default {
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
+      activeChat: (state) => state.chatPrivate.activeChat,
     }),
   },
   methods: {
