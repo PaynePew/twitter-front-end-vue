@@ -5,18 +5,12 @@
       :key="message.id"
       class="chat-message__container"
     >
-      <div v-if="message.type === 'notice'" class="chat-message__notice-box">
-        <div class="chat-message__notice">
-          {{ message.name }}
-          {{ message.content }}
-        </div>
-      </div>
       <div
-        v-if="!message.type && message.userId !== currentUser.id"
+        v-if="sender.userId !== currentUser.id"
         class="chat-message__message-box"
       >
         <div class="chat-message__side">
-          <img class="chat-message__avatar" :src="message.avatar" />
+          <img class="chat-message__avatar" :src="sender.avatar" />
         </div>
         <div class="chat-message__main">
           <div class="chat-message__content chat-message__content--other">
@@ -28,7 +22,7 @@
         </div>
       </div>
       <div
-        v-if="!message.type && message.userId === currentUser.id"
+        v-if="sender.userId === currentUser.id"
         class="chat-message__message-box chat-message__message-box--self"
       >
         <div class="chat-message__side"></div>
@@ -62,13 +56,8 @@ export default {
     }),
     ...mapGetters({
       messages: "chatPrivate/getRoomMessage",
+      sender: "chatPrivate/getRoomUser",
     }),
-  },
-  methods: {
-    // 從rooms裡面拿到特定roomId的所有messages
-    // roomMessage(room) {
-    //   return room[].messages.map((_roomId) => this.messageList[_roomId]);
-    // },
   },
   mixins: [fromNowMixin],
 };
