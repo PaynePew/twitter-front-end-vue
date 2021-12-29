@@ -46,8 +46,23 @@ export default {
     // [setMessageList]: (state, list) => {
     //   state.messageList = list;
     // },
-    [addNewMessage]: (state, message) => {
-      state.messageList.push(message);
+    [addNewMessage]: (state, data) => {
+      const {
+        id,
+        content,
+        createdAt,
+        UserId: userId,
+        RoomId,
+      } = data.newMessages;
+      state.messageList[id] = {
+        id,
+        content,
+        createdAt,
+        userId,
+      };
+      state.rooms[RoomId] = {
+        messages: [...state.rooms[RoomId].messages, id],
+      };
     },
     [setPrivateHistory]: (state, data) => {
       data.map((_data) =>
@@ -65,12 +80,15 @@ export default {
     [setPrivateUserList]: (state, data) => {
       data.map((_data) => {
         let { id: roomId } = _data;
-        state.roomList = [...state.roomList, roomId];
         state.rooms[roomId] = {
           messages: _data.history.map((_message) => {
             return _message.id;
           }),
         };
+        if (state.roomList.includes(roomId)) {
+          return;
+        }
+        state.roomList = [...state.roomList, roomId];
         state.userList[roomId] = {
           ..._data.receiver,
           roomId,
@@ -86,6 +104,14 @@ export default {
       return state.rooms[state.activeChat].messages.map(
         (_messageId) => state.messageList[_messageId]
       );
+    },
+    getRoomUser: (state) => {
+      return state.userList[state.activeChat];
+    },
+    getReceiverUser: (state, getters) => {
+      return getters.getUserList.filter(
+        (_user) => _user.id === state.activeReceiver
+      )[0].roomId;
     },
   },
 };
