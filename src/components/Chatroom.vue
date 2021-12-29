@@ -39,7 +39,7 @@
 import ChatMessage from "../components/ChatMessage.vue";
 import ChatMessagePrivate from "../components/ChatMessagePrivate.vue";
 import { fromNowMixin } from "@/utils/mixins";
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   components: {
@@ -56,6 +56,9 @@ export default {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
       activeChat: (state) => state.chatPrivate.activeChat,
+    }),
+    ...mapGetters({
+      getReceiverUser: "chatPrivate/getReceiverUser",
     }),
   },
   methods: {
