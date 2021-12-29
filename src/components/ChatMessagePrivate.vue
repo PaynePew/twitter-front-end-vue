@@ -6,7 +6,7 @@
       class="chat-message__container"
     >
       <div
-        v-if="sender.userId !== currentUser.id"
+        v-if="message.userId !== currentUser.id"
         class="chat-message__message-box"
       >
         <div class="chat-message__side">
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div
-        v-if="sender.userId === currentUser.id"
+        v-if="message.userId === currentUser.id"
         class="chat-message__message-box chat-message__message-box--self"
       >
         <div class="chat-message__side"></div>

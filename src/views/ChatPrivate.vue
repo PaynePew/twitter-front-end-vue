@@ -44,6 +44,7 @@ export default {
     },
     // 註冊接收新訊息
     privateMessage(newMessage) {
+      console.log(newMessage);
       this.addMessage(newMessage);
     },
   },
