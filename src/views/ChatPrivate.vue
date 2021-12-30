@@ -39,7 +39,7 @@ export default {
   // vue3-sockets會在mounted階段註冊event
   sockets: {
     privateHistory(data) {
-      this.$store.commit("chatPrivate/setPrivateUserList", data);
+      // this.$store.commit("chatPrivate/setPrivateUserList", data);
       this.$store.commit("chatPrivate/setPrivateHistory", data);
     },
     // 註冊接收新訊息
@@ -51,13 +51,13 @@ export default {
   // mounted後下一個Tick加入Private-Room
   mounted() {
     this.$nextTick(function () {
-      this.joinPrivate(this.currentUserId, this.activeReceiver);
+      this.joinPrivate(this.currentUserId);
     });
   },
 
   methods: {
-    joinPrivate(senderId, receiverId) {
-      this.$socket.emit("privateEnter", { senderId, receiverId });
+    joinPrivate(senderId) {
+      this.$socket.emit("privateEnter", { senderId });
     },
     handleReceiver(data) {
       this.$store.commit("chatPrivate/setPrivateMessageList", data);
