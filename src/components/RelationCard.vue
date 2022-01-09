@@ -79,7 +79,7 @@ export default {
       });
     },
     toggleFollow(id) {
-      this.topUsers.map((_user) => {
+      this.topUsers.forEach((_user) => {
         _user.id === id ? (_user.isFollowed = !_user.isFollowed) : _user;
       });
     },
