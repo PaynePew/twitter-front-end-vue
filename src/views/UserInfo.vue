@@ -124,6 +124,11 @@ export default {
       this.getUser(this.userInfo.id);
     },
   },
+  beforeRouteUpdate(to, from, next) {
+    const { userId } = to.params;
+    this.getUser(userId);
+    next();
+  },
 };
 </script>
 
