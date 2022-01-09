@@ -55,6 +55,22 @@ const routes = [
     components: { default: Home, nav: NavBar, side: PopularList },
   },
   {
+    path: "/message/public",
+    name: "ChatPublic",
+    components: {
+      default: () => import("../views/ChatPublic.vue"),
+      nav: NavBar,
+    },
+  },
+  {
+    path: "/message/private",
+    name: "ChatPrivate",
+    components: {
+      default: () => import("../views/ChatPrivate.vue"),
+      nav: NavBar,
+    },
+  },
+  {
     path: "/:userId",
     name: "UserInfo",
     components: {
@@ -144,8 +160,6 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const token = localStorage.getItem("token");
   const tokenInStore = store.state.token;
-  console.log("beforeEach: token:", token);
-  console.log("tokenInStore: ", tokenInStore);
   let isAuthenticated = store.state.isAuthenticated;
 
   if (token && token !== tokenInStore) {

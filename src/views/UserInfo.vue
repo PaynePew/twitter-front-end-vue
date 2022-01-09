@@ -62,7 +62,6 @@ export default {
   created() {
     const { userId } = this.$route.params;
     this.getUser(userId);
-    
   },
   computed: {
     ...mapState({

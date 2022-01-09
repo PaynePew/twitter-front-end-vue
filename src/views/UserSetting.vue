@@ -36,7 +36,6 @@ export default {
 
   methods: {
     async fetchUser() {
-      console.log("fetching user");
       try {
         const { data } = await usersAPI.getCurrentUser();
 

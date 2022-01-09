@@ -81,11 +81,6 @@ export default {
       return false;
     },
   },
-
-  mounted() {
-    console.log(this.$router.name);
-  },
-
   methods: {
     async handleSubmit() {
       try {

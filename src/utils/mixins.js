@@ -10,6 +10,12 @@ export const fromNowMixin = {
     moment: function (datetime) {
       return datetime ? moment(datetime).format("a h:mm·LL") : "-";
     },
+    chatTime: function (datetime) {
+      return datetime ? moment(datetime).format("A H:mm") : "-";
+    },
+    now: function () {
+      return moment();
+    },
   },
 };
 

@@ -3,6 +3,8 @@ import authentication from "./modules/authentication";
 import modalArticle from "./modules/modalArticle";
 import modalUserInfo from "./modules/modalUserInfo";
 import noticeInfo from "./modules/noticeInfo";
+import chat from "./modules/chat";
+import chatPrivate from "./modules/chatPrivate";
 
 export default createStore({
   modules: {
@@ -10,5 +12,7 @@ export default createStore({
     authentication,
     modalUserInfo,
     noticeInfo,
+    chat,
+    chatPrivate,
   },
 });

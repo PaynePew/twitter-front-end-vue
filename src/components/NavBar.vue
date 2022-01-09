@@ -29,6 +29,60 @@
           <router-link
             class="navbar__menu"
             :to="{
+              name: 'ChatPublic',
+            }"
+          >
+            <img
+              v-if="currentPage === 'ChatPublic'"
+              src="@/assets/img/icon_msg_active@2x.png"
+              class="navbar__icon"
+            />
+            <img
+              v-else
+              src="@/assets/img/icon_msg@2x.png"
+              class="navbar__icon"
+            />
+            <div
+              :class="[
+                'navbar__title',
+                {
+                  'navbar__title--active': currentPage === 'ChatPublic',
+                },
+              ]"
+            >
+              公開聊天室
+            </div>
+          </router-link>
+          <router-link
+            class="navbar__menu"
+            :to="{
+              name: 'ChatPrivate',
+            }"
+          >
+            <img
+              v-if="currentPage === 'ChatPrivate'"
+              src="@/assets/img/icon_msg_active@2x.png"
+              class="navbar__icon"
+            />
+            <img
+              v-else
+              src="@/assets/img/icon_msg@2x.png"
+              class="navbar__icon"
+            />
+            <div
+              :class="[
+                'navbar__title',
+                {
+                  'navbar__title--active': currentPage === 'ChatPrivate',
+                },
+              ]"
+            >
+              私人訊息
+            </div>
+          </router-link>
+          <router-link
+            class="navbar__menu"
+            :to="{
               name: 'UserInfo',
               params: { userId: currentUser.id || 'null' },
             }"
@@ -130,7 +184,6 @@ export default {
   computed: {
     isAdminPage() {
       let currentURL = this.$route;
-      console.log("URL.name", currentURL.name);
       const pathWithoutSideRender = ["AdminUsers", "AdminArticles"];
       if (pathWithoutSideRender.includes(currentURL.name)) {
         return true;
@@ -139,7 +192,6 @@ export default {
     },
 
     currentPage() {
-      console.log("currentPage:", this.$route.name);
       return this.$route.name;
     },
 

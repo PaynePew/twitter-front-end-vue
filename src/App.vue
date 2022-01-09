@@ -4,7 +4,7 @@
       class="header"
       :class="[
         { 'header--width': noSideBar.includes($route.name) },
-        { 'header--login': signURL.includes($route.name)},
+        { 'header--login': signURL.includes($route.name) },
       ]"
     >
       <router-view class="nav" name="nav" @after-click="TOGGLE_MODAL" />
@@ -14,8 +14,10 @@
       <section
         class="content"
         :class="[
-          { 'content--admin': isAdmin },
-          { 'content--login': signURL.includes($route.name)},
+          {
+            'content--fit-content': isWide,
+          },
+          { 'content--login': signURL.includes($route.name) },
           { 'content--setting': $route.name === 'SettingAccount' },
         ]"
       >
@@ -50,11 +52,8 @@ export default {
         "AdminArticles",
         "SettingAccount",
       ],
-      signURL: [
-        "Login",
-        "Signup",
-        "AdminLogin",
-      ]
+      signURL: ["Login", "Signup", "AdminLogin"],
+      chatURL: ["ChatPublic", "ChatPrivate"],
     };
   },
   created() {},
@@ -62,14 +61,20 @@ export default {
     ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
   },
   computed: {
-    isAdmin() {
+    isWide() {
       const currentURL = this.$route.name;
-      const contentWithoutMax = ["AdminUsers", "AdminArticles"];
+      const contentWithoutMax = [
+        "AdminUsers",
+        "AdminArticles",
+        "ChatPublic",
+        "ChatPrivate",
+      ];
       if (contentWithoutMax.includes(currentURL)) {
         return true;
       }
       return false;
     },
+
     ...mapState({
       isShow: (state) => state.modalArticle.isShow,
       currentUser: (state) => state.authentication.currentUser,
@@ -108,8 +113,8 @@ export default {
   display: flex;
   flex-direction: column;
   width: 600px;
-  border: 1px solid $clr-border;
-  &--admin {
+  border-right: 1px solid $clr-border;
+  &--fit-content {
     width: fit-content;
     width: none;
   }
@@ -118,9 +123,6 @@ export default {
   }
   &--setting {
     flex: 1;
-    border: none;
-  }
-  &--login {
     border: none;
   }
 }
