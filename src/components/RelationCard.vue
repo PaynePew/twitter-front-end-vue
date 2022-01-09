@@ -52,22 +52,22 @@ export default {
     },
     async addFollowShips(id) {
       try {
+        this.toggleFollow(id);
         const { data } = await usersAPI.follower.addFollowShips(id);
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.toggleFollow(id);
       } catch (error) {
         console.log(error);
       }
     },
     async deleteFollowShips(id) {
       try {
+        this.toggleFollow(id);
         const { data } = await usersAPI.follower.deleteFollowShips(id);
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.toggleFollow(id);
       } catch (error) {
         console.log(error);
       }
