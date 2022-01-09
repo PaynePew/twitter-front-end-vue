@@ -54,6 +54,7 @@ export default {
         }
         this.description = "";
         this.$emit("after-submit");
+        this.isProcessing = false;
       } catch (error) {
         console.log(error);
       }
