@@ -6,11 +6,11 @@ A simple social platform allows users to post, like, comment tweets and modify p
 ![](https://github.com/PaynePew/twitter-front-end-vue/blob/master/public/root.jpg)
 
 ## Front-End Tech 
-- VueJS - Vue-Router, Vuex
-- Vue3-socket.io
-- SCSS
-- Axios
-- Travis CI
+- VueJS - Vue-Router, Vuex.
+- Vue3-socket.io.
+- SCSS with BEM methodology.
+- Axios.
+- Travis CI.
 ## Features
 - Tweet:
   - restricted in 140 words with front-end verify.
