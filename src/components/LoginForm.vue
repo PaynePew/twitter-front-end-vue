@@ -25,6 +25,7 @@
           type="password"
           class="login-form__input form__input"
           required
+          autocomplete
         />
       </div>
     </div>
