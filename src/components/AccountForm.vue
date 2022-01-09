@@ -96,6 +96,7 @@
           type="password"
           class="account-form__input form__input"
           required
+          autocomplete
         />
       </div>
     </div>
@@ -115,6 +116,7 @@
           type="password"
           class="account-form__input form__input"
           required
+          autocomplete
         />
       </div>
       <div class="form__hint">
