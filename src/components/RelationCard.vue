@@ -103,6 +103,7 @@ export default {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    cursor: pointer;
   }
   &__body {
     display: flex;
@@ -116,6 +117,7 @@ export default {
     align-items: flex-start;
     line-height: 20px;
     font-weight: bold;
+    cursor: pointer;
   }
   &__account {
     color: $clr-secondary;
@@ -130,6 +132,7 @@ export default {
     padding: 10px 15px;
     height: 35px;
     font-weight: bold;
+    cursor: pointer;
     &--active {
       background-color: $btn-primary;
       color: $clr-fourth;
