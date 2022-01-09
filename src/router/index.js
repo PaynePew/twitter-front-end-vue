@@ -162,8 +162,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const token = localStorage.getItem("token");
-  const tokenInStore = store.state.token;
-  let isAuthenticated = store.state.isAuthenticated;
+  const tokenInStore = store.state.authentication.token;
+  let isAuthenticated = store.state.authentication.isAuthenticated;
 
   if (token && token !== tokenInStore) {
     isAuthenticated = await store.dispatch("authentication/fetchCurrentUser");
