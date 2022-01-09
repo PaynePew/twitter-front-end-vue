@@ -131,22 +131,22 @@ export default {
     ...mapMutations("chatPrivate", ["selectReceiver"]),
     async addFollowShips(id) {
       try {
+        this.$emit("after-follow");
         const { data } = await usersAPI.follower.addFollowShips(id);
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.$emit("after-follow");
       } catch (error) {
         console.log(error);
       }
     },
     async deleteFollowShips(id) {
       try {
+        this.$emit("after-follow");
         const { data } = await usersAPI.follower.deleteFollowShips(id);
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.$emit("after-follow");
       } catch (error) {
         console.log(error);
       }

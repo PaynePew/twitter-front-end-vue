@@ -120,7 +120,6 @@ export default {
     },
     handleRelation() {
       this.userInfo.isFollowed = !this.userInfo.isFollowed;
-      this.getUser(this.userInfo.id);
     },
   },
   beforeRouteUpdate(to, from, next) {
