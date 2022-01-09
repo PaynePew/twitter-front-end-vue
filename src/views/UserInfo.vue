@@ -62,6 +62,7 @@ export default {
   created() {
     const { userId } = this.$route.params;
     this.getUser(userId);
+    this.getArticle(userId);
   },
   computed: {
     ...mapState({
@@ -77,11 +78,11 @@ export default {
       try {
         const { data } = await usersAPI.getUser(id);
         this.userInfo = data;
-        await this.getArticle(id);
+        // await this.getArticle(id);
         this.isTabLoading = false;
         this.isLoading = false;
-        await this.getLikes(id);
-        await this.getReplies(id);
+        this.getLikes(id);
+        this.getReplies(id);
       } catch (error) {
         this.isLoading = false;
         console.log(error);
@@ -127,6 +128,7 @@ export default {
     this.isLoading = true;
     const { userId } = to.params;
     this.getUser(userId);
+    this.getArticle(userId);
     next();
   },
 };
