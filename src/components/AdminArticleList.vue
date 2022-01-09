@@ -50,7 +50,6 @@ export default {
       try {
         const { data } = await adminAPI.articles.getAll();
         this.articles = data;
-        // this.articles = articleDummy;
       } catch (error) {
         console.log(error);
       }
@@ -58,11 +57,9 @@ export default {
     async deleteArticle(tweetId) {
       try {
         const { data } = await adminAPI.articles.delete({ tweetId });
-
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-
         this.articles = this.articles.filter(
           (article) => article.id !== tweetId
         );

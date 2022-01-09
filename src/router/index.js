@@ -52,6 +52,9 @@ const routes = [
   {
     path: "/home",
     name: "Home",
+    meta: {
+      keepAlive: true,
+    },
     components: { default: Home, nav: NavBar, side: PopularList },
   },
   {
