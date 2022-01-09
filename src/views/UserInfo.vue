@@ -78,10 +78,10 @@ export default {
         const { data } = await usersAPI.getUser(id);
         this.userInfo = data;
         await this.getArticle(id);
-        await this.getLikes(id);
-        await this.getReplies(id);
         this.isTabLoading = false;
         this.isLoading = false;
+        await this.getLikes(id);
+        await this.getReplies(id);
       } catch (error) {
         this.isLoading = false;
         console.log(error);
