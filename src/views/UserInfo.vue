@@ -82,8 +82,6 @@ export default {
         this.isLoading = false;
         await this.getLikes(id);
         await this.getReplies(id);
-        this.isTabLoading = true;
-        this.isLoading = true;
       } catch (error) {
         this.isLoading = false;
         console.log(error);
@@ -125,6 +123,8 @@ export default {
     },
   },
   beforeRouteUpdate(to, from, next) {
+    this.isTabLoading = true;
+    this.isLoading = true;
     const { userId } = to.params;
     this.getUser(userId);
     next();
