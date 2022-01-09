@@ -1,4 +1,21 @@
-# twitter-front-end-vue
+# Simple Twitter
+A simple social platform allows users to post, like, comment tweets and modify personal information, building relations with others through real-time chat and following system.  Administrator can also manage tweets and users in CMS.
+> [Simple Twitter](https://paynepew.github.io/twitter-front-end-vue/)
+
+![](https://github.com/PaynePew/twitter-front-end-vue/blob/master/public/Home.jpg)
+![](https://github.com/PaynePew/twitter-front-end-vue/blob/master/public/root.jpg)
+## Testing Account
+Admin account can only view in CMS. 
+```
+account: admin 
+password: 12345678
+```
+Clients accounts user1 ~ user5 all with same password.
+```
+account: user1 
+password: 12345678
+```
+
 
 ## Project download
 ```
