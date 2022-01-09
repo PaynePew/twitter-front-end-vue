@@ -55,7 +55,7 @@ export default {
     justify-content: space-between;
     position: fixed;
     top: 15px;
-    right: 15px;
+    right: 35%;
     z-index: 999;
     width: 354px;
     height: 56px;
