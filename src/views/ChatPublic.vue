@@ -140,7 +140,7 @@ export default {
 <style lang="scss" scoped>
 .public-message {
   &__container {
-    width: 1063px;
+    width: 981px;
     height: 100%;
     display: flex;
   }

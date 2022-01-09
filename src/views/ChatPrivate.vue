@@ -44,7 +44,6 @@ export default {
     },
     // 註冊接收新訊息
     privateMessage(newMessage) {
-      console.log(newMessage);
       this.addMessage(newMessage);
     },
   },
@@ -84,7 +83,7 @@ export default {
 <style lang="scss" scoped>
 .private-message {
   &__container {
-    width: 1063px;
+    width: 981px;
     height: 100%;
     display: flex;
   }
