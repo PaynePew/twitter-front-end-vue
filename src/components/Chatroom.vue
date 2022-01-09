@@ -14,7 +14,7 @@
       />
       <div class="chatroom__temp" ref="temp"></div>
     </div>
-    <div v-if="activeChat" class="chatroom__footer">
+    <div class="chatroom__footer">
       <input
         class="chatroom__input"
         type="text"

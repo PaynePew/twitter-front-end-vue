@@ -114,7 +114,6 @@ export default {
         this.replyArticle = this.replyArticle.map((_replyArticle) => {
           return { ..._replyArticle, owner: { ...this.userInfo } };
         });
-        console.log(this.replyArticle);
       } catch (error) {
         console.log(error);
       }
