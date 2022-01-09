@@ -129,6 +129,7 @@ export default {
   &--setting {
     flex: 1;
     border: none;
+    padding-right: 395px;
   }
 }
 </style>

@@ -124,10 +124,6 @@ export default {
       this.getUser(this.userInfo.id);
     },
   },
-  beforeRouteUpdate(to, from, next) {
-    console.log(to);
-    next();
-  },
 };
 </script>
 
