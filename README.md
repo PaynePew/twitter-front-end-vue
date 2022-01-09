@@ -12,7 +12,7 @@ git clone https://github.com/PaynePew/twitter-front-end-vue.git
 
 ## Project setup
 ```
-npm install
+npm install, patch is for vue3-socket.io
 ```
 
 ### Compiles and hot-reloads for development
