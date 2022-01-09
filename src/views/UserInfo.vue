@@ -73,6 +73,13 @@ export default {
       return Number(this.$route.params.userId) === this.currentUser.id;
     },
   },
+  watch: {
+    userInfo(newValue) {
+      this.articles = this.articles.map((_articles) => {
+        return { ..._articles, User: { ...newValue } };
+      });
+    },
+  },
   methods: {
     async getUser(id) {
       try {
