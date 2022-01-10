@@ -50,7 +50,7 @@ export default {
     //   state.messageList = list;
     // },
     [addNewMessage]: (state, data) => {
-      const {
+      let {
         id,
         content,
         createdAt,
@@ -58,6 +58,9 @@ export default {
         RoomId,
         isRead,
       } = data.newMessages;
+      // if (state.activeChat === RoomId) {
+      //   isRead = true;
+      // }
       state.messageList[id] = {
         id,
         content,

@@ -26,6 +26,7 @@ export default {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
       activeReceiver: (state) => state.chatPrivate.activeReceiver,
+      activeChat: (state) => state.chatPrivate.activeChat,
     }),
     ...mapGetters({
       userList: "chatPrivate/getUserList",
@@ -72,6 +73,13 @@ export default {
       });
     },
     async addMessage(message) {
+      if (message.newMessages.RoomId === this.activeChat) {
+        message.newMessages.isRead = true;
+        this.$socket.emit("getRoomHistory", {
+          currentUserId: this.currentUserId,
+          roomId: this.activeChat,
+        });
+      }
       await this.$store.commit("chatPrivate/addNewMessage", message);
       // 新訊息動畫滾動底部
       this.$refs.chatroomRef.scrollToggle(true);
