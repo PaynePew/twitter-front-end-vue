@@ -8,7 +8,10 @@
       clickRoom(user.roomId);
     "
   >
-    <div class="relation__wrapper">
+    <div
+      class="relation__wrapper"
+      :class="{ 'relation__wrapper--active': user.id === activeReceiver }"
+    >
       <div class="relation__header">
         <div class="relation__avatar">
           <img class="relation__img" :src="user.avatar" alt="" />
@@ -54,7 +57,10 @@ export default {
     },
   },
   computed: {
-    ...mapState("authentication", ["currentUser"]),
+    ...mapState({
+      currentUser: (state) => state.authentication.currentUser,
+      activeReceiver: (state) => state.chatPrivate.activeReceiver,
+    }),
     ...mapGetters({
       latestRoomMessage: "chatPrivate/getLatestRoomMessage",
     }),
@@ -71,6 +77,9 @@ export default {
     padding: 10px 15px;
     box-sizing: border-box;
     cursor: pointer;
+    &--active {
+      background: rgba(50, 50, 50, 0.15);
+    }
   }
   &__header {
     margin-right: 10px;
