@@ -4,7 +4,7 @@ import {
   // setMessageList,
   addNewMessage,
   setPrivateHistory,
-  setPrivateUserList,
+  // setPrivateUserList,
   selectReceiver,
 } from "../mutation-types";
 
@@ -41,7 +41,7 @@ export default {
       state.activeReceiver = selectId;
     },
     [removeSelect]: (state) => {
-      state.activeChat = -1;
+      state.activeChat = null;
     },
     // [setMessageList]: (state, list) => {
     //   state.messageList = list;
@@ -64,8 +64,22 @@ export default {
         messages: [...state.rooms[RoomId].messages, id],
       };
     },
+    // [setPrivateHistory]: (state, data) => {
+    //   data.map((_data) =>
+    //     _data.history.map((_message) => {
+    //       let { id, content, createdAt, UserId: userId } = _message;
+    //       state.messageList[id] = {
+    //         id,
+    //         content,
+    //         createdAt,
+    //         userId,
+    //       };
+    //     })
+    //   );
+    // },
     [setPrivateHistory]: (state, data) => {
-      data.map((_data) =>
+      data.map((_data) => {
+        let { id: roomId } = _data;
         _data.history.map((_message) => {
           let { id, content, createdAt, UserId: userId } = _message;
           state.messageList[id] = {
@@ -74,12 +88,7 @@ export default {
             createdAt,
             userId,
           };
-        })
-      );
-    },
-    [setPrivateUserList]: (state, data) => {
-      data.map((_data) => {
-        let { id: roomId } = _data;
+        });
         state.rooms[roomId] = {
           messages: _data.history.map((_message) => {
             return _message.id;
@@ -104,6 +113,10 @@ export default {
       return state.rooms[state.activeChat].messages.map(
         (_messageId) => state.messageList[_messageId]
       );
+    },
+    getLatestRoomMessage: (state) => (roomId) => {
+      let max = Math.max(...state.rooms[roomId].messages);
+      return state.messageList[max];
     },
     getRoomUser: (state) => {
       return state.userList[state.activeChat];

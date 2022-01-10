@@ -1,5 +1,5 @@
 <template>
-  <section  class="relation">
+  <section class="relation">
     <div v-for="user in users" :key="user.id" class="relation__wrapper">
       <div class="relation__header">
         <div class="relation__avatar">

@@ -20,10 +20,14 @@
             <div class="relation__name">{{ user.name }}</div>
             <div class="relation__account">@{{ user.account }}</div>
           </div>
-          <div class="relation__time">10秒</div>
+          <div class="relation__time">
+            {{ chatTime(latestRoomMessage(user.roomId).createdAt) }}
+          </div>
         </div>
         <div class="relation__box-bottom">
-          <div class="relation__message">Latest message</div>
+          <div class="relation__message">
+            {{ latestRoomMessage(user.roomId).content }}
+          </div>
         </div>
       </div>
     </div>
@@ -31,6 +35,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { fromNowMixin } from "@/utils/mixins";
 export default {
   props: {
     users: Array,
@@ -43,6 +49,12 @@ export default {
       this.$store.commit("chatPrivate/selectChat", roomId);
     },
   },
+  computed: {
+    ...mapGetters({
+      latestRoomMessage: "chatPrivate/getLatestRoomMessage",
+    }),
+  },
+  mixins: [fromNowMixin],
 };
 </script>
 
@@ -53,6 +65,7 @@ export default {
     border-bottom: 1px solid $clr-border;
     padding: 10px 15px;
     box-sizing: border-box;
+    cursor: pointer;
   }
   &__header {
     margin-right: 10px;
@@ -90,6 +103,7 @@ export default {
   }
   &__time {
     color: $clr-secondary;
+    text-align: right;
   }
   &__message {
     color: $clr-secondary;
