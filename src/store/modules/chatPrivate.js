@@ -36,6 +36,9 @@ export default {
   mutations: {
     [selectChat]: (state, selectId) => {
       state.activeChat = selectId;
+      state.rooms[state.activeChat].messages.map(
+        (_messageId) => (state.messageList[_messageId].isRead = true)
+      );
     },
     [selectReceiver]: (state, selectId) => {
       state.activeReceiver = selectId;
@@ -53,12 +56,14 @@ export default {
         createdAt,
         UserId: userId,
         RoomId,
+        isRead,
       } = data.newMessages;
       state.messageList[id] = {
         id,
         content,
         createdAt,
         userId,
+        isRead,
       };
       state.rooms[RoomId] = {
         messages: [...state.rooms[RoomId].messages, id],
@@ -81,12 +86,13 @@ export default {
       data.map((_data) => {
         let { id: roomId } = _data;
         _data.history.map((_message) => {
-          let { id, content, createdAt, UserId: userId } = _message;
+          let { id, content, createdAt, UserId: userId, isRead } = _message;
           state.messageList[id] = {
             id,
             content,
             createdAt,
             userId,
+            isRead,
           };
         });
         state.rooms[roomId] = {

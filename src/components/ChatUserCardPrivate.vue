@@ -28,7 +28,13 @@
           </div>
         </div>
         <div class="relation__box-bottom">
-          <div class="relation__message">
+          <div
+            class="relation__message"
+            :class="{
+              'relation__message--unread': !latestRoomMessage(user.roomId)
+                .isRead,
+            }"
+          >
             {{ latestRoomMessage(user.roomId).content }}
           </div>
         </div>
@@ -121,6 +127,10 @@ export default {
   }
   &__message {
     color: $clr-secondary;
+    &--unread {
+      font-weight: bold;
+      font-size: 18px;
+    }
   }
 }
 </style>
