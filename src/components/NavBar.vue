@@ -78,6 +78,7 @@
               ]"
             >
               私人訊息
+              <span class="navbar__unread">{{ unReadCount }}</span>
             </div>
           </router-link>
           <router-link
@@ -175,11 +176,27 @@
 import { mapState } from "vuex";
 
 export default {
+  name: "NavBar",
   data() {
     return {
       HomeURL: ["Home", "ArticleShow"],
       UserURL: ["UserInfo", "UserInfoWithReply", "UserInfoWithLike"],
+      unReadCount: 0,
     };
+  },
+  sockets: {
+    unReadCount(data) {
+      this.unReadCount = data;
+    },
+  },
+  created() {
+    this.$socket.connect();
+  },
+  mounted() {
+    this.$nextTick(function () {
+      this.joinPrivate(this.currentUser.id);
+      this.$socket.emit("unReadCount", this.currentUser.id);
+    });
   },
   computed: {
     isAdminPage() {
@@ -190,17 +207,18 @@ export default {
       }
       return false;
     },
-
     currentPage() {
       return this.$route.name;
     },
-
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
     }),
   },
 
   methods: {
+    joinPrivate(senderId) {
+      this.$socket.emit("privateEnter", { senderId });
+    },
     handleNewPost() {
       this.$emit("after-click");
     },
@@ -239,6 +257,12 @@ export default {
     margin-top: 14px;
     margin-left: 10px;
     margin-bottom: 30px;
+  }
+
+  &__unread {
+    font-size: 15px;
+    font-weight: bold;
+    color: red;
   }
 
   &__menu {

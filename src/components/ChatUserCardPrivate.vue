@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { fromNowMixin } from "@/utils/mixins";
 export default {
   props: {
@@ -47,9 +47,14 @@ export default {
     },
     clickRoom(roomId) {
       this.$store.commit("chatPrivate/selectChat", roomId);
+      this.$socket.emit("getRoomHistory", {
+        currentUserId: this.currentUser.id,
+        roomId,
+      });
     },
   },
   computed: {
+    ...mapState("authentication", ["currentUser"]),
     ...mapGetters({
       latestRoomMessage: "chatPrivate/getLatestRoomMessage",
     }),
