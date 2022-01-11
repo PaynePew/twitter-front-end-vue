@@ -284,6 +284,7 @@ export default {
     width: 24px;
     height: 24px;
     margin-right: 44.5px;
+    cursor: pointer;
   }
   &__body {
     display: flex;
@@ -337,6 +338,7 @@ export default {
     z-index: 999;
     top: 45%;
     left: 45%;
+
     > input {
       display: none;
     }
@@ -345,14 +347,17 @@ export default {
     width: 20px;
     height: 20px;
     margin-right: 36.5px;
+    cursor: pointer;
   }
   &__cover-delete {
     width: 20px;
     height: 20px;
+    cursor: pointer;
   }
   &__avatar-upload {
     width: 20px;
     height: 20px;
+    cursor: pointer;
   }
   &__image-upload {
     position: absolute;
