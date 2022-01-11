@@ -159,11 +159,13 @@ export default {
     justify-content: center;
   }
   &__main {
+    width: 100%;
   }
   &__des {
     font-size: $fs-h1;
     font-weight: 500;
     margin-bottom: 15px;
+    overflow-wrap: break-word;
   }
   &__time-box {
     padding-bottom: 15px;

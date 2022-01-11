@@ -178,6 +178,7 @@ export default {
   }
   &__main {
     margin-left: 10px;
+    width: 85%;
   }
   &__name {
     font-weight: bold;
@@ -188,7 +189,9 @@ export default {
     color: $clr-secondary;
   }
   &__body {
+    width: 100%;
     font-weight: 500;
+    overflow-wrap: break-word;
   }
   &__footer {
     display: flex;
