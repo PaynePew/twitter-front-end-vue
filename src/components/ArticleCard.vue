@@ -132,6 +132,10 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "success",
+          message: data.message,
+        });
       } catch (error) {
         console.log(error);
       }
