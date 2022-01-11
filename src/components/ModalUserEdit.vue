@@ -2,98 +2,94 @@
   <section class="modal">
     <div class="modal__mask">
       <div @click.self="TOGGLE_MODAL" class="modal__wrapper">
-        <div class="modal__container">
-          <div class="modal__header">
-            <img
-              @click.self="TOGGLE_MODAL"
-              class="modal__icon"
-              src="@/assets/img/icon_close@2x.png"
-              alt=""
-            />
-            <div class="modal__appBar">
-              <span>編輯個人資料</span>
-              <button
-                @click.stop="
-                  handleSubmit();
-                  TOGGLE_MODAL();
-                "
-                class="btn btn--primary"
-              >
-                儲存
-              </button>
+        <form @submit.prevent="handleSubmit">
+          <div class="modal__container">
+            <div class="modal__header">
+              <img
+                @click.self="TOGGLE_MODAL"
+                class="modal__icon"
+                src="@/assets/img/icon_close@2x.png"
+                alt=""
+              />
+              <div class="modal__appBar">
+                <span>編輯個人資料</span>
+                <button class="btn btn--primary">儲存</button>
+              </div>
             </div>
-          </div>
-          <section class="userinfo-card">
-            <div class="userinfo-card__wrapper">
-              <div class="userinfo-card__container">
-                <div class="userinfo-card__cover-box">
-                  <img
-                    :src="userInfo.coverTemp"
-                    alt=""
-                    class="userinfo-card__cover"
-                  />
-                  <div class="userinfo-card__cover-utils">
-                    <label for="cover-input">
-                      <img
-                        class="userinfo-card__cover-upload"
-                        src="@/assets/img/icon_upload@2x.png"
-                        alt=""
-                      />
-                    </label>
+            <section class="userinfo-card">
+              <div class="userinfo-card__wrapper">
+                <div class="userinfo-card__container">
+                  <div class="userinfo-card__cover-box">
                     <img
-                      @click.stop="handleDeleteCover"
-                      class="userinfo-card__cover-delete"
-                      src="@/assets/img/icon_delete@2x.png"
+                      :src="userInfo.cover"
+                      alt=""
+                      class="userinfo-card__cover"
                     />
-                    <input
-                      id="cover-input"
-                      type="file"
-                      name="cover"
-                      accept="image/*"
-                      class="form-control-file"
-                      @change="handleCoverChange"
-                    />
-                  </div>
-                </div>
-                <div class="userinfo-card__main">
-                  <div class="userinfo-card__header">
-                    <div class="userinfo-card__avatar-box">
-                      <img
-                        v-if="userInfo.avatarTemp"
-                        :src="userInfo.avatarTemp"
-                        alt=""
-                        class="userinfo-card__avatar"
-                      />
-                      <div class="userinfo-card__image-upload">
-                        <label for="avatar-input">
-                          <img
-                            class="userinfo-card__avatar-upload"
-                            src="@/assets/img/icon_upload@2x.png"
-                            alt=""
-                          />
-                        </label>
-                        <input
-                          id="avatar-input"
-                          type="file"
-                          name="avatar"
-                          accept="image/*"
-                          class="form-control-file"
-                          @change="handleAvatarChange"
+                    <div class="userinfo-card__cover-utils">
+                      <label for="cover-input">
+                        <img
+                          class="userinfo-card__cover-upload"
+                          src="@/assets/img/icon_upload@2x.png"
+                          alt=""
                         />
+                      </label>
+                      <label for="cover-remove">
+                        <img
+                          @click.stop="handleDeleteCover"
+                          class="userinfo-card__cover-delete"
+                          src="@/assets/img/icon_delete@2x.png"
+                        />
+                      </label>
+                      <input
+                        id="cover-remove"
+                        type="text"
+                        name="noCover"
+                        v-model="coverNull"
+                      />
+                      <input
+                        id="cover-input"
+                        type="file"
+                        name="cover"
+                        accept="image/*"
+                        class="form-control-file"
+                        @change="handleCoverChange"
+                      />
+                    </div>
+                  </div>
+                  <div class="userinfo-card__main">
+                    <div class="userinfo-card__header">
+                      <div class="userinfo-card__avatar-box">
+                        <img
+                          v-if="userInfo.avatar"
+                          :src="userInfo.avatar"
+                          alt=""
+                          class="userinfo-card__avatar"
+                        />
+                        <div class="userinfo-card__image-upload">
+                          <label for="avatar-input">
+                            <img
+                              class="userinfo-card__avatar-upload"
+                              src="@/assets/img/icon_upload@2x.png"
+                              alt=""
+                            />
+                          </label>
+                          <input
+                            id="avatar-input"
+                            type="file"
+                            name="avatar"
+                            accept="image/*"
+                            class="form-control-file"
+                            @change="handleAvatarChange"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-          <div class="modal__body">
-            <section class="modal__edit-wrapper">
-              <form
-                @submit.stop.prevent="handleSubmit"
-                class="modal__form form"
-                enctype="multipart/form-data"
-              >
+            </section>
+            <div class="modal__body">
+              <section class="modal__edit-wrapper">
                 <div class="form__input-box">
                   <label class="form__label" for="name">名稱</label>
                   <div class="form__input-container">
@@ -109,11 +105,14 @@
                     />
                   </div>
                   <div class="form__hint">
-                    <p class="form__error-message" v-if="nameLength > 50">
+                    <p
+                      class="form__error-message"
+                      v-if="userInfo.name.length > 20"
+                    >
                       字數超出上限！
                     </p>
                     <p class="form__counter" v-show="focus === 'name'">
-                      {{ 0 || nameLength }}/50
+                      {{ 0 || userInfo.name.length }}/20
                     </p>
                   </div>
                 </div>
@@ -132,18 +131,21 @@
                     />
                   </div>
                   <div class="form__hint">
-                    <p class="form__error-message" v-if="nameLength > 50">
+                    <p
+                      class="form__error-message"
+                      v-if="userInfo.introduction.length > 50"
+                    >
                       字數超出上限！
                     </p>
                     <p class="form__counter" v-show="focus === 'name'">
-                      {{ 0 || nameLength }}/50
+                      {{ 0 || userInfo.introduction.length }}/50
                     </p>
                   </div>
                 </div>
-              </form>
-            </section>
+              </section>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </section>
@@ -163,9 +165,8 @@ export default {
         introduction: "",
         cover: "",
         avatar: "",
-        coverTemp: "",
-        avatarTemp: "",
       },
+      coverNull: "",
     };
   },
   created() {
@@ -173,25 +174,29 @@ export default {
   },
   methods: {
     ...mapMutations("modalUserInfo", ["TOGGLE_MODAL"]),
-    async handleSubmit() {
+    async handleSubmit(e) {
       try {
-        const formData = new FormData();
-        console.log("avatar type check", this.userInfo.avatar);
-        // if (typeof this.userInfo.avatar != "Object") {
-        //   formData.append("name", this.userInfo.name);
-        //   formData.append("introduction", this.userInfo.introduction);
-        // }
-        formData.append("avatar", this.userInfo.avatar[0]);
-        formData.append("cover", this.userInfo.cover[0]);
-        formData.append("name", this.userInfo.name);
-        formData.append("introduction", this.userInfo.introduction);
-        for (let [name, value] of formData.entries()) {
-          console.log(name + ":" + value);
+        console.log(e);
+        if (this.userInfo.name.length > 20) {
+          throw new Error("名稱超過字數");
+        } else if (this.userInfo.introduction.length > 50) {
+          throw new Error("自我介紹超過字數");
         }
+        const form = e.target;
+        const formData = new FormData(form);
         const { data } = await usersAPI.info.update({ formData });
-        console.log(data);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "success",
+          message: data.message,
+        });
       } catch (error) {
-        console.log(error);
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "error",
+          message: error.message,
+        });
       }
     },
     loadUserInfo() {
@@ -201,34 +206,30 @@ export default {
         introduction,
         avatar,
         cover,
-        coverTemp: cover,
-        avatarTemp: avatar,
       };
     },
     handleCoverChange(e) {
       const files = e.target.files;
       if (files.length === 0) {
-        this.userInfo.coverTemp = "";
+        this.userInfo.cover = "";
       } else {
         const imageURL = window.URL.createObjectURL(files[0]);
-        this.userInfo.cover = files;
-        this.userInfo.coverTemp = imageURL;
+        this.userInfo.cover = imageURL;
+        this.coverNull = "";
       }
     },
     handleAvatarChange(e) {
       const files = e.target.files;
-      console.log(files);
       if (files.length === 0) {
         this.userInfo.avatar = "";
       } else {
         const imageURL = window.URL.createObjectURL(files[0]);
-        this.userInfo.avatar = files;
-        this.userInfo.avatarTemp = imageURL;
+        this.userInfo.avatar = imageURL;
       }
     },
     handleDeleteCover() {
-      this.userInfo.coverTemp = "https://i.imgur.com/l8uvSR5.jpeg";
       this.userInfo.cover = "https://i.imgur.com/l8uvSR5.jpeg";
+      this.coverNull = "https://i.imgur.com/l8uvSR5.jpeg";
     },
   },
 };
@@ -288,7 +289,6 @@ export default {
     flex: 1 1 auto;
   }
   &__edit-wrapper {
-    display: flex;
     padding: 20px 15px 72px;
   }
 }
