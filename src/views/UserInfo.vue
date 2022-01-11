@@ -7,7 +7,11 @@
     :init-isSelf="isSelf"
     @after-follow="handleRelation"
   />
-  <ModalUserEdit v-if="isShow" :init-user-info="userInfo" />
+  <ModalUserEdit
+    v-if="isShow"
+    :init-user-info="userInfo"
+    @after-submit="handleAfterSubmit"
+  />
 
   <UserInfoTab />
   <Spinner v-if="isTabLoading" />
@@ -128,6 +132,10 @@ export default {
     },
     handleRelation() {
       this.userInfo.isFollowed = !this.userInfo.isFollowed;
+    },
+    handleAfterSubmit() {
+      const { userId } = this.$route.params;
+      this.getUser(userId);
     },
   },
   beforeRouteUpdate(to, from, next) {

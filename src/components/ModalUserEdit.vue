@@ -13,7 +13,9 @@
               />
               <div class="modal__appBar">
                 <span>編輯個人資料</span>
-                <button class="btn btn--primary">儲存</button>
+                <button class="btn btn--primary" :disabled="isProcessing">
+                  {{ isProcessing ? "上傳中..." : "儲存" }}
+                </button>
               </div>
             </div>
             <section class="userinfo-card">
@@ -100,8 +102,6 @@
                       type="text"
                       class="form__input"
                       required
-                      @focus="focus = 'name'"
-                      @blur="focus = null"
                     />
                   </div>
                   <div class="form__hint">
@@ -111,7 +111,7 @@
                     >
                       字數超出上限！
                     </p>
-                    <p class="form__counter" v-show="focus === 'name'">
+                    <p class="form__counter">
                       {{ 0 || userInfo.name.length }}/20
                     </p>
                   </div>
@@ -126,8 +126,6 @@
                       type="text"
                       class="form__input form__input--textarea"
                       required
-                      @focus="focus = 'introduction'"
-                      @blur="focus = null"
                     />
                   </div>
                   <div class="form__hint">
@@ -137,7 +135,7 @@
                     >
                       字數超出上限！
                     </p>
-                    <p class="form__counter" v-show="focus === 'name'">
+                    <p class="form__counter">
                       {{ 0 || userInfo.introduction.length }}/50
                     </p>
                   </div>
@@ -167,6 +165,7 @@ export default {
         avatar: "",
       },
       coverNull: "",
+      isProcessing: false,
     };
   },
   created() {
@@ -176,12 +175,12 @@ export default {
     ...mapMutations("modalUserInfo", ["TOGGLE_MODAL"]),
     async handleSubmit(e) {
       try {
-        console.log(e);
         if (this.userInfo.name.length > 20) {
           throw new Error("名稱超過字數");
         } else if (this.userInfo.introduction.length > 50) {
           throw new Error("自我介紹超過字數");
         }
+        this.isProcessing = true;
         const form = e.target;
         const formData = new FormData(form);
         const { data } = await usersAPI.info.update({ formData });
@@ -192,7 +191,10 @@ export default {
           type: "success",
           message: data.message,
         });
+        this.isProcessing = false;
+        this.$emit("after-submit");
       } catch (error) {
+        this.isProcessing = false;
         this.$store.commit("noticeInfo/toggleNotice", {
           type: "error",
           message: error.message,
