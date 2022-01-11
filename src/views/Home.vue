@@ -1,6 +1,6 @@
 <template>
   <AppBar :status="'首頁'" />
-  <ArticleNew :current-user="currentUser" @after-submit="fetchArticles" />
+  <ArticleNew @after-submit="fetchArticles" />
   <Spinner v-if="isLoading" />
   <ArticleCard v-else :init-articles="articles" />
 </template>
@@ -11,7 +11,6 @@ import ArticleCard from "@/components/ArticleCard.vue";
 import Spinner from "@/components/Spinner.vue";
 import AppBar from "@/components/AppBar.vue";
 import articlesAPI from "@/apis/articles";
-import { mapState } from "vuex";
 
 export default {
   components: {
@@ -28,9 +27,6 @@ export default {
   },
   created() {
     this.fetchArticles();
-  },
-  computed: {
-    ...mapState("authentication", ["currentUser"]),
   },
   methods: {
     async fetchArticles() {

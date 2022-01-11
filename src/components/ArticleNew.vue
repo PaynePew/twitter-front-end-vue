@@ -34,15 +34,16 @@
 
 <script>
 import articlesAPI from "@/apis/articles";
+import { mapState } from "vuex";
 export default {
-  props: {
-    currentUser: Object,
-  },
   data() {
     return {
       description: "",
       isProcessing: false,
     };
+  },
+  computed: {
+    ...mapState("authentication", ["currentUser"]),
   },
   methods: {
     async handleSubmit() {

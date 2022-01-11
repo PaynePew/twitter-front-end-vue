@@ -119,11 +119,9 @@ export default {
             this.isProcessing = false;
             return;
           }
-
           localStorage.setItem("token", data.token);
-
           this.$store.commit("authentication/setCurrentUser", data.user);
-
+          this.$store.dispatch("authentication/fetchCurrentUser");
           this.$router.push("/admin/users");
         } else {
           //否則為前台登入
@@ -131,13 +129,10 @@ export default {
             account: this.account,
             password: this.password,
           });
-
           const { data } = response;
-
           if (data.status !== "success") {
             throw new Error(data.message);
           }
-
           if (data.user.role === "admin") {
             //阻擋後台帳號登入前台
             this.$store.commit("authentication/revokeAuthentication");
@@ -149,11 +144,9 @@ export default {
             this.isProcessing = false;
             return;
           }
-
           localStorage.setItem("token", data.token);
-
           this.$store.commit("authentication/setCurrentUser", data.user);
-
+          this.$store.dispatch("authentication/fetchCurrentUser");
           this.$router.push("/home");
         }
       } catch (error) {

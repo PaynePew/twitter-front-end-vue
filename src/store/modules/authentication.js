@@ -38,14 +38,11 @@ export default {
     async fetchCurrentUser({ commit }) {
       try {
         const { data } = await usersAPI.getCurrentUser();
-
         if (data.status === "error") {
           throw new Error(data.message);
         }
-
         const { id, account, name, email, avatar, cover, role, introduction } =
           data.user;
-
         commit("setCurrentUser", {
           id,
           account,
