@@ -1,5 +1,6 @@
 <template>
   <div
+    v-show="isNotice"
     :class="[
       isNotice && notice.type === 'success'
         ? ['notice__box', 'notice__box--show']
@@ -17,6 +18,7 @@
   </div>
 
   <div
+    v-show="isNotice"
     :class="[
       isNotice && notice.type === 'error'
         ? ['notice__box', 'notice__box--show']

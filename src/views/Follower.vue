@@ -42,11 +42,11 @@ export default {
       }
     },
     async fetchTweetsNum(id) {
-      try{
+      try {
         const { data } = await usersAPI.tweet.getTweets(id);
         this.tweetNum = data.length;
-      } catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
     },
   },
