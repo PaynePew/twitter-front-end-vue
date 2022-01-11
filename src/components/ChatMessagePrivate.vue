@@ -1,41 +1,49 @@
 <template>
   <section>
-    <div
-      v-for="message in messages"
-      :key="message.id"
-      class="chat-message__container"
-    >
-      <div
-        v-if="message.userId !== currentUser.id"
-        class="chat-message__message-box"
-      >
-        <div class="chat-message__side">
-          <img class="chat-message__avatar" :src="sender.avatar" />
-        </div>
-        <div class="chat-message__main">
-          <div class="chat-message__content chat-message__content--other">
-            {{ message.content }}
-          </div>
-          <div class="chat-message__time">
-            {{ chatTime(message.createdAt) }}
-          </div>
-        </div>
-      </div>
-      <div
-        v-if="message.userId === currentUser.id"
-        class="chat-message__message-box chat-message__message-box--self"
-      >
-        <div class="chat-message__side"></div>
-        <div class="chat-message__main chat-message__main--self">
-          <div class="chat-message__content chat-message__content--self">
-            {{ message.content }}
-          </div>
-          <div class="chat-message__time">
-            {{ chatTime(message.createdAt) }}
-          </div>
-        </div>
-      </div>
+    <div class="chat-message__alert" v-if="!tempUser && !activeChat">
+      點選聊天室開啟對話吧!
     </div>
+    <div class="chat-message__alert" v-if="tempUser && !activeChat">
+      輸入訊息建立與{{ tempUser }}的聊天室吧!
+    </div>
+    <section v-if="activeChat">
+      <div
+        v-for="message in messages"
+        :key="message.id"
+        class="chat-message__container"
+      >
+        <div
+          v-if="message.userId !== currentUser.id"
+          class="chat-message__message-box"
+        >
+          <div class="chat-message__side">
+            <img class="chat-message__avatar" :src="sender.avatar" />
+          </div>
+          <div class="chat-message__main">
+            <div class="chat-message__content chat-message__content--other">
+              {{ message.content }}
+            </div>
+            <div class="chat-message__time">
+              {{ chatTime(message.createdAt) }}
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="message.userId === currentUser.id"
+          class="chat-message__message-box chat-message__message-box--self"
+        >
+          <div class="chat-message__side"></div>
+          <div class="chat-message__main chat-message__main--self">
+            <div class="chat-message__content chat-message__content--self">
+              {{ message.content }}
+            </div>
+            <div class="chat-message__time">
+              {{ chatTime(message.createdAt) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </section>
   <!-- <div class="chat-message__bottom-index"></div> -->
 </template>
@@ -45,19 +53,33 @@ import { mapGetters, mapState } from "vuex";
 import { fromNowMixin } from "@/utils/mixins";
 
 export default {
-  props: {
-    activeChat: Number,
-  },
   computed: {
     ...mapState({
       currentUser: (state) => state.authentication.currentUser,
       messageList: (state) => state.chatPrivate.messageList,
-      rooms: (state) => state.chatPrivate.rooms,
+      activeReceiver: (state) => state.chatPrivate.activeReceiver,
+      activeChat: (state) => state.chatPrivate.activeChat,
+      tempUser: (state) => state.chatPrivate.tempUser,
     }),
     ...mapGetters({
       messages: "chatPrivate/getRoomMessage",
       sender: "chatPrivate/getRoomUser",
+      getUserList: "chatPrivate/getUserList",
     }),
+  },
+  methods: {
+    handleActiveChat() {
+      let test = this.getUserList.filter(
+        (_user) => _user.id === this.activeReceiver
+      );
+      let roomId = !test.length ? null : test[0].roomId;
+      this.$store.commit("chatPrivate/selectChat", roomId);
+    },
+  },
+  mounted() {
+    this.$nextTick(function () {
+      this.handleActiveChat();
+    });
   },
   mixins: [fromNowMixin],
 };
@@ -65,6 +87,12 @@ export default {
 
 <style lang="scss" scoped>
 .chat-message {
+  &__alert {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 30px;
+    text-align: center;
+  }
   &__notice-box {
     display: flex;
     justify-content: center;

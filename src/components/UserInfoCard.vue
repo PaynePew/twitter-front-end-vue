@@ -22,7 +22,10 @@
                     class="userinfo-card__btn"
                     src="@/assets/img/btn_messege@2x.png"
                     alt=""
-                    @click="selectReceiver(userInfo.id)"
+                    @click="
+                      selectReceiver(userInfo.id);
+                      selectTempUser(userInfo.name);
+                    "
                   />
                 </router-link>
                 <img
@@ -127,8 +130,11 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("modalUserInfo", ["TOGGLE_MODAL"]),
-    ...mapMutations("chatPrivate", ["selectReceiver"]),
+    ...mapMutations({
+      selectTempUser: "chatPrivate/selectTempUser",
+      selectReceiver: "chatPrivate/selectReceiver",
+      TOGGLE_MODAL: "modalUserInfo/TOGGLE_MODAL",
+    }),
     async addFollowShips(id) {
       try {
         this.$emit("after-follow");

@@ -1,11 +1,10 @@
 import {
   selectChat,
   removeSelect,
-  // setMessageList,
   addNewMessage,
   setPrivateHistory,
-  // setPrivateUserList,
   selectReceiver,
+  selectTempUser,
 } from "../mutation-types";
 
 export default {
@@ -17,6 +16,7 @@ export default {
     rooms: {},
     messageList: {},
     userList: {},
+    tempUser: "",
     // roomList:[id1,id2,id3,id4],
     // rooms:{
     //     id1:{
@@ -36,6 +36,9 @@ export default {
   mutations: {
     [selectChat]: (state, selectId) => {
       state.activeChat = selectId;
+      if (!state.activeChat) {
+        return;
+      }
       state.rooms[state.activeChat].messages.map(
         (_messageId) => (state.messageList[_messageId].isRead = true)
       );
@@ -46,9 +49,9 @@ export default {
     [removeSelect]: (state) => {
       state.activeChat = null;
     },
-    // [setMessageList]: (state, list) => {
-    //   state.messageList = list;
-    // },
+    [selectTempUser]: (state, selectName) => {
+      state.tempUser = selectName;
+    },
     [addNewMessage]: (state, data) => {
       let {
         id,
@@ -58,9 +61,6 @@ export default {
         RoomId,
         isRead,
       } = data.newMessages;
-      // if (state.activeChat === RoomId) {
-      //   isRead = true;
-      // }
       state.messageList[id] = {
         id,
         content,
@@ -116,8 +116,9 @@ export default {
   },
   actions: {},
   getters: {
-    getUserList: (state) =>
-      state.roomList.map((_roomId) => state.userList[_roomId]),
+    getUserList: (state) => {
+      return state.roomList.map((_roomId) => state.userList[_roomId]);
+    },
     getRoomMessage: (state) => {
       return state.rooms[state.activeChat].messages.map(
         (_messageId) => state.messageList[_messageId]
@@ -131,9 +132,10 @@ export default {
       return state.userList[state.activeChat];
     },
     getReceiverUser: (state, getters) => {
-      return getters.getUserList.filter(
+      let test = getters.getUserList.filter(
         (_user) => _user.id === state.activeReceiver
-      )[0].roomId;
+      );
+      return test[0].roomId;
     },
   },
 };

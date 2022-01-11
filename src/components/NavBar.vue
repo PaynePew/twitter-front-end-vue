@@ -235,7 +235,7 @@ export default {
 .navbar {
   width: 235px;
   height: 100vh;
-  // padding: 0 20px;
+  padding: 0 20px;
   display: flex;
   flex: 0 1 auto;
   align-items: stretch;

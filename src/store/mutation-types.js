@@ -12,3 +12,4 @@ export const setPrivateMessageList = "setPrivateMessageList";
 export const setPrivateHistory = "setPrivateHistory";
 export const setPrivateUserList = "setPrivateUserList";
 export const selectReceiver = "selectReceiver";
+export const selectTempUser = "selectTempUser";

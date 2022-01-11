@@ -27,6 +27,7 @@ export default {
       currentUser: (state) => state.authentication.currentUser,
       activeReceiver: (state) => state.chatPrivate.activeReceiver,
       activeChat: (state) => state.chatPrivate.activeChat,
+      roomList: (state) => state.chatPrivate.roomList,
     }),
     ...mapGetters({
       userList: "chatPrivate/getUserList",
@@ -73,7 +74,10 @@ export default {
       });
     },
     async addMessage(message) {
-      if (message.newMessages.RoomId === this.activeChat) {
+      if (!this.roomList.includes(message.newMessages.RoomId)) {
+        this.joinPrivate(this.currentUserId);
+        return;
+      } else if (message.newMessages.RoomId === this.activeChat) {
         message.newMessages.isRead = true;
         this.$socket.emit("getRoomHistory", {
           currentUserId: this.currentUserId,

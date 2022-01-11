@@ -8,10 +8,7 @@
     </div>
     <div class="chatroom__body">
       <ChatMessage v-if="$route.name == 'ChatPublic'" />
-      <ChatMessagePrivate
-        v-if="$route.name == 'ChatPrivate' && activeChat !== null"
-        :activeChat="activeChat"
-      />
+      <ChatMessagePrivate v-if="$route.name == 'ChatPrivate'" />
       <div class="chatroom__temp" ref="temp"></div>
     </div>
     <div class="chatroom__footer">
