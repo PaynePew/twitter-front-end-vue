@@ -113,6 +113,7 @@ export default {
         this.$store.commit("modalArticle/TOGGLE_MODAL");
         this.$store.dispatch("modalArticle/FETCH_ARTICLES");
       } catch (error) {
+        this.isProcessing = false;
         this.$store.commit("noticeInfo/toggleNotice", {
           type: "error",
           message: error.message,
@@ -145,6 +146,7 @@ export default {
         this.$store.dispatch("modalArticle/FETCH_ARTICLES");
         this.$store.commit("modalArticle/TOGGLE_MODAL");
       } catch (error) {
+        this.isProcessing = false;
         this.$store.commit("noticeInfo/toggleNotice", {
           type: "error",
           message: error.message,

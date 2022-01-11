@@ -60,6 +60,7 @@ export default {
         this.$emit("after-submit");
         this.isProcessing = false;
       } catch (error) {
+        this.isProcessing = false;
         this.$store.commit("noticeInfo/toggleNotice", {
           type: "error",
           message: error.message,
