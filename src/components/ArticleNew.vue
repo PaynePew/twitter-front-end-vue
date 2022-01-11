@@ -16,7 +16,6 @@
             v-model="description"
           />
           <div class="article-create__footer">
-            <p class="article-create__warn" v-if="!description">內容不可空白</p>
             <button
               type="button"
               :disabled="isProcessing"
@@ -61,7 +60,10 @@ export default {
         this.$emit("after-submit");
         this.isProcessing = false;
       } catch (error) {
-        console.log(error);
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "error",
+          message: error.message,
+        });
       }
     },
   },

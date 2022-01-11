@@ -36,9 +36,6 @@
                   />
                 </div>
                 <div class="article-create__footer">
-                  <p class="article-create__warn" v-if="!description">
-                    內容不可空白
-                  </p>
                   <button
                     @click.stop.prevent="postArticle"
                     class="article-create__btn btn"
@@ -60,9 +57,6 @@
                   />
                 </div>
                 <div class="article-create__footer">
-                  <p class="article-create__warn" v-if="!description">
-                    內容不可空白
-                  </p>
                   <button
                     @click.prevent="postReply"
                     class="article-create__btn btn"
@@ -119,7 +113,10 @@ export default {
         this.$store.commit("modalArticle/TOGGLE_MODAL");
         this.$store.dispatch("modalArticle/FETCH_ARTICLES");
       } catch (error) {
-        console.log(error);
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "error",
+          message: error.message,
+        });
       }
     },
     async postReply() {
@@ -148,7 +145,10 @@ export default {
         this.$store.dispatch("modalArticle/FETCH_ARTICLES");
         this.$store.commit("modalArticle/TOGGLE_MODAL");
       } catch (error) {
-        console.log(error);
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "error",
+          message: error.message,
+        });
       }
     },
   },
