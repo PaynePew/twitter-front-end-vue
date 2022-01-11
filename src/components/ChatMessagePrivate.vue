@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="chat-message__alert" v-if="!tempUser && !activeChat">
-      點選聊天室開啟對話吧!
+      點選聊天室或從朋友頁面點信封開啟新的對話吧!
     </div>
     <div class="chat-message__alert" v-if="tempUser && !activeChat">
       輸入訊息建立與{{ tempUser }}的聊天室吧!
