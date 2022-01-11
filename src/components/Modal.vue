@@ -172,6 +172,7 @@ export default {
   }
   &__wrapper {
     margin-top: 54px;
+    height: 100%;
   }
   &__container {
     display: flex;
