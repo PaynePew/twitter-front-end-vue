@@ -11,15 +11,16 @@
           <div class="relation__name">{{ user.name }}</div>
           <div class="relation__account">@{{ user.account }}</div>
         </div>
+        <!-- <div v-if="user.id === currentUser.id">恭喜上榜!</div> -->
         <button
-          v-if="!user.isFollowed"
+          v-if="!user.isFollowed && user.id !== currentUser.id"
           @click.stop="addFollowShips(user.id)"
           class="relation__btn"
         >
           跟隨
         </button>
         <button
-          v-else
+          v-if="user.isFollowed && user.id !== currentUser.id"
           @click.stop="deleteFollowShips(user.id)"
           class="relation__btn relation__btn--active"
         >
@@ -32,6 +33,7 @@
 
 <script>
 import usersAPI from "@/apis/users";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -40,6 +42,11 @@ export default {
   },
   created() {
     this.getTopFollowers();
+  },
+  computed: {
+    ...mapState({
+      currentUser: (state) => state.authentication.currentUser,
+    }),
   },
   methods: {
     async getTopFollowers() {

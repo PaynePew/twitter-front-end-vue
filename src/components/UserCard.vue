@@ -15,14 +15,14 @@
           {{ user.introduction }}
         </div>
         <button
-          v-if="user.isFollowed"
+          v-if="user.isFollowed && user.id !== currentUser.id"
           class="btn btn--primary user-card__button"
           @click.stop.prevent="deleteFollowShips(user.id)"
         >
           <span>正在跟隨</span>
         </button>
         <button
-          v-if="!user.isFollowed"
+          v-if="!user.isFollowed && user.id !== currentUser.id"
           class="btn user-card__button--frame"
           @click.stop.prevent="addFollowShips(user.id)"
         >
@@ -35,7 +35,7 @@
 
 <script>
 import usersAPI from "@/apis/users";
-
+import { mapState } from "vuex";
 export default {
   props: {
     initialUser: {
@@ -43,13 +43,16 @@ export default {
       require: true,
     },
   },
-
   data() {
     return {
       user: this.initialUser,
     };
   },
-
+  computed: {
+    ...mapState({
+      currentUser: (state) => state.authentication.currentUser,
+    }),
+  },
   // watch: {
   //   initialUser(newValue) {
   //     this.user = {
