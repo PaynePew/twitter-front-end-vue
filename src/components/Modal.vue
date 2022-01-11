@@ -112,7 +112,12 @@ export default {
           throw new Error(data.message);
         }
         this.description = "";
-        this.TOGGLE_MODAL();
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "success",
+          message: "發文成功",
+        });
+        this.$store.commit("modalArticle/TOGGLE_MODAL");
+        this.$store.dispatch("modalArticle/FETCH_ARTICLES");
       } catch (error) {
         console.log(error);
       }
@@ -128,7 +133,20 @@ export default {
           throw new Error(data.message);
         }
         this.description = "";
-        this.TOGGLE_MODAL();
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "success",
+          message: "文章回覆成功",
+        });
+        this.$store.dispatch(
+          "modalArticle/FETCH_ARTICLESHOW",
+          this.articleReply.id
+        );
+        this.$store.dispatch(
+          "modalArticle/FETCH_ARTICLE_REPLY",
+          this.articleReply.id
+        );
+        this.$store.dispatch("modalArticle/FETCH_ARTICLES");
+        this.$store.commit("modalArticle/TOGGLE_MODAL");
       } catch (error) {
         console.log(error);
       }

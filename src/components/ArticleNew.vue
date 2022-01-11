@@ -54,6 +54,10 @@ export default {
           throw new Error(data.message);
         }
         this.description = "";
+        this.$store.commit("noticeInfo/toggleNotice", {
+          type: "success",
+          message: "發文成功",
+        });
         this.$emit("after-submit");
         this.isProcessing = false;
       } catch (error) {

@@ -1,5 +1,11 @@
 export const TOGGLE_MODAL = "TOGGLE_MODAL";
 export const LOAD_ARTICLE = "LOAD_ARTICLE";
+export const FETCH_ARTICLES = "FETCH_ARTICLES";
+export const SET_ARTICLES = "SET_ARTICLES";
+export const FETCH_ARTICLESHOW = "FETCH_ARTICLESHOW";
+export const SET_ARTICLESHOW = "SET_ARTICLESHOW";
+export const FETCH_ARTICLE_REPLY = "FETCH_ARTICLE_REPLY";
+export const SET_ARTICLE_REPLY = "SET_ARTICLE_REPLY";
 export const setCurrentUser = "setCurrentUser";
 export const revokeAuthentication = "revokeAuthentication";
 export const toggleNotice = "toggleNotice";

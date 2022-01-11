@@ -3,7 +3,10 @@
   <Spinner v-if="isLoading" />
   <div v-else>
     <ArticleCardShow :current-article="currentArticle" />
-    <ArticleCardWithReply :init-article="allReplies" :owner="owner" />
+    <ArticleCardWithReply
+      :init-article="currentReplies"
+      :owner="articleOwner"
+    />
   </div>
 </template>
 
@@ -12,7 +15,7 @@ import AppBar from "@/components/AppBar.vue";
 import ArticleCardShow from "@/components/ArticleCardShow.vue";
 import ArticleCardWithReply from "@/components/ArticleCardWithReply.vue";
 import Spinner from "@/components/Spinner.vue";
-import articlesAPI from "@/apis/articles";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -23,25 +26,26 @@ export default {
   },
   data() {
     return {
-      currentUser: [],
-      currentArticle: {},
-      allReplies: [],
-      owner: [],
       isLoading: true,
     };
   },
   created() {
     const { articleId } = this.$route.params;
     this.getArticleShow(articleId);
+    this.getArticleReply(articleId);
+  },
+  computed: {
+    ...mapState({
+      currentArticle: (state) => state.modalArticle.currentArticle,
+      currentReplies: (state) => state.modalArticle.currentReplies,
+      articleOwner: (state) => state.modalArticle.articleOwner,
+    }),
   },
   methods: {
     async getArticleShow(articleId) {
       try {
         this.isLoading = true;
-        const { data } = await articlesAPI.getArticleShow(articleId);
-        this.currentArticle = data;
-        this.owner = data.User;
-        await this.getArticleReply(articleId);
+        await this.$store.dispatch("modalArticle/FETCH_ARTICLESHOW", articleId);
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
@@ -50,8 +54,10 @@ export default {
     },
     async getArticleReply(articleId) {
       try {
-        const { data } = await articlesAPI.reply.get(articleId);
-        this.allReplies = data;
+        await this.$store.dispatch(
+          "modalArticle/FETCH_ARTICLE_REPLY",
+          articleId
+        );
       } catch (error) {
         console.log(error);
       }
