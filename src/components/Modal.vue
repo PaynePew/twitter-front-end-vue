@@ -131,6 +131,9 @@ export default {
           throw new Error(data.message);
         }
         this.description = "";
+        if (this.$route.name === "UserInfo") {
+          this.$store.commit("modalArticle/USERINFO_REFRESH");
+        }
         this.$store.commit("noticeInfo/toggleNotice", {
           type: "success",
           message: "文章回覆成功",

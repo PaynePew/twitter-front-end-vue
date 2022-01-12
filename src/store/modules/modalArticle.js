@@ -7,6 +7,7 @@ import {
   SET_ARTICLESHOW,
   FETCH_ARTICLE_REPLY,
   SET_ARTICLE_REPLY,
+  USERINFO_REFRESH,
 } from "../mutation-types";
 import articlesAPI from "@/apis/articles";
 
@@ -19,6 +20,7 @@ export default {
     articleOwner: [],
     articleReply: {},
     isShow: false,
+    userInfoRefresh: false,
   },
   mutations: {
     [SET_ARTICLES]: (state, payload) => {
@@ -37,6 +39,9 @@ export default {
     },
     [LOAD_ARTICLE]: (state, payload) =>
       (state.articleReply = { ...state.articleReply, ...payload }),
+    [USERINFO_REFRESH]: (state) => {
+      state.userInfoRefresh = !state.userInfoRefresh;
+    },
   },
   actions: {
     [FETCH_ARTICLES]: async ({ commit }) => {

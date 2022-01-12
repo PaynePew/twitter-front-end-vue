@@ -67,10 +67,17 @@ export default {
     const { userId } = this.$route.params;
     this.getUser(userId);
     this.getArticle(userId);
+    // this.$store.watch(
+    //   (state) => state.modalUserInfo.userInfoRefresh,
+    //   () => {
+    //     console.log("hello");
+    //   }
+    // );
   },
   computed: {
     ...mapState({
       isShow: (state) => state.modalUserInfo.isShow,
+      userInfoRefresh: (state) => state.modalArticle.userInfoRefresh,
       currentUser: (state) => state.authentication.currentUser,
     }),
     isSelf() {
@@ -82,6 +89,10 @@ export default {
       this.articles = this.articles.map((_articles) => {
         return { ..._articles, User: { ...newValue } };
       });
+    },
+    userInfoRefresh() {
+      const { userId } = this.$route.params;
+      this.getArticle(userId);
     },
   },
   methods: {
