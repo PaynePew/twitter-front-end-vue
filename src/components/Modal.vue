@@ -94,7 +94,7 @@ export default {
   },
   created() {},
   computed: {
-    ...mapState("modalArticle", ["articleReply", "isReply"]),
+    ...mapState("modalArticle", ["articleReply"]),
     ...mapMutations("modalArticle", ["TOGGLE_MODAL"]),
   },
   methods: {

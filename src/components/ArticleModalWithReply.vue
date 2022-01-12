@@ -97,6 +97,7 @@ export default {
   }
   &__main {
     margin-left: 10px;
+    width: 85%;
   }
   &__name {
     font-weight: bold;
@@ -108,6 +109,7 @@ export default {
   }
   &__body {
     font-weight: 500;
+    overflow-wrap: break-word;
   }
 }
 </style>
