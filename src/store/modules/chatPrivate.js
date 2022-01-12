@@ -5,11 +5,27 @@ import {
   setPrivateHistory,
   selectReceiver,
   selectTempUser,
+  RESET_PRIVATE,
 } from "../mutation-types";
 
-export default {
-  namespaced: true,
-  state: {
+// roomList:[id1,id2,id3,id4],
+// rooms:{
+//     id1:{
+//       messages:[mId1,mId2]
+//     }
+//     id2:{message....}
+//   },
+// messageList:{
+// mId1:{},
+// mId2:{},
+//  },
+// userList:{
+//   id1:{},
+//   id2:{},
+// }
+
+const getDefaultState = () => {
+  return {
     activeChat: null,
     activeReceiver: null,
     roomList: [],
@@ -17,22 +33,14 @@ export default {
     messageList: {},
     userList: {},
     tempUser: "",
-    // roomList:[id1,id2,id3,id4],
-    // rooms:{
-    //     id1:{
-    //       messages:[mId1,mId2]
-    //     }
-    //     id2:{message....}
-    //   },
-    // messageList:{
-    // mId1:{},
-    // mId2:{},
-    //  },
-    // userList:{
-    //   id1:{},
-    //   id2:{},
-    // }
-  },
+  };
+};
+
+const state = getDefaultState();
+
+export default {
+  namespaced: true,
+  state,
   mutations: {
     [selectChat]: (state, selectId) => {
       state.activeChat = selectId;
@@ -72,19 +80,6 @@ export default {
         messages: [...state.rooms[RoomId].messages, id],
       };
     },
-    // [setPrivateHistory]: (state, data) => {
-    //   data.map((_data) =>
-    //     _data.history.map((_message) => {
-    //       let { id, content, createdAt, UserId: userId } = _message;
-    //       state.messageList[id] = {
-    //         id,
-    //         content,
-    //         createdAt,
-    //         userId,
-    //       };
-    //     })
-    //   );
-    // },
     [setPrivateHistory]: (state, data) => {
       data.map((_data) => {
         let { id: roomId } = _data;
@@ -113,8 +108,10 @@ export default {
         };
       });
     },
+    [RESET_PRIVATE]: (state) => {
+      Object.assign(state, getDefaultState());
+    },
   },
-  actions: {},
   getters: {
     getUserList: (state) => {
       return state.roomList.map((_roomId) => state.userList[_roomId]);

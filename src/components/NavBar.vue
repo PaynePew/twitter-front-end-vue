@@ -225,6 +225,7 @@ export default {
 
     logout() {
       this.$store.commit("authentication/revokeAuthentication");
+      this.$store.commit("chatPrivate/RESET_PRIVATE");
       this.$router.push("/login");
     },
   },

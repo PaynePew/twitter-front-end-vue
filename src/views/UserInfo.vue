@@ -67,12 +67,6 @@ export default {
     const { userId } = this.$route.params;
     this.getUser(userId);
     this.getArticle(userId);
-    // this.$store.watch(
-    //   (state) => state.modalUserInfo.userInfoRefresh,
-    //   () => {
-    //     console.log("hello");
-    //   }
-    // );
   },
   computed: {
     ...mapState({
@@ -100,7 +94,6 @@ export default {
       try {
         const { data } = await usersAPI.getUser(id);
         this.userInfo = data;
-        // await this.getArticle(id);
         this.isTabLoading = false;
         this.isLoading = false;
         this.getLikes(id);
