@@ -28,7 +28,7 @@ A simple social platform allows users to post, like, comment tweets and modify p
   - Public Chat Room with online users status.
   - Private Chat with all users in real-time.
 ### Testing Account
-Admin account can only view in CMS. 
+Admin account can only control in CMS. 
 ```
 account: root
 password: 12345678
