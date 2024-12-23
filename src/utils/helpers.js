@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = process.env.VUE_APP_AXIOS_URL;
+const baseURL = "https://twitter-backend-7u7ygq.fly.dev/api";
 
 const axiosInstance = axios.create({
   baseURL,
